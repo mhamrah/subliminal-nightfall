@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "engines": { "vscode": ">=1.70.0" },
   "categories": ["Themes"],
-  "author": "Michael Hamrah",
+  "author": "Mike Hamrah",
   "license": "MIT",
   "repository": {"type": "git", "url": "https://github.com/mhamrah/subliminal-nightfall.git"},
   "homepage": "https://github.com/mhamrah/subliminal-nightfall",
