@@ -1,10 +1,10 @@
 {
   "$schema": "https://zed.dev/schema/themes/v0.2.0.json",
-  "name": "Subliminal",
-  "author": "Your Name",
+  "name": "Subliminal Nightfall",
+  "author": "Mike Hamrah",
   "themes": [
     {
-      "name": "Subliminal",
+      "name": "Subliminal Nightfall",
       "appearance": "dark",
       "style": {
         "border": "#484e5b",
@@ -210,7 +210,7 @@
             "font_weight": null
           },
           "constructor": {
-            "color": "#31748f",
+            "color": "#c4a7e7",
             "font_style": null,
             "font_weight": null
           },
@@ -230,7 +230,7 @@
             "font_weight": 700
           },
           "enum": {
-            "color": "#ffe2a9",
+            "color": "#c4a7e7",
             "font_style": null,
             "font_weight": null
           },
@@ -270,7 +270,7 @@
             "font_weight": null
           },
           "namespace": {
-            "color": "#e0def4",
+            "color": "#c4a7e7",
             "font_style": null,
             "font_weight": null
           },
@@ -325,7 +325,7 @@
             "font_weight": null
           },
           "punctuation.markup": {
-            "color": "#9ccfd8",
+            "color": "#c4a7e7",
             "font_style": null,
             "font_weight": null
           },
@@ -345,22 +345,22 @@
             "font_weight": null
           },
           "string": {
-            "color": "#e6c79c",
+            "color": "#9ccfd8",
             "font_style": null,
             "font_weight": null
           },
           "string.escape": {
-            "color": "#5fb3b3",
+            "color": "#9ccfd8",
             "font_style": null,
             "font_weight": null
           },
           "string.regex": {
-            "color": "#5fb3b3",
+            "color": "#9ccfd8",
             "font_style": null,
             "font_weight": null
           },
           "string.special": {
-            "color": "#5fb3b3",
+            "color": "#9ccfd8",
             "font_style": null,
             "font_weight": null
           },
@@ -370,7 +370,7 @@
             "font_weight": null
           },
           "tag": {
-            "color": "#31748f",
+            "color": "#c4a7e7",
             "font_style": null,
             "font_weight": null
           },
@@ -415,7 +415,7 @@
             "font_weight": 700
           },
           "type.parameter": {
-            "color": "#5fb3b3",
+            "color": "#c4a7e7",
             "font_style": "italic",
             "font_weight": null
           },

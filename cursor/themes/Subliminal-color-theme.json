@@ -19,7 +19,7 @@
     { "scope": ["variable"], "settings": { "foreground": "#e0def4" }},
     { "scope": ["storage.type", "entity.name.type"], "settings": { "foreground": "#31748f" }},
     { "scope": ["entity.name.tag"], "settings": { "foreground": "#31748f" }},
-    { "scope": ["string"], "settings": { "foreground": "#e6c79c" }},
+    { "scope": ["string"], "settings": { "foreground": "#9ccfd8" }},
     { "scope": ["constant.numeric"], "settings": { "foreground": "#c4a7e7" }},
     { "scope": ["support.type", "support.class"], "settings": { "foreground": "#31748f" }},
     { "scope": ["punctuation.definition.string", "string.regexp"], "settings": { "foreground": "#5fb3b3" }},
