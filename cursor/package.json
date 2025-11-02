@@ -1,0 +1,17 @@
+{
+  "name": "subliminal-cursor-theme",
+  "displayName": "Subliminal Nightfall (Cursor)",
+  "publisher": "your-name",
+  "version": "0.0.1",
+  "engines": { "vscode": ">=1.70.0" },
+  "categories": ["Themes"],
+  "contributes": {
+    "themes": [
+      {
+        "label": "Subliminal Nightfall",
+        "uiTheme": "vs-dark",
+        "path": "./themes/Subliminal-color-theme.json"
+      }
+    ]
+  }
+}
