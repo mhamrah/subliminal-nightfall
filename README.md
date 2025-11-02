@@ -1,6 +1,6 @@
 # Subliminal Nightfall (Zed, Ghostty, Cursor)
 
-Last updated: 2025-11-02T01:56:29.062Z
+Last updated: 2025-11-02T02:38:59.253Z
 
 This repo packages the Subliminal color scheme for three editors/terminals:
 - Zed (native theme JSON)
