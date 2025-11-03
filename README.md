@@ -28,6 +28,24 @@ This repo packages the Subliminal color scheme for three editors/terminals:
 - Ghostty theme: ghostty/subliminal-nightfall.conf (palette + background/foreground/cursor)
 - Cursor theme: cursor/themes/Subliminal-color-theme.json + cursor/package.json
 
+## Color Palette
+
+Base colors with properly calibrated bright and dim variants:
+
+| Color   | Base    | Bright  | Dim     | Usage                           |
+|---------|---------|---------|---------|----------------------------------|
+| Red     | #bf616a | #e2848d | #85434a | Errors, deletions               |
+| Green   | #a9cfa4 | #ccf2c7 | #769072 | Success, additions              |
+| Yellow  | #ffe2a9 | #ffffcc | #b29e76 | Warnings, modifications         |
+| Blue    | #6699cc | #89bcef | #476b8e | Info, titles, predictive        |
+| Magenta | #f1a5ab | #ffc8ce | #a87377 | Attributes, emphasis            |
+| Cyan    | #5fb3b3 | #82d6d6 | #427d7d | Focus borders, operators        |
+
+Background: #191724 (deep purple-black)  
+Foreground: #e0def4 (soft white)
+
 ## Notes
-- Palette from iTerm2 Subliminal: #e15a60 #a9cfa4 #ffe2a9 #6699cc #f1a5ab #5fb3b3 with dark base #191724.
-- Swift/Rust accents: cyan functions, blue‑green types/variants, pink attributes/macros, sand strings, lavender numbers/inline code.
+- Red uses Nord red (#bf616a) for consistency with Nord color palette
+- All bright colors are visibly brighter than base (not duplicates)
+- Dim colors are 30% darker for proper terminal contrast
+- Swift/Rust accents: cyan functions, blue‑green types/variants, pink attributes/macros, sand strings, lavender numbers/inline code
