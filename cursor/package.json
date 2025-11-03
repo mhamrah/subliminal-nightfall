@@ -2,7 +2,7 @@
   "name": "subliminal-nightfall",
   "displayName": "Subliminal Nightfall",
   "publisher": "hamrahm",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "engines": {
     "vscode": ">=1.70.0"
   },
@@ -27,8 +27,7 @@
   "files": [
     "themes/*.json",
     "LICENSE",
-    "README.md",
-    "package.json"
+    "README.md"
   ],
   "contributes": {
     "themes": [
