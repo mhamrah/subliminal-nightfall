@@ -1,6 +1,6 @@
 {
-  "name": "subliminal-cursor-theme",
-  "displayName": "Subliminal Nightfall (Cursor)",
+  "name": "subliminal-nightfall",
+  "displayName": "Subliminal Nightfall",
   "publisher": "mhamrah",
   "version": "0.1.0",
   "engines": { "vscode": ">=1.70.0" },
@@ -10,12 +10,18 @@
   "repository": {"type": "git", "url": "https://github.com/mhamrah/subliminal-nightfall.git"},
   "homepage": "https://github.com/mhamrah/subliminal-nightfall",
   "keywords": ["theme","color-theme","subliminal","nightfall","cursor","vscode"],
+  "files": [
+    "themes/*.json",
+    "LICENSE",
+    "README.md",
+    "package.json"
+  ],
   "contributes": {
     "themes": [
       {
         "label": "Subliminal Nightfall",
         "uiTheme": "vs-dark",
-        "path": "./themes/Subliminal-color-theme.json"
+        "path": "./themes/subliminal-nightfall-color-theme.json"
       }
     ]
   }
