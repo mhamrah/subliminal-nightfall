@@ -1,0 +1,59 @@
+name: Publish Cursor Theme (VS Code + Open VSX)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'cursor/**'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    name: Publish to both registries
+    # Prevent loop on bot commit from version bump
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cursor
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install CLIs (vsce + ovsx)
+        run: npm i -g @vscode/vsce ovsx
+
+      - name: Install extension dependencies
+        run: npm i --no-audit --no-fund
+
+      - name: Auto-bump patch version
+        run: |
+          node -e "const fs=require('fs'); const p=JSON.parse(fs.readFileSync('package.json','utf8')); const v=p.version.split('.').map(Number); if(v.length!==3||v.some(n=>Number.isNaN(n))) throw new Error('Invalid semver in package.json'); v[2]++; p.version=v.join('.'); fs.writeFileSync('package.json', JSON.stringify(p,null,2)+'\n'); console.log('New version:', p.version);"
+
+      - name: Publish to VS Code Marketplace
+        env:
+          VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
+        run: vsce publish -p "$VSCE_TOKEN" --no-dependencies -y
+
+      - name: Publish to Open VSX
+        env:
+          OPEN_VSX_TOKEN: ${{ secrets.OPEN_VSX_TOKEN }}
+        run: ovsx publish -p "$OPEN_VSX_TOKEN" -y
+
+      - name: Commit and push version bump
+        run: |
+          set -euo pipefail
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add package.json
+          git commit -m "chore(cursor): bump version to ${NEW_VERSION} [skip ci]"
+          git push

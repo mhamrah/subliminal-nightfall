@@ -13,10 +13,10 @@ This repo packages the Subliminal color scheme for three editors/terminals:
 - In Zed: Command Palette → "Theme: Select Theme" → Subliminal Nightfall
 
 ### Ghostty
-- Copy ghostty/subliminal-nightfall.conf to ~/.config/ghostty/themes/subliminal-nightfall.conf
+- Copy ghostty/subliminal-nightfall to ~/.config/ghostty/themes/subliminal-nightfall
 - In ~/.config/ghostty/config add:
   ```
-  theme = subliminal-nightfall.conf
+  theme = subliminal-nightfall
   ```
 
 ### Cursor (VS Code)
@@ -25,7 +25,7 @@ This repo packages the Subliminal color scheme for three editors/terminals:
 
 ## Development
 - Zed theme source: themes/subliminal-nightfall.json (follows https://zed.dev/schema/themes/v0.2.0.json)
-- Ghostty theme: ghostty/subliminal-nightfall.conf (palette + background/foreground/cursor)
+- Ghostty theme: ghostty/subliminal-nightfall (palette + background/foreground/cursor)
 - Cursor theme: cursor/themes/Subliminal-color-theme.json + cursor/package.json
 
 ## Color Palette
