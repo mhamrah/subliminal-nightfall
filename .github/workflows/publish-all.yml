@@ -39,15 +39,12 @@ jobs:
         run: |
           node -e "const fs=require('fs'); const p=JSON.parse(fs.readFileSync('package.json','utf8')); const v=p.version.split('.').map(Number); if(v.length!==3||v.some(n=>Number.isNaN(n))) throw new Error('Invalid semver in package.json'); v[2]++; p.version=v.join('.'); fs.writeFileSync('package.json', JSON.stringify(p,null,2)+'\n'); console.log('New version:', p.version);"
 
-      - name: Publish to VS Code Marketplace
-        env:
-          VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
-        run: vsce publish -p "$VSCE_TOKEN" --no-dependencies
-
-      - name: Publish to Open VSX
-        env:
-          OPEN_VSX_TOKEN: ${{ secrets.OPEN_VSX_TOKEN }}
-        run: ovsx publish -p "$OPEN_VSX_TOKEN"
+      - name: Publish to VS Code Marketplace and Open VSX
+        uses: HaaLeo/publish-vscode-extension@v1
+        with:
+          pat: ${{ secrets.VSCE_TOKEN }}
+          ovsx_pat: ${{ secrets.OPEN_VSX_TOKEN }}
+          packagePath: ./cursor
 
       - name: Commit and push version bump
         run: |
