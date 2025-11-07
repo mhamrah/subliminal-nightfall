@@ -14,7 +14,6 @@ permissions:
 jobs:
   publish:
     name: Publish to both registries
-    # Prevent loop on bot commit from version bump
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     defaults:
@@ -29,21 +28,27 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install CLIs (vsce + ovsx)
-        run: npm i -g @vscode/vsce ovsx
-
       - name: Install extension dependencies
-        run: npm i --no-audit --no-fund
+        run: npm ci --ignore-scripts
 
       - name: Auto-bump patch version
         run: |
           node -e "const fs=require('fs'); const p=JSON.parse(fs.readFileSync('package.json','utf8')); const v=p.version.split('.').map(Number); if(v.length!==3||v.some(n=>Number.isNaN(n))) throw new Error('Invalid semver in package.json'); v[2]++; p.version=v.join('.'); fs.writeFileSync('package.json', JSON.stringify(p,null,2)+'\n'); console.log('New version:', p.version);"
 
-      - name: Publish to VS Code Marketplace and Open VSX
+      - name: Publish to VS Code Marketplace
         uses: HaaLeo/publish-vscode-extension@v1
         with:
           pat: ${{ secrets.VSCE_TOKEN }}
-          ovsx_pat: ${{ secrets.OPEN_VSX_TOKEN }}
+          registryUrl: https://marketplace.visualstudio.com
+          packagePath: ./cursor
+          baseContentUrl: https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
+          baseImagesUrl: https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
+
+      - name: Publish to Open VSX Registry
+        uses: HaaLeo/publish-vscode-extension@v1
+        with:
+          pat: ${{ secrets.OPEN_VSX_TOKEN }}
+          registryUrl: https://open-vsx.org
           packagePath: ./cursor
           baseContentUrl: https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
           baseImagesUrl: https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
