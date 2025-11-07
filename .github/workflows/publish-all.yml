@@ -25,28 +25,25 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Install vsce and ovsx
+        run: npm install -g @vscode/vsce ovsx
+
       - name: Auto-bump patch version
         working-directory: cursor
         run: |
           node -e "const fs=require('fs'); const p=JSON.parse(fs.readFileSync('package.json','utf8')); const v=p.version.split('.').map(Number); if(v.length!==3||v.some(n=>Number.isNaN(n))) throw new Error('Invalid semver in package.json'); v[2]++; p.version=v.join('.'); fs.writeFileSync('package.json', JSON.stringify(p,null,2)+'\n'); console.log('New version:', p.version);"
 
       - name: Publish to VS Code Marketplace
-        uses: HaaLeo/publish-vscode-extension@v1
-        with:
-          pat: ${{ secrets.VSCE_TOKEN }}
-          registryUrl: https://marketplace.visualstudio.com
-          packagePath: cursor
-          baseContentUrl: https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
-          baseImagesUrl: https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
+        working-directory: cursor
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_TOKEN }}
+        run: vsce publish --pat "$VSCE_PAT" --baseContentUrl https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor --baseImagesUrl https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
 
       - name: Publish to Open VSX Registry
-        uses: HaaLeo/publish-vscode-extension@v1
-        with:
-          pat: ${{ secrets.OPEN_VSX_TOKEN }}
-          registryUrl: https://open-vsx.org
-          packagePath: cursor
-          baseContentUrl: https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
-          baseImagesUrl: https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
+        working-directory: cursor
+        env:
+          OVSX_PAT: ${{ secrets.OPEN_VSX_TOKEN }}
+        run: ovsx publish --pat "$OVSX_PAT" --baseContentUrl https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor --baseImagesUrl https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
 
       - name: Commit and push version bump
         working-directory: cursor
