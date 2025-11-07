@@ -40,7 +40,6 @@ jobs:
         with:
           pat: ${{ secrets.VSCE_TOKEN }}
           registryUrl: https://marketplace.visualstudio.com
-          packagePath: ./cursor
           baseContentUrl: https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
           baseImagesUrl: https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
 
@@ -49,7 +48,6 @@ jobs:
         with:
           pat: ${{ secrets.OPEN_VSX_TOKEN }}
           registryUrl: https://open-vsx.org
-          packagePath: ./cursor
           baseContentUrl: https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
           baseImagesUrl: https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
 
