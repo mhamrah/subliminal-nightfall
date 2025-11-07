@@ -37,13 +37,15 @@ jobs:
         working-directory: cursor
         env:
           VSCE_PAT: ${{ secrets.VSCE_TOKEN }}
-        run: vsce publish --pat "$VSCE_PAT" --baseContentUrl https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor --baseImagesUrl https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
+        run: vsce publish --pat "$VSCE_PAT" --baseContentUrl https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor --baseImagesUrl https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor || echo "Publication may have failed, continuing..."
+        continue-on-error: true
 
       - name: Publish to Open VSX Registry
         working-directory: cursor
         env:
           OVSX_PAT: ${{ secrets.OPEN_VSX_TOKEN }}
-        run: ovsx publish --pat "$OVSX_PAT" --baseContentUrl https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor --baseImagesUrl https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
+        run: ovsx publish --pat "$OVSX_PAT" --baseContentUrl https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor --baseImagesUrl https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor || echo "Publication may have failed, continuing..."
+        continue-on-error: true
 
       - name: Commit and push version bump
         working-directory: cursor
