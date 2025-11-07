@@ -8,10 +8,26 @@ A dark colorscheme for Neovim based on the Subliminal Nightfall theme.
 
 ```lua
 {
-  dir = "path/to/subliminal-nightfall/neovim",
+  "mhamrah/subliminal-nightfall",
+  dir = vim.fn.stdpath("config") .. "/colors",
   lazy = false,
   priority = 1000,
   config = function()
+    vim.cmd([[colorscheme subliminal-nightfall]])
+  end,
+}
+```
+
+Or install from GitHub directly:
+
+```lua
+{
+  "mhamrah/subliminal-nightfall",
+  lazy = false,
+  priority = 1000,
+  config = function()
+    -- The colorscheme file is in neovim/colors/
+    vim.opt.runtimepath:append(vim.fn.stdpath("data") .. "/lazy/subliminal-nightfall/neovim")
     vim.cmd([[colorscheme subliminal-nightfall]])
   end,
 }
@@ -21,8 +37,9 @@ A dark colorscheme for Neovim based on the Subliminal Nightfall theme.
 
 ```lua
 use {
-  'path/to/subliminal-nightfall/neovim',
+  'mhamrah/subliminal-nightfall',
   config = function()
+    vim.opt.runtimepath:append(vim.fn.stdpath("data") .. "/site/pack/packer/start/subliminal-nightfall/neovim")
     vim.cmd([[colorscheme subliminal-nightfall]])
   end
 }
@@ -30,11 +47,18 @@ use {
 
 ### Manual Installation
 
-Copy the `colors/subliminal-nightfall.lua` file to your Neovim configuration directory:
+#### Option 1: Copy to Neovim config directory
 
 ```bash
+# Clone the repository
+git clone https://github.com/mhamrah/subliminal-nightfall.git /tmp/subliminal-nightfall
+
+# Copy the colorscheme file
 mkdir -p ~/.config/nvim/colors
-cp neovim/colors/subliminal-nightfall.lua ~/.config/nvim/colors/
+cp /tmp/subliminal-nightfall/neovim/colors/subliminal-nightfall.lua ~/.config/nvim/colors/
+
+# Clean up
+rm -rf /tmp/subliminal-nightfall
 ```
 
 Then add to your `init.lua`:
@@ -47,6 +71,22 @@ Or in your `init.vim`:
 
 ```vim
 colorscheme subliminal-nightfall
+```
+
+#### Option 2: Add to runtimepath
+
+Clone the repository somewhere and add it to your runtimepath:
+
+```bash
+# Clone to your preferred location
+git clone https://github.com/mhamrah/subliminal-nightfall.git ~/.local/share/nvim/themes/subliminal-nightfall
+```
+
+Then in your `init.lua`:
+
+```lua
+vim.opt.runtimepath:append("~/.local/share/nvim/themes/subliminal-nightfall/neovim")
+vim.cmd([[colorscheme subliminal-nightfall]])
 ```
 
 ## Features
