@@ -16,9 +16,6 @@ jobs:
     name: Publish to both registries
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: cursor
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -29,6 +26,7 @@ jobs:
           node-version: '20'
 
       - name: Auto-bump patch version
+        working-directory: cursor
         run: |
           node -e "const fs=require('fs'); const p=JSON.parse(fs.readFileSync('package.json','utf8')); const v=p.version.split('.').map(Number); if(v.length!==3||v.some(n=>Number.isNaN(n))) throw new Error('Invalid semver in package.json'); v[2]++; p.version=v.join('.'); fs.writeFileSync('package.json', JSON.stringify(p,null,2)+'\n'); console.log('New version:', p.version);"
 
@@ -37,6 +35,7 @@ jobs:
         with:
           pat: ${{ secrets.VSCE_TOKEN }}
           registryUrl: https://marketplace.visualstudio.com
+          packagePath: cursor
           baseContentUrl: https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
           baseImagesUrl: https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
 
@@ -45,10 +44,12 @@ jobs:
         with:
           pat: ${{ secrets.OPEN_VSX_TOKEN }}
           registryUrl: https://open-vsx.org
+          packagePath: cursor
           baseContentUrl: https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
           baseImagesUrl: https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
 
       - name: Commit and push version bump
+        working-directory: cursor
         run: |
           set -euo pipefail
           NEW_VERSION=$(node -p "require('./package.json').version")
