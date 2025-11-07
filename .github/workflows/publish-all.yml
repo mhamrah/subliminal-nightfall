@@ -28,9 +28,6 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install extension dependencies
-        run: npm ci --ignore-scripts
-
       - name: Auto-bump patch version
         run: |
           node -e "const fs=require('fs'); const p=JSON.parse(fs.readFileSync('package.json','utf8')); const v=p.version.split('.').map(Number); if(v.length!==3||v.some(n=>Number.isNaN(n))) throw new Error('Invalid semver in package.json'); v[2]++; p.version=v.join('.'); fs.writeFileSync('package.json', JSON.stringify(p,null,2)+'\n'); console.log('New version:', p.version);"
