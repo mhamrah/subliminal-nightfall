@@ -1,27 +1,81 @@
-# Subliminal Nightfall (Zed, Ghostty, Cursor)
+# Subliminal Nightfall
 
+A dark color scheme for multiple editors and terminals, featuring deep purple-black backgrounds with carefully calibrated accent colors.
 
-This repo packages the Subliminal color scheme for three editors/terminals:
-- Zed (native theme JSON)
-- Ghostty (terminal scheme)
-- Cursor/VS Code (theme extension)
+## Supported Platforms
 
-## Install
+- **Zed** - Native theme JSON
+- **Ghostty** - Terminal color scheme
+- **Cursor/VS Code** - Extension (published to VS Code Marketplace & Open VSX)
+- **Neovim** - Lua colorscheme with Treesitter & LSP support
+
+## Installation
+
+### Cursor/VS Code
+
+Install from the marketplace:
+- **VS Code Marketplace**: Search for "Subliminal Nightfall" in Extensions
+- **Open VSX**: Available at https://open-vsx.org/extension/hamrahm/subliminal-nightfall
+
+Or install manually:
+```bash
+npm i -g @vscode/vsce
+cd cursor
+vsce package
+# Then in Cursor/VS Code: Extensions → Install from VSIX
+```
+
+### Neovim
+
+#### Using lazy.nvim
+
+```lua
+{
+  "mhamrah/subliminal-nightfall",
+  lazy = false,
+  priority = 1000,
+  config = function()
+    vim.opt.runtimepath:append(vim.fn.stdpath("data") .. "/lazy/subliminal-nightfall/neovim")
+    vim.cmd([[colorscheme subliminal-nightfall]])
+  end,
+}
+```
+
+#### Manual installation
+
+```bash
+git clone https://github.com/mhamrah/subliminal-nightfall.git /tmp/subliminal-nightfall
+mkdir -p ~/.config/nvim/colors
+cp /tmp/subliminal-nightfall/neovim/colors/subliminal-nightfall.lua ~/.config/nvim/colors/
+```
+
+Then in your `init.lua`:
+```lua
+vim.cmd([[colorscheme subliminal-nightfall]])
+```
+
+See [neovim/README.md](neovim/README.md) for detailed installation instructions.
 
 ### Zed
-- Copy themes/subliminal-nightfall.json to ~/.config/zed/themes/subliminal-nightfall.json
-- In Zed: Command Palette → "Theme: Select Theme" → Subliminal Nightfall
+
+```bash
+mkdir -p ~/.config/zed/themes
+cp zed/themes/subliminal-nightfall.json ~/.config/zed/themes/
+```
+
+Then in Zed: Command Palette → "Theme: Select Theme" → Subliminal Nightfall
 
 ### Ghostty
-- Copy ghostty/subliminal-nightfall to ~/.config/ghostty/themes/subliminal-nightfall
-- In ~/.config/ghostty/config add:
-  ```
-  theme = subliminal-nightfall
-  ```
 
-### Cursor (VS Code)
-- From repo root: npm i -g @vscode/vsce && vsce package cursor
-- In Cursor: Extensions → "Install from VSIX" → select the generated .vsix
+```bash
+mkdir -p ~/.config/ghostty/themes
+cp ghostty/subliminal-nightfall ~/.config/ghostty/themes/
+```
+
+Add to `~/.config/ghostty/config`:
+```
+theme = subliminal-nightfall
+```
 
 ## Development
 - Zed theme source: themes/subliminal-nightfall.json (follows https://zed.dev/schema/themes/v0.2.0.json)
