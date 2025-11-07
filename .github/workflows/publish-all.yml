@@ -42,12 +42,12 @@ jobs:
       - name: Publish to VS Code Marketplace
         env:
           VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
-        run: vsce publish -p "$VSCE_TOKEN" --no-dependencies -y
+        run: vsce publish -p "$VSCE_TOKEN" --no-dependencies
 
       - name: Publish to Open VSX
         env:
           OPEN_VSX_TOKEN: ${{ secrets.OPEN_VSX_TOKEN }}
-        run: ovsx publish -p "$OPEN_VSX_TOKEN" -y
+        run: ovsx publish -p "$OPEN_VSX_TOKEN"
 
       - name: Commit and push version bump
         run: |
