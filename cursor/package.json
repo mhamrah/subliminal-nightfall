@@ -24,11 +24,6 @@
     "cursor",
     "vscode"
   ],
-  "files": [
-    "themes/*.json",
-    "LICENSE",
-    "README.md"
-  ],
   "contributes": {
     "themes": [
       {

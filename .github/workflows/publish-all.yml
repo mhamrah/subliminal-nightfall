@@ -45,6 +45,8 @@ jobs:
           pat: ${{ secrets.VSCE_TOKEN }}
           ovsx_pat: ${{ secrets.OPEN_VSX_TOKEN }}
           packagePath: ./cursor
+          baseContentUrl: https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
+          baseImagesUrl: https://github.com/mhamrah/subliminal-nightfall/raw/main/cursor
 
       - name: Commit and push version bump
         run: |
