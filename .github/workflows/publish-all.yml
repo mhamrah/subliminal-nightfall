@@ -1,11 +1,12 @@
-name: Publish Cursor Theme (VS Code + Open VSX)
+name: Publish VS Code/Cursor Theme
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'cursor/**'
+      - "cursor/**"
+      - "packages/core/**"
   workflow_dispatch:
 
 permissions:
@@ -23,7 +24,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install vsce and ovsx
         run: npm install -g @vscode/vsce ovsx

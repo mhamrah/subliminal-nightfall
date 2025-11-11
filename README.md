@@ -96,27 +96,27 @@ theme = subliminal-nightfall
 ## Color Palette
 
 ### Syntax Colors
-- **Teal** `#9ccfd8` - Functions, methods, strings
-- **Blue-Green** `#31748f` - Keywords, types, constructors
-- **Lavender** `#c4a7e7` - Numbers, constants, enums
-- **Gray** `#7f7f7f` - Comments
+- ![#9ccfd8](https://via.placeholder.com/12/9ccfd8/9ccfd8.png) **Teal** `#9ccfd8` - Functions, methods, strings
+- ![#31748f](https://via.placeholder.com/12/31748f/31748f.png) **Blue-Green** `#31748f` - Keywords, types, constructors
+- ![#c4a7e7](https://via.placeholder.com/12/c4a7e7/c4a7e7.png) **Lavender** `#c4a7e7` - Numbers, constants, enums
+- ![#7f7f7f](https://via.placeholder.com/12/7f7f7f/7f7f7f.png) **Gray** `#7f7f7f` - Comments
 
 ### Base ANSI Colors
 | Color | Base | Bright | Dim |
 |-------|------|--------|-----|
-| **Red** | `#bf616a` | `#e2848d` | `#85434a` |
-| **Green** | `#a9cfa4` | `#ccf2c7` | `#769072` |
-| **Yellow** | `#ffe2a9` | `#ffffcc` | `#b29e76` |
-| **Blue** | `#6699cc` | `#89bcef` | `#476b8e` |
-| **Magenta** | `#f1a5ab` | `#ffc8ce` | `#a87377` |
-| **Cyan** | `#5fb3b3` | `#82d6d6` | `#427d7d` |
+| **Red** | ![#bf616a](https://via.placeholder.com/12/bf616a/bf616a.png) `#bf616a` | ![#e2848d](https://via.placeholder.com/12/e2848d/e2848d.png) `#e2848d` | ![#85434a](https://via.placeholder.com/12/85434a/85434a.png) `#85434a` |
+| **Green** | ![#a9cfa4](https://via.placeholder.com/12/a9cfa4/a9cfa4.png) `#a9cfa4` | ![#ccf2c7](https://via.placeholder.com/12/ccf2c7/ccf2c7.png) `#ccf2c7` | ![#769072](https://via.placeholder.com/12/769072/769072.png) `#769072` |
+| **Yellow** | ![#ffe2a9](https://via.placeholder.com/12/ffe2a9/ffe2a9.png) `#ffe2a9` | ![#ffffcc](https://via.placeholder.com/12/ffffcc/ffffcc.png) `#ffffcc` | ![#b29e76](https://via.placeholder.com/12/b29e76/b29e76.png) `#b29e76` |
+| **Blue** | ![#6699cc](https://via.placeholder.com/12/6699cc/6699cc.png) `#6699cc` | ![#89bcef](https://via.placeholder.com/12/89bcef/89bcef.png) `#89bcef` | ![#476b8e](https://via.placeholder.com/12/476b8e/476b8e.png) `#476b8e` |
+| **Magenta** | ![#f1a5ab](https://via.placeholder.com/12/f1a5ab/f1a5ab.png) `#f1a5ab` | ![#ffc8ce](https://via.placeholder.com/12/ffc8ce/ffc8ce.png) `#ffc8ce` | ![#a87377](https://via.placeholder.com/12/a87377/a87377.png) `#a87377` |
+| **Cyan** | ![#5fb3b3](https://via.placeholder.com/12/5fb3b3/5fb3b3.png) `#5fb3b3` | ![#82d6d6](https://via.placeholder.com/12/82d6d6/82d6d6.png) `#82d6d6` | ![#427d7d](https://via.placeholder.com/12/427d7d/427d7d.png) `#427d7d` |
 
 ### UI Colors
-- **Background** `#191724` - Deep purple-black
-- **Background Alt** `#1f1d2e` - Sidebars, panels
-- **Foreground** `#e0def4` - Primary text
-- **Selection** `#484e5b` - Text selection
-- **Cursor** `#5fb3b3` - Cursor color
+- ![#191724](https://via.placeholder.com/12/191724/191724.png) **Background** `#191724` - Deep purple-black
+- ![#1f1d2e](https://via.placeholder.com/12/1f1d2e/1f1d2e.png) **Background Alt** `#1f1d2e` - Sidebars, panels
+- ![#e0def4](https://via.placeholder.com/12/e0def4/e0def4.png) **Foreground** `#e0def4` - Primary text
+- ![#484e5b](https://via.placeholder.com/12/484e5b/484e5b.png) **Selection** `#484e5b` - Text selection
+- ![#5fb3b3](https://via.placeholder.com/12/5fb3b3/5fb3b3.png) **Cursor** `#5fb3b3` - Cursor color
 
 ## Philosophy
 
@@ -188,31 +188,45 @@ pnpm --filter website preview
 
 The showcase website is deployed to Cloudflare Pages at `subliminal-nightfall.hamrah.com`.
 
-**Automatic Deployment (Recommended):**
+**Automatic Deployment:**
 
-The website deploys automatically via GitHub Actions when changes are pushed to `main`:
+Cloudflare Pages automatically deploys when you push to `main`:
 
 ```bash
-git add .
-git commit -m "Update website"
 git push origin main
+# Cloudflare detects changes and deploys automatically
 ```
 
-GitHub Actions will:
-- Build the website with `pnpm run build:cloudflare`
-- Deploy to Cloudflare Pages automatically
-- Update deployment status
-
-**Setup GitHub Actions:**
-See `.github/DEPLOYMENT_SETUP.md` for instructions on configuring:
-- `CLOUDFLARE_API_TOKEN` secret
-- `CLOUDFLARE_ACCOUNT_ID` secret
+The deployment uses these settings:
+- Build command: `pnpm run build:cloudflare`
+- Output directory: `website/dist`
+- Node version: 22
+- pnpm version: 10.11.1
 
 **Manual Deployment via Wrangler CLI:**
 ```bash
 pnpm run build:cloudflare
 cd website
 npx wrangler pages deploy dist --project-name=subliminal-nightfall
+```
+
+### Publishing to VS Code Marketplace
+
+The VS Code/Cursor extension automatically publishes to both marketplaces when theme changes are pushed:
+
+**Automatic (via GitHub Actions):**
+- Triggers on changes to `cursor/**` or `packages/core/**`
+- Auto-bumps patch version
+- Publishes to VS Code Marketplace and Open VSX
+- Commits version bump back to repository
+
+**Manual:**
+```bash
+# Trigger workflow from GitHub Actions tab
+# Or manually publish:
+cd cursor
+vsce publish
+ovsx publish
 ```
 
 ### Making Theme Changes
