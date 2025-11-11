@@ -1,6 +1,12 @@
 ---
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
+import Prism from 'prismjs';
+import 'prismjs/components/prism-go';
+import 'prismjs/components/prism-rust';
+import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-swift';
+import 'prismjs/components/prism-bash';
 
 const codeFiles = [
   {
@@ -35,14 +41,15 @@ const codeFiles = [
   }
 ];
 
-// Read code samples
+// Read code samples and highlight them
 const samples = codeFiles.map(({ name, lang, file, icon }) => {
   try {
     const filePath = resolve('./src/code-samples', file);
     const code = readFileSync(filePath, 'utf-8');
-    return { name, lang, code, icon };
+    const highlighted = Prism.highlight(code, Prism.languages[lang] || Prism.languages.markup, lang);
+    return { name, lang, code, highlighted, icon };
   } catch (error) {
-    return { name, lang, code: `// Error loading ${file}`, icon };
+    return { name, lang, code: `// Error loading ${file}`, highlighted: `// Error loading ${file}`, icon };
   }
 });
 ---
@@ -104,7 +111,7 @@ const samples = codeFiles.map(({ name, lang, file, icon }) => {
             </button>
           </div>
           <div class="overflow-x-auto">
-            <pre class="p-6 text-sm leading-relaxed"><code class={`language-${sample.lang}`}>{sample.code}</code></pre>
+            <pre class="p-6 text-sm leading-relaxed"><code class={`language-${sample.lang}`} set:html={sample.highlighted}></code></pre>
           </div>
         </div>
       ))}
@@ -124,72 +131,79 @@ const samples = codeFiles.map(({ name, lang, file, icon }) => {
     color: var(--color-sn-fg);
   }
 
-  /* Syntax highlighting using theme colors */
-  :global(.language-go .token.keyword),
-  :global(.language-rust .token.keyword),
-  :global(.language-typescript .token.keyword),
-  :global(.language-swift .token.keyword),
-  :global(.language-bash .token.keyword) {
+  /* Prism syntax highlighting using theme colors */
+  :global(.token.keyword),
+  :global(.token.control),
+  :global(.token.directive) {
     color: var(--color-sn-blue-green);
   }
 
-  :global(.language-go .token.function),
-  :global(.language-rust .token.function),
-  :global(.language-typescript .token.function),
-  :global(.language-swift .token.function) {
+  :global(.token.function),
+  :global(.token.function-name) {
     color: var(--color-sn-teal);
   }
 
-  :global(.language-go .token.string),
-  :global(.language-rust .token.string),
-  :global(.language-typescript .token.string),
-  :global(.language-swift .token.string),
-  :global(.language-bash .token.string) {
+  :global(.token.string),
+  :global(.token.char) {
     color: var(--color-sn-teal);
   }
 
-  :global(.language-go .token.number),
-  :global(.language-rust .token.number),
-  :global(.language-typescript .token.number),
-  :global(.language-swift .token.number) {
+  :global(.token.number),
+  :global(.token.boolean),
+  :global(.token.constant) {
     color: var(--color-sn-lavender);
   }
 
-  :global(.language-go .token.comment),
-  :global(.language-rust .token.comment),
-  :global(.language-typescript .token.comment),
-  :global(.language-swift .token.comment),
-  :global(.language-bash .token.comment) {
+  :global(.token.comment),
+  :global(.token.prolog),
+  :global(.token.doctype),
+  :global(.token.cdata) {
     color: var(--color-sn-fg-dim);
     font-style: italic;
   }
 
-  :global(.language-go .token.builtin),
-  :global(.language-rust .token.builtin),
-  :global(.language-typescript .token.builtin),
-  :global(.language-swift .token.builtin) {
+  :global(.token.builtin),
+  :global(.token.class-name),
+  :global(.token.type-annotation),
+  :global(.token.type-declaration) {
     color: var(--color-sn-blue-green);
   }
 
-  :global(.language-go .token.operator),
-  :global(.language-rust .token.operator),
-  :global(.language-typescript .token.operator),
-  :global(.language-swift .token.operator) {
+  :global(.token.operator),
+  :global(.token.entity),
+  :global(.token.url) {
     color: var(--color-sn-cyan);
   }
 
-  :global(.language-rust .token.attribute),
-  :global(.language-swift .token.attribute) {
+  :global(.token.property),
+  :global(.token.tag),
+  :global(.token.selector) {
+    color: var(--color-sn-cyan);
+  }
+
+  :global(.token.attr-name),
+  :global(.token.attribute),
+  :global(.token.macro),
+  :global(.token.decorator) {
     color: var(--color-sn-magenta);
     font-style: italic;
   }
 
-  :global(.language-bash .token.builtin) {
-    color: var(--color-sn-blue);
+  :global(.token.punctuation) {
+    color: var(--color-sn-fg-muted);
   }
 
-  :global(.language-bash .token.function) {
-    color: var(--color-sn-cyan);
+  :global(.token.variable) {
+    color: var(--color-sn-fg);
+  }
+
+  :global(.token.namespace) {
+    color: var(--color-sn-lavender);
+  }
+
+  :global(.token.regex),
+  :global(.token.important) {
+    color: var(--color-sn-yellow);
   }
 </style>
 
