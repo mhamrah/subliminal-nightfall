@@ -5,8 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://hamrah.com',
-  base: '/subliminal-nightfall',
+  site: 'https://subliminal-nightfall.hamrah.com',
   output: 'static',
   build: {
     inlineStylesheets: 'auto'

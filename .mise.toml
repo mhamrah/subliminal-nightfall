@@ -1,0 +1,46 @@
+# Mise configuration for Subliminal Nightfall
+# https://mise.jdx.dev/configuration.html
+
+[tools]
+node = "22"
+pnpm = "10.11.1"
+
+[env]
+# Force pnpm to use the workspace
+_.file = ".env"
+
+[tasks.install]
+description = "Install all dependencies"
+run = "pnpm install"
+
+[tasks.dev]
+description = "Start website development server"
+run = "pnpm --filter @subliminal/website dev"
+
+[tasks.build]
+description = "Build all packages"
+run = "pnpm build"
+
+[tasks."build:website"]
+description = "Build website for production"
+run = "pnpm --filter @subliminal/website build"
+
+[tasks.preview]
+description = "Preview website build"
+run = "pnpm --filter @subliminal/website preview"
+
+[tasks.verify]
+description = "Verify symlink setup"
+run = "./scripts/verify-symlinks.sh"
+
+[tasks.clean]
+description = "Clean all build artifacts"
+run = "pnpm clean"
+
+[tasks.format]
+description = "Format code with Prettier"
+run = "pnpm format"
+
+[tasks.lint]
+description = "Lint code with ESLint"
+run = "pnpm lint"
