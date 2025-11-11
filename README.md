@@ -27,6 +27,10 @@ code --install-extension hamrahm.subliminal-nightfall
 4. Click Install
 5. Select theme: `theme selector: toggle` → Subliminal Nightfall
 
+**Theme Variants:**
+- **Subliminal Nightfall** - Standard opaque theme
+- **Subliminal Nightfall Hazy** - Transparent variant with blur effects and 60% opacity
+
 Or install as dev extension:
 ```bash
 # Clone this repository
@@ -126,6 +130,15 @@ Subliminal Nightfall is designed for extended coding sessions with:
 - Carefully calibrated contrast ratios for readability
 - Distinct colors for different syntax elements
 - Muted accent colors that don't fatigue
+
+### Theme Variants
+
+**Subliminal Nightfall Hazy** (Zed only) offers a transparent, blurred experience:
+- Background blur effects that integrate with your desktop
+- 60% opacity for a lightweight, floating editor feel
+- All UI surfaces (editor, panels, toolbar, terminal) support transparency
+- Maintains full syntax color readability despite transparency
+- Perfect for those who prefer a less visually heavy workspace
 
 ## Repository Overview
 
