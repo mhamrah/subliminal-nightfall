@@ -1,3 +1,6 @@
 .DS_Store
 extensions/
 cursor/*.vsix
+
+# themes/ is a symlink to zed/themes/ for Zed extension compatibility
+# Git tracks symlinks, so no exclusion needed
