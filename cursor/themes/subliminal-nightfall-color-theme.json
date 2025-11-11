@@ -7,26 +7,157 @@
     "editor.foreground": "#e0def4",
     "sideBar.background": "#1f1d2e",
     "panel.background": "#1f1d2e",
+    "panel.border": "#363b45CC",
+    "statusBar.background": "#1d1b29",
+    "statusBar.noFolderBackground": "#1d1b29",
+    "titleBar.activeBackground": "#1d1b29",
+    "titleBar.inactiveBackground": "#1f1d2e",
+    "panelSectionHeader.background": "#1d1b29",
     "tab.activeBackground": "#191724",
     "tab.inactiveBackground": "#1f1d2e",
     "editor.selectionBackground": "#484e5b",
     "editor.lineHighlightBackground": "#2e3239bf"
   },
   "tokenColors": [
-    { "scope": ["keyword"], "settings": { "foreground": "#31748f" }},
-    { "scope": ["entity.name.function"], "settings": { "foreground": "#9ccfd8" }},
-    { "scope": ["support.function"], "settings": { "foreground": "#9ccfd8" }},
-    { "scope": ["variable"], "settings": { "foreground": "#e0def4" }},
-    { "scope": ["storage.type", "entity.name.type"], "settings": { "foreground": "#31748f" }},
-    { "scope": ["entity.name.tag"], "settings": { "foreground": "#31748f" }},
-    { "scope": ["string"], "settings": { "foreground": "#9ccfd8" }},
-    { "scope": ["constant.numeric"], "settings": { "foreground": "#c4a7e7" }},
-    { "scope": ["support.type", "support.class"], "settings": { "foreground": "#31748f" }},
-    { "scope": ["punctuation.definition.string", "string.regexp"], "settings": { "foreground": "#5fb3b3" }},
-    { "scope": ["entity.other.attribute-name", "markup.italic"], "settings": { "foreground": "#f1a5ab", "fontStyle": "italic" }},
-    { "scope": ["markup.bold"], "settings": { "foreground": "#f1a5ab", "fontStyle": "bold" }},
-    { "scope": ["markup.inline.raw"], "settings": { "foreground": "#c4a7e7" }},
-    { "scope": ["markup.heading"], "settings": { "foreground": "#6699cc" }},
-    { "scope": ["meta.preprocessor", "meta.annotation"], "settings": { "foreground": "#f1a5ab" }}
-  ]
+    {
+      "scope": [
+        "keyword"
+      ],
+      "settings": {
+        "foreground": "#31748f"
+      }
+    },
+    {
+      "scope": [
+        "entity.name.function"
+      ],
+      "settings": {
+        "foreground": "#9ccfd8"
+      }
+    },
+    {
+      "scope": [
+        "support.function"
+      ],
+      "settings": {
+        "foreground": "#9ccfd8"
+      }
+    },
+    {
+      "scope": [
+        "variable"
+      ],
+      "settings": {
+        "foreground": "#e0def4"
+      }
+    },
+    {
+      "scope": [
+        "storage.type",
+        "entity.name.type"
+      ],
+      "settings": {
+        "foreground": "#31748f"
+      }
+    },
+    {
+      "scope": [
+        "entity.name.tag"
+      ],
+      "settings": {
+        "foreground": "#31748f"
+      }
+    },
+    {
+      "scope": [
+        "string"
+      ],
+      "settings": {
+        "foreground": "#9ccfd8"
+      }
+    },
+    {
+      "scope": [
+        "constant.numeric"
+      ],
+      "settings": {
+        "foreground": "#c4a7e7"
+      }
+    },
+    {
+      "scope": [
+        "support.type",
+        "support.class"
+      ],
+      "settings": {
+        "foreground": "#31748f"
+      }
+    },
+    {
+      "scope": [
+        "punctuation.definition.string",
+        "string.regexp"
+      ],
+      "settings": {
+        "foreground": "#5fb3b3"
+      }
+    },
+    {
+      "scope": [
+        "entity.other.attribute-name",
+        "markup.italic"
+      ],
+      "settings": {
+        "foreground": "#f1a5ab",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "scope": [
+        "markup.bold"
+      ],
+      "settings": {
+        "foreground": "#f1a5ab",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": [
+        "markup.inline.raw"
+      ],
+      "settings": {
+        "foreground": "#c4a7e7"
+      }
+    },
+    {
+      "scope": [
+        "markup.heading"
+      ],
+      "settings": {
+        "foreground": "#6699cc"
+      }
+    },
+    {
+      "scope": [
+        "meta.preprocessor",
+        "meta.annotation"
+      ],
+      "settings": {
+        "foreground": "#f1a5ab"
+      }
+    },
+    {
+      "scope": [
+        "keyword.operator"
+      ],
+      "settings": {
+        "foreground": "#f1a5ab"
+      }
+    }
+  ],
+  "semanticHighlighting": true,
+  "semanticTokenColors": {
+    "operator": "#f1a5ab",
+    "struct": "#ffe2a9"
+  }
 }

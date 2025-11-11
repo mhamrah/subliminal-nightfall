@@ -29,7 +29,8 @@ code --install-extension hamrahm.subliminal-nightfall
 
 **Theme Variants:**
 - **Subliminal Nightfall** - Standard opaque theme
-- **Subliminal Nightfall Hazy** - Transparent variant with blur effects and 60% opacity
+- **Subliminal Nightfall Blurred** - Transparent blurred variant at ~60% opacity
+- **Subliminal Nightfall Hazy** - Higher-opacity blurred variant (≈95% opacity, 35 percentage points more opaque than Blurred)
 
 Or install as dev extension:
 ```bash
@@ -97,9 +98,9 @@ cp ghostty/subliminal-nightfall ~/.config/ghostty/themes/
 theme = subliminal-nightfall
 ```
 
-## Color Palette
+## Terminal Base Palette
 
-### Syntax Colors
+### Expanded Editor Syntax Palette
 - ![#9ccfd8](https://img.shields.io/badge/Teal-9ccfd8?style=for-the-badge&color=9ccfd8) `#9ccfd8` - Functions, methods, strings
 - ![#31748f](https://img.shields.io/badge/Blue--Green-31748f?style=for-the-badge&color=31748f) `#31748f` - Keywords, types, constructors
 - ![#c4a7e7](https://img.shields.io/badge/Lavender-c4a7e7?style=for-the-badge&color=c4a7e7) `#c4a7e7` - Numbers, constants, enums

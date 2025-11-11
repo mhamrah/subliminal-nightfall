@@ -16,15 +16,15 @@ local colors = {
   bg_alt = '#1f1d2e',
   bg_highlight = '#26233a',
   bg_line = '#2e3239',
-  
+
   fg = '#e0def4',
   fg_alt = '#d4d4d4',
   fg_muted = '#a0a0a0',
   fg_dim = '#7f7f7f',
-  
+
   border = '#484e5b',
   border_alt = '#363b45',
-  
+
   -- Syntax colors
   red = '#bf616a',
   green = '#a9cfa4',
@@ -35,18 +35,18 @@ local colors = {
   purple = '#c4a7e7',
   teal = '#9ccfd8',
   dark_blue = '#31748f',
-  
+
   -- UI colors
   selection = '#484e5b',
   search = '#6699cc80',
   line_number = '#8a9099',
   line_number_active = '#c7c7c7',
-  
+
   -- Git colors
   git_add = '#a9cfa4',
   git_change = '#ffe2a9',
   git_delete = '#bf616a',
-  
+
   -- Diagnostic colors
   error = '#bf616a',
   warning = '#ffe2a9',
@@ -108,7 +108,7 @@ hl('Statement', { fg = colors.dark_blue })
 hl('Conditional', { fg = colors.dark_blue })
 hl('Repeat', { fg = colors.dark_blue })
 hl('Label', { fg = colors.blue })
-hl('Operator', { fg = colors.cyan })
+hl('Operator', { fg = colors.magenta })
 hl('Keyword', { fg = colors.dark_blue })
 hl('Exception', { fg = colors.dark_blue })
 
@@ -120,7 +120,7 @@ hl('PreCondit', { fg = colors.magenta })
 
 hl('Type', { fg = colors.dark_blue })
 hl('StorageClass', { fg = colors.dark_blue })
-hl('Structure', { fg = colors.purple })
+hl('Structure', { fg = colors.yellow })
 hl('Typedef', { fg = colors.dark_blue })
 
 hl('Special', { fg = colors.cyan })
@@ -157,11 +157,11 @@ hl('@function.method', { fg = colors.teal })
 hl('@include', { fg = colors.magenta })
 hl('@keyword', { fg = colors.dark_blue })
 hl('@keyword.function', { fg = colors.dark_blue })
-hl('@keyword.operator', { fg = colors.cyan })
+hl('@keyword.operator', { fg = colors.magenta })
 hl('@label', { fg = colors.blue })
 hl('@namespace', { fg = colors.purple })
 hl('@number', { fg = colors.purple })
-hl('@operator', { fg = colors.cyan })
+hl('@operator', { fg = colors.magenta })
 hl('@parameter', { fg = colors.fg_muted, italic = true })
 hl('@property', { fg = colors.fg })
 hl('@punctuation.bracket', { fg = colors.fg_muted })
@@ -198,7 +198,7 @@ hl('@lsp.type.method', { fg = colors.teal })
 hl('@lsp.type.namespace', { fg = colors.purple })
 hl('@lsp.type.parameter', { fg = colors.fg_muted, italic = true })
 hl('@lsp.type.property', { fg = colors.fg })
-hl('@lsp.type.struct', { fg = colors.purple })
+hl('@lsp.type.struct', { fg = colors.yellow })
 hl('@lsp.type.type', { fg = colors.dark_blue })
 hl('@lsp.type.typeParameter', { fg = colors.purple, italic = true })
 hl('@lsp.type.variable', { fg = colors.fg })

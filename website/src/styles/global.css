@@ -45,6 +45,18 @@
     --color-sn-border: #484e5b;
     --color-sn-border-variant: #363b45;
     --color-sn-selection: #484e5b;
+
+    /* Headers & subtle variants */
+    --color-sn-header: #1d1b29;
+    /* header.base */
+    --color-sn-header-translucent: #1d1b29E6;
+    /* header.translucent (hazy) */
+    --color-sn-border-subtle: #363b45CC;
+    /* softer border */
+    --color-sn-border-soft: #2e32396B;
+    /* very soft border */
+    --color-sn-bg-hazy: #191724F2;
+    /* subtle translucency for blurred panels */
 }
 
 body {
@@ -88,4 +100,45 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--color-sn-cyan);
+}
+
+/* Headers and soft box utilities */
+.sn-header {
+    background-color: var(--color-sn-header);
+}
+
+.sn-header-translucent {
+    background-color: var(--color-sn-header-translucent);
+}
+
+.sn-border-subtle {
+    border-color: var(--color-sn-border-subtle) !important;
+}
+
+.sn-border-soft {
+    border-color: var(--color-sn-border-soft) !important;
+}
+
+/* Website terminal/code header bar blending */
+.code-panel>div:first-child {
+    background-color: var(--color-sn-header-translucent) !important;
+    border-bottom-color: var(--color-sn-border-subtle) !important;
+}
+
+/* Hazy/blurred panel background translucency */
+.code-panel {
+    background-color: var(--color-sn-bg-hazy) !important;
+}
+
+/* Softer default boxes (optional utility) */
+.bg-sn-box,
+.bg-sn-bg-alt.sn-soft-box {
+    background: linear-gradient(180deg, var(--color-sn-header) 0%, var(--color-sn-bg-alt) 100%);
+    border-color: var(--color-sn-border-subtle) !important;
+}
+
+/* Make common bordered alt boxes less stark by default */
+.bg-sn-bg-alt.border,
+.bg-sn-bg-alt .border {
+    border-color: var(--color-sn-border-subtle) !important;
 }

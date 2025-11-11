@@ -80,13 +80,13 @@ export const baseColors = {
   } as ColorVariant,
 
   magenta: {
-    base: '#f1a5ab',    // Attributes, emphasis, booleans
+    base: '#f1a5ab',    // Attributes, emphasis, booleans, operators
     bright: '#ffc8ce',
     dim: '#a87377'
   } as ColorVariant,
 
   cyan: {
-    base: '#5fb3b3',    // Focus borders, operators
+    base: '#5fb3b3',    // Focus borders
     bright: '#82d6d6',
     dim: '#427d7d'
   } as ColorVariant
