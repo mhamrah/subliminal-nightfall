@@ -1,6 +1,39 @@
+# macOS
 .DS_Store
+
+# Build outputs
 extensions/
 cursor/*.vsix
+dist/
+*.tsbuildinfo
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Cache
+.astro/
+.next/
+.cache/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # themes/ is a symlink to zed/themes/ for Zed extension compatibility
 # Git tracks symlinks, so no exclusion needed
