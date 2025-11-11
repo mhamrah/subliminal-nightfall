@@ -96,27 +96,27 @@ theme = subliminal-nightfall
 ## Color Palette
 
 ### Syntax Colors
-- ![#9ccfd8](https://via.placeholder.com/12/9ccfd8/9ccfd8.png) **Teal** `#9ccfd8` - Functions, methods, strings
-- ![#31748f](https://via.placeholder.com/12/31748f/31748f.png) **Blue-Green** `#31748f` - Keywords, types, constructors
-- ![#c4a7e7](https://via.placeholder.com/12/c4a7e7/c4a7e7.png) **Lavender** `#c4a7e7` - Numbers, constants, enums
-- ![#7f7f7f](https://via.placeholder.com/12/7f7f7f/7f7f7f.png) **Gray** `#7f7f7f` - Comments
+- ![#9ccfd8](https://via.placeholder.com/100x30/9ccfd8/000000?text=Teal) `#9ccfd8` - Functions, methods, strings
+- ![#31748f](https://via.placeholder.com/100x30/31748f/ffffff?text=Blue-Green) `#31748f` - Keywords, types, constructors
+- ![#c4a7e7](https://via.placeholder.com/100x30/c4a7e7/000000?text=Lavender) `#c4a7e7` - Numbers, constants, enums
+- ![#7f7f7f](https://via.placeholder.com/100x30/7f7f7f/ffffff?text=Gray) `#7f7f7f` - Comments
 
 ### Base ANSI Colors
 | Color | Base | Bright | Dim |
 |-------|------|--------|-----|
-| **Red** | ![#bf616a](https://via.placeholder.com/12/bf616a/bf616a.png) `#bf616a` | ![#e2848d](https://via.placeholder.com/12/e2848d/e2848d.png) `#e2848d` | ![#85434a](https://via.placeholder.com/12/85434a/85434a.png) `#85434a` |
-| **Green** | ![#a9cfa4](https://via.placeholder.com/12/a9cfa4/a9cfa4.png) `#a9cfa4` | ![#ccf2c7](https://via.placeholder.com/12/ccf2c7/ccf2c7.png) `#ccf2c7` | ![#769072](https://via.placeholder.com/12/769072/769072.png) `#769072` |
-| **Yellow** | ![#ffe2a9](https://via.placeholder.com/12/ffe2a9/ffe2a9.png) `#ffe2a9` | ![#ffffcc](https://via.placeholder.com/12/ffffcc/ffffcc.png) `#ffffcc` | ![#b29e76](https://via.placeholder.com/12/b29e76/b29e76.png) `#b29e76` |
-| **Blue** | ![#6699cc](https://via.placeholder.com/12/6699cc/6699cc.png) `#6699cc` | ![#89bcef](https://via.placeholder.com/12/89bcef/89bcef.png) `#89bcef` | ![#476b8e](https://via.placeholder.com/12/476b8e/476b8e.png) `#476b8e` |
-| **Magenta** | ![#f1a5ab](https://via.placeholder.com/12/f1a5ab/f1a5ab.png) `#f1a5ab` | ![#ffc8ce](https://via.placeholder.com/12/ffc8ce/ffc8ce.png) `#ffc8ce` | ![#a87377](https://via.placeholder.com/12/a87377/a87377.png) `#a87377` |
-| **Cyan** | ![#5fb3b3](https://via.placeholder.com/12/5fb3b3/5fb3b3.png) `#5fb3b3` | ![#82d6d6](https://via.placeholder.com/12/82d6d6/82d6d6.png) `#82d6d6` | ![#427d7d](https://via.placeholder.com/12/427d7d/427d7d.png) `#427d7d` |
+| **Red** | ![#bf616a](https://via.placeholder.com/80x25/bf616a/ffffff?text=Base) `#bf616a` | ![#e2848d](https://via.placeholder.com/80x25/e2848d/000000?text=Bright) `#e2848d` | ![#85434a](https://via.placeholder.com/80x25/85434a/ffffff?text=Dim) `#85434a` |
+| **Green** | ![#a9cfa4](https://via.placeholder.com/80x25/a9cfa4/000000?text=Base) `#a9cfa4` | ![#ccf2c7](https://via.placeholder.com/80x25/ccf2c7/000000?text=Bright) `#ccf2c7` | ![#769072](https://via.placeholder.com/80x25/769072/ffffff?text=Dim) `#769072` |
+| **Yellow** | ![#ffe2a9](https://via.placeholder.com/80x25/ffe2a9/000000?text=Base) `#ffe2a9` | ![#ffffcc](https://via.placeholder.com/80x25/ffffcc/000000?text=Bright) `#ffffcc` | ![#b29e76](https://via.placeholder.com/80x25/b29e76/000000?text=Dim) `#b29e76` |
+| **Blue** | ![#6699cc](https://via.placeholder.com/80x25/6699cc/ffffff?text=Base) `#6699cc` | ![#89bcef](https://via.placeholder.com/80x25/89bcef/000000?text=Bright) `#89bcef` | ![#476b8e](https://via.placeholder.com/80x25/476b8e/ffffff?text=Dim) `#476b8e` |
+| **Magenta** | ![#f1a5ab](https://via.placeholder.com/80x25/f1a5ab/000000?text=Base) `#f1a5ab` | ![#ffc8ce](https://via.placeholder.com/80x25/ffc8ce/000000?text=Bright) `#ffc8ce` | ![#a87377](https://via.placeholder.com/80x25/a87377/ffffff?text=Dim) `#a87377` |
+| **Cyan** | ![#5fb3b3](https://via.placeholder.com/80x25/5fb3b3/ffffff?text=Base) `#5fb3b3` | ![#82d6d6](https://via.placeholder.com/80x25/82d6d6/000000?text=Bright) `#82d6d6` | ![#427d7d](https://via.placeholder.com/80x25/427d7d/ffffff?text=Dim) `#427d7d` |
 
 ### UI Colors
-- ![#191724](https://via.placeholder.com/12/191724/191724.png) **Background** `#191724` - Deep purple-black
-- ![#1f1d2e](https://via.placeholder.com/12/1f1d2e/1f1d2e.png) **Background Alt** `#1f1d2e` - Sidebars, panels
-- ![#e0def4](https://via.placeholder.com/12/e0def4/e0def4.png) **Foreground** `#e0def4` - Primary text
-- ![#484e5b](https://via.placeholder.com/12/484e5b/484e5b.png) **Selection** `#484e5b` - Text selection
-- ![#5fb3b3](https://via.placeholder.com/12/5fb3b3/5fb3b3.png) **Cursor** `#5fb3b3` - Cursor color
+- ![#191724](https://via.placeholder.com/100x30/191724/ffffff?text=Background) `#191724` - Deep purple-black
+- ![#1f1d2e](https://via.placeholder.com/100x30/1f1d2e/ffffff?text=BG+Alt) `#1f1d2e` - Sidebars, panels
+- ![#e0def4](https://via.placeholder.com/100x30/e0def4/000000?text=Foreground) `#e0def4` - Primary text
+- ![#484e5b](https://via.placeholder.com/100x30/484e5b/ffffff?text=Selection) `#484e5b` - Text selection
+- ![#5fb3b3](https://via.placeholder.com/100x30/5fb3b3/000000?text=Cursor) `#5fb3b3` - Cursor color
 
 ## Philosophy
 
