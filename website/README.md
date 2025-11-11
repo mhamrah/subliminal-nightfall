@@ -18,14 +18,14 @@ Showcase website for the Subliminal Nightfall color scheme.
 pnpm install
 
 # Start dev server
-pnpm --filter @subliminal/website dev
+pnpm --filter website dev
 # Visit http://localhost:4321
 
 # Build for production
-pnpm --filter @subliminal/website build
+pnpm --filter website build
 
 # Preview production build
-pnpm --filter @subliminal/website preview
+pnpm --filter website preview
 ```
 
 ## Deployment

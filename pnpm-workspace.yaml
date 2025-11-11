@@ -3,6 +3,7 @@
 
 packages:
   - "packages/*"
+  - "website"
 
 # Exclude build outputs and dependencies
 exclude:

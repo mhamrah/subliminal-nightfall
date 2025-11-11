@@ -15,7 +15,7 @@ run = "pnpm install"
 
 [tasks.dev]
 description = "Start website development server"
-run = "pnpm --filter @subliminal/website dev"
+run = "pnpm --filter website dev"
 
 [tasks.build]
 description = "Build all packages"
@@ -27,7 +27,7 @@ run = "pnpm --filter @subliminal/website build"
 
 [tasks.preview]
 description = "Preview website build"
-run = "pnpm --filter @subliminal/website preview"
+run = "pnpm --filter website preview"
 
 [tasks.verify]
 description = "Verify symlink setup"

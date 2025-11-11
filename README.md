@@ -177,6 +177,11 @@ pnpm preview
 
 # Verify symlink setup
 ./scripts/verify-symlinks.sh
+
+# Or use specific package filters
+pnpm --filter website dev
+pnpm --filter website build
+pnpm --filter website preview
 ```
 
 ### Deploying the Website
@@ -201,6 +206,8 @@ npx wrangler pages deploy dist --project-name=subliminal-nightfall
 ### Making Theme Changes
 
 All colors are defined in `packages/core/src/colors.ts` as the single source of truth. Theme files in each platform directory should derive from these core colors.
+
+**Note**: The website package is named `website` (not scoped), so use `pnpm --filter website` when working with it directly.
 
 ## License
 
