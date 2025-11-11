@@ -188,15 +188,27 @@ pnpm --filter website preview
 
 The showcase website is deployed to Cloudflare Pages at `subliminal-nightfall.hamrah.com`.
 
-**Via Cloudflare Dashboard:**
-1. Connect repository to Cloudflare Pages
-2. Configure build settings:
-   - Build command: `pnpm run build:cloudflare`
-   - Output directory: `website/dist`
-   - Environment variables: `NODE_VERSION=22`, `PNPM_VERSION=10.11.1`
-3. Add custom domain: `subliminal-nightfall.hamrah.com`
+**Automatic Deployment (Recommended):**
 
-**Via Wrangler CLI:**
+The website deploys automatically via GitHub Actions when changes are pushed to `main`:
+
+```bash
+git add .
+git commit -m "Update website"
+git push origin main
+```
+
+GitHub Actions will:
+- Build the website with `pnpm run build:cloudflare`
+- Deploy to Cloudflare Pages automatically
+- Update deployment status
+
+**Setup GitHub Actions:**
+See `.github/DEPLOYMENT_SETUP.md` for instructions on configuring:
+- `CLOUDFLARE_API_TOKEN` secret
+- `CLOUDFLARE_ACCOUNT_ID` secret
+
+**Manual Deployment via Wrangler CLI:**
 ```bash
 pnpm run build:cloudflare
 cd website
