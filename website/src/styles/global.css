@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@theme {
+    /* Subliminal Nightfall Color Palette */
+
+    /* Background & Foreground */
+    --color-sn-bg: #191724;
+    --color-sn-bg-alt: #1f1d2e;
+    --color-sn-bg-elevated: #26233a;
+    --color-sn-fg: #e0def4;
+    --color-sn-fg-muted: #a0a0a0;
+    --color-sn-fg-dim: #7f7f7f;
+
+    /* Base Colors */
+    --color-sn-red: #bf616a;
+    --color-sn-red-bright: #e2848d;
+    --color-sn-red-dim: #85434a;
+
+    --color-sn-green: #a9cfa4;
+    --color-sn-green-bright: #ccf2c7;
+    --color-sn-green-dim: #769072;
+
+    --color-sn-yellow: #ffe2a9;
+    --color-sn-yellow-bright: #ffffcc;
+    --color-sn-yellow-dim: #b29e76;
+
+    --color-sn-blue: #6699cc;
+    --color-sn-blue-bright: #89bcef;
+    --color-sn-blue-dim: #476b8e;
+
+    --color-sn-magenta: #f1a5ab;
+    --color-sn-magenta-bright: #ffc8ce;
+    --color-sn-magenta-dim: #a87377;
+
+    --color-sn-cyan: #5fb3b3;
+    --color-sn-cyan-bright: #82d6d6;
+    --color-sn-cyan-dim: #427d7d;
+
+    /* Syntax Colors */
+    --color-sn-teal: #9ccfd8;
+    --color-sn-blue-green: #31748f;
+    --color-sn-lavender: #c4a7e7;
+
+    /* Borders & UI */
+    --color-sn-border: #484e5b;
+    --color-sn-border-variant: #363b45;
+    --color-sn-selection: #484e5b;
+}
+
+body {
+    @apply bg-sn-bg text-sn-fg;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'SF Mono', Monaco, 'Courier New', monospace;
+}
+
+::selection {
+    @apply bg-sn-selection text-white;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-sn-bg-alt);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-sn-border);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-sn-cyan);
+}

@@ -1,0 +1,161 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ColorPalette from '../components/ColorPalette.astro';
+import CodePreview from '../components/CodePreview.astro';
+import Installation from '../components/Installation.astro';
+---
+
+<Layout title="Subliminal Nightfall - Dark Color Scheme">
+  <Header />
+
+  <!-- Hero Section -->
+  <section id="home" class="container mx-auto px-4 pt-20 pb-32">
+    <div class="max-w-5xl mx-auto text-center">
+      <div class="inline-flex items-center justify-center w-24 h-24 mb-8 rounded-2xl bg-gradient-to-br from-sn-cyan via-sn-blue to-sn-magenta">
+        <span class="text-sn-bg font-bold text-4xl">SN</span>
+      </div>
+
+      <h1 class="text-5xl md:text-7xl font-bold text-sn-fg mb-6">
+        Subliminal Nightfall
+      </h1>
+
+      <p class="text-xl md:text-2xl text-sn-fg-muted mb-12 max-w-3xl mx-auto leading-relaxed">
+        A dark color scheme featuring <span class="text-sn-lavender">deep purple-black</span> backgrounds
+        with <span class="text-sn-cyan">carefully calibrated</span> accent colors for multiple editors and terminals.
+      </p>
+
+      <div class="flex flex-wrap gap-4 justify-center mb-16">
+        <a
+          href="#installation"
+          class="inline-flex items-center px-8 py-4 bg-sn-cyan hover:bg-sn-cyan-bright text-sn-bg rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-sn-cyan/50"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          Get Started
+        </a>
+
+        <a
+          href="https://github.com/mhamrah/subliminal-nightfall"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center px-8 py-4 bg-sn-bg-alt hover:bg-sn-bg-elevated text-sn-fg border border-sn-border hover:border-sn-cyan rounded-lg font-semibold transition-all duration-200"
+        >
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+          </svg>
+          View on GitHub
+        </a>
+      </div>
+
+      <!-- Features Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-20">
+        <div class="bg-sn-bg-alt border border-sn-border rounded-lg p-6 hover:border-sn-cyan transition-colors">
+          <div class="w-12 h-12 bg-sn-blue/20 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-sn-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-sn-fg mb-2">Carefully Crafted</h3>
+          <p class="text-sm text-sn-fg-muted">Calibrated colors with proper contrast ratios for comfortable long coding sessions</p>
+        </div>
+
+        <div class="bg-sn-bg-alt border border-sn-border rounded-lg p-6 hover:border-sn-cyan transition-colors">
+          <div class="w-12 h-12 bg-sn-green/20 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-sn-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-sn-fg mb-2">Multi-Platform</h3>
+          <p class="text-sm text-sn-fg-muted">Available for VS Code, Neovim, Zed, and Ghostty terminal</p>
+        </div>
+
+        <div class="bg-sn-bg-alt border border-sn-border rounded-lg p-6 hover:border-sn-cyan transition-colors">
+          <div class="w-12 h-12 bg-sn-magenta/20 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-sn-magenta" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-sn-fg mb-2">Syntax Aware</h3>
+          <p class="text-sm text-sn-fg-muted">Optimized for Go, Rust, TypeScript, Swift, and more</p>
+        </div>
+
+        <div class="bg-sn-bg-alt border border-sn-border rounded-lg p-6 hover:border-sn-cyan transition-colors">
+          <div class="w-12 h-12 bg-sn-yellow/20 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-sn-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-sn-fg mb-2">Treesitter & LSP</h3>
+          <p class="text-sm text-sn-fg-muted">Full support for modern syntax highlighting and language servers</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Color Palette Section -->
+  <ColorPalette />
+
+  <!-- Code Examples Section -->
+  <CodePreview />
+
+  <!-- Installation Section -->
+  <Installation />
+
+  <!-- CTA Section -->
+  <section class="container mx-auto px-4 py-20">
+    <div class="max-w-4xl mx-auto bg-gradient-to-br from-sn-blue-green/20 to-sn-cyan/20 border border-sn-cyan/50 rounded-2xl p-12 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold text-sn-fg mb-4">
+        Ready to transform your coding experience?
+      </h2>
+      <p class="text-lg text-sn-fg-muted mb-8">
+        Join developers who've made the switch to a more comfortable and beautiful coding environment.
+      </p>
+      <div class="flex flex-wrap gap-4 justify-center">
+        <a
+          href="#installation"
+          class="inline-flex items-center px-8 py-4 bg-sn-cyan hover:bg-sn-cyan-bright text-sn-bg rounded-lg font-semibold transition-all duration-200 transform hover:scale-105"
+        >
+          Install Now
+          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </a>
+        <a
+          href="https://github.com/mhamrah/subliminal-nightfall/issues"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center px-8 py-4 bg-sn-bg-alt hover:bg-sn-bg-elevated text-sn-fg border border-sn-border hover:border-sn-cyan rounded-lg font-semibold transition-all duration-200"
+        >
+          Report an Issue
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+<style>
+  /* Smooth scroll offset for fixed header */
+  section[id] {
+    scroll-margin-top: 80px;
+  }
+
+  /* Gradient animation */
+  @keyframes gradient-shift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .bg-gradient-to-br {
+    background-size: 200% 200%;
+    animation: gradient-shift 15s ease infinite;
+  }
+</style>

@@ -1,0 +1,72 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="border-t border-sn-border bg-sn-bg-alt mt-20">
+  <div class="container mx-auto px-4 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="col-span-1 md:col-span-2">
+        <div class="flex items-center space-x-2 mb-4">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-sn-cyan to-sn-blue flex items-center justify-center">
+            <span class="text-sn-bg font-bold text-lg">SN</span>
+          </div>
+          <h3 class="text-lg font-bold text-sn-fg">Subliminal Nightfall</h3>
+        </div>
+        <p class="text-sn-fg-muted max-w-md">
+          A dark color scheme featuring deep purple-black backgrounds with carefully calibrated accent colors for multiple editors and terminals.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="font-semibold text-sn-fg mb-4">Platforms</h4>
+        <ul class="space-y-2">
+          <li>
+            <a href="https://marketplace.visualstudio.com/items?itemName=hamrahm.subliminal-nightfall" target="_blank" rel="noopener noreferrer" class="text-sn-fg-muted hover:text-sn-cyan transition-colors">
+              VS Code
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/mhamrah/subliminal-nightfall/tree/main/neovim" target="_blank" rel="noopener noreferrer" class="text-sn-fg-muted hover:text-sn-cyan transition-colors">
+              Neovim
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/mhamrah/subliminal-nightfall/tree/main/zed" target="_blank" rel="noopener noreferrer" class="text-sn-fg-muted hover:text-sn-cyan transition-colors">
+              Zed
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/mhamrah/subliminal-nightfall/tree/main/ghostty" target="_blank" rel="noopener noreferrer" class="text-sn-fg-muted hover:text-sn-cyan transition-colors">
+              Ghostty
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-semibold text-sn-fg mb-4">Links</h4>
+        <ul class="space-y-2">
+          <li>
+            <a href="https://github.com/mhamrah/subliminal-nightfall" target="_blank" rel="noopener noreferrer" class="text-sn-fg-muted hover:text-sn-cyan transition-colors">
+              GitHub
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/mhamrah/subliminal-nightfall/issues" target="_blank" rel="noopener noreferrer" class="text-sn-fg-muted hover:text-sn-cyan transition-colors">
+              Report Issue
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/mhamrah/subliminal-nightfall/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="text-sn-fg-muted hover:text-sn-cyan transition-colors">
+              License
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-sn-border mt-8 pt-8 text-center text-sn-fg-muted text-sm">
+      <p>© {currentYear} Subliminal Nightfall. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

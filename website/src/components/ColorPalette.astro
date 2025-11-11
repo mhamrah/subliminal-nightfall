@@ -1,0 +1,217 @@
+---
+const colors = [
+  {
+    name: 'Red',
+    base: '#bf616a',
+    bright: '#e2848d',
+    dim: '#85434a',
+    usage: 'Errors, deletions, keywords'
+  },
+  {
+    name: 'Green',
+    base: '#a9cfa4',
+    bright: '#ccf2c7',
+    dim: '#769072',
+    usage: 'Success, additions'
+  },
+  {
+    name: 'Yellow',
+    base: '#ffe2a9',
+    bright: '#ffffcc',
+    dim: '#b29e76',
+    usage: 'Warnings, modifications'
+  },
+  {
+    name: 'Blue',
+    base: '#6699cc',
+    bright: '#89bcef',
+    dim: '#476b8e',
+    usage: 'Info, titles, headings'
+  },
+  {
+    name: 'Magenta',
+    base: '#f1a5ab',
+    bright: '#ffc8ce',
+    dim: '#a87377',
+    usage: 'Attributes, emphasis'
+  },
+  {
+    name: 'Cyan',
+    base: '#5fb3b3',
+    bright: '#82d6d6',
+    dim: '#427d7d',
+    usage: 'Focus borders, operators'
+  }
+];
+
+const syntaxColors = [
+  { name: 'Cyan Teal', hex: '#9ccfd8', usage: 'Functions, methods, strings' },
+  { name: 'Blue Green', hex: '#31748f', usage: 'Keywords, types, constructors' },
+  { name: 'Lavender', hex: '#c4a7e7', usage: 'Numbers, constants, inline code' },
+  { name: 'Gray', hex: '#7f7f7f', usage: 'Comments' }
+];
+
+const backgroundColors = [
+  { name: 'Background', hex: '#191724', usage: 'Deep purple-black editor background' },
+  { name: 'Background Alt', hex: '#1f1d2e', usage: 'Sidebar, panels, inactive tabs' },
+  { name: 'Foreground', hex: '#e0def4', usage: 'Soft white text', textColor: '#000' }
+];
+---
+
+<section id="colors" class="container mx-auto px-4 py-20">
+  <div class="text-center mb-12">
+    <h2 class="text-4xl font-bold text-sn-fg mb-4">Color Palette</h2>
+    <p class="text-sn-fg-muted text-lg max-w-2xl mx-auto">
+      Carefully calibrated colors with bright and dim variants for optimal contrast across terminals and editors.
+    </p>
+  </div>
+
+  <!-- Base Colors -->
+  <div class="mb-16">
+    <h3 class="text-2xl font-semibold text-sn-fg mb-6">Base Colors</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {colors.map((color) => (
+        <div class="bg-sn-bg-alt border border-sn-border rounded-lg p-6 hover:border-sn-cyan transition-colors">
+          <div class="flex items-center justify-between mb-4">
+            <h4 class="text-lg font-semibold text-sn-fg">{color.name}</h4>
+          </div>
+
+          <div class="space-y-3 mb-4">
+            <div class="flex items-center justify-between group cursor-pointer color-swatch" data-color={color.base}>
+              <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 rounded-lg border border-sn-border" style={`background-color: ${color.base}`}></div>
+                <div>
+                  <div class="text-sm text-sn-fg-muted">Base</div>
+                  <code class="text-sm text-sn-fg font-mono">{color.base}</code>
+                </div>
+              </div>
+              <svg class="w-5 h-5 text-sn-fg-muted opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+            </div>
+
+            <div class="flex items-center justify-between group cursor-pointer color-swatch" data-color={color.bright}>
+              <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 rounded-lg border border-sn-border" style={`background-color: ${color.bright}`}></div>
+                <div>
+                  <div class="text-sm text-sn-fg-muted">Bright</div>
+                  <code class="text-sm text-sn-fg font-mono">{color.bright}</code>
+                </div>
+              </div>
+              <svg class="w-5 h-5 text-sn-fg-muted opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+            </div>
+
+            <div class="flex items-center justify-between group cursor-pointer color-swatch" data-color={color.dim}>
+              <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 rounded-lg border border-sn-border" style={`background-color: ${color.dim}`}></div>
+                <div>
+                  <div class="text-sm text-sn-fg-muted">Dim</div>
+                  <code class="text-sm text-sn-fg font-mono">{color.dim}</code>
+                </div>
+              </div>
+              <svg class="w-5 h-5 text-sn-fg-muted opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-sn-border">
+            <p class="text-sm text-sn-fg-muted">{color.usage}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Syntax Colors -->
+  <div class="mb-16">
+    <h3 class="text-2xl font-semibold text-sn-fg mb-6">Syntax Colors</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {syntaxColors.map((color) => (
+        <div class="bg-sn-bg-alt border border-sn-border rounded-lg p-6 hover:border-sn-cyan transition-colors group cursor-pointer color-swatch" data-color={color.hex}>
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center space-x-4">
+              <div class="w-16 h-16 rounded-lg border border-sn-border" style={`background-color: ${color.hex}`}></div>
+              <div>
+                <h4 class="text-lg font-semibold text-sn-fg">{color.name}</h4>
+                <code class="text-sm text-sn-fg-muted font-mono">{color.hex}</code>
+              </div>
+            </div>
+            <svg class="w-5 h-5 text-sn-fg-muted opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <p class="text-sm text-sn-fg-muted">{color.usage}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Background & Foreground -->
+  <div>
+    <h3 class="text-2xl font-semibold text-sn-fg mb-6">Background & Foreground</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {backgroundColors.map((color) => (
+        <div class="bg-sn-bg-alt border border-sn-border rounded-lg p-6 hover:border-sn-cyan transition-colors group cursor-pointer color-swatch" data-color={color.hex}>
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center space-x-4">
+              <div class="w-16 h-16 rounded-lg border border-sn-border" style={`background-color: ${color.hex}; ${color.textColor ? `color: ${color.textColor}` : ''}`}>
+                {color.textColor && <div class="w-full h-full flex items-center justify-center text-xs font-mono">Aa</div>}
+              </div>
+              <div>
+                <h4 class="text-lg font-semibold text-sn-fg">{color.name}</h4>
+                <code class="text-sm text-sn-fg-muted font-mono">{color.hex}</code>
+              </div>
+            </div>
+            <svg class="w-5 h-5 text-sn-fg-muted opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <p class="text-sm text-sn-fg-muted">{color.usage}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div id="copy-toast" class="fixed bottom-8 right-8 bg-sn-blue-green text-sn-fg px-6 py-3 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="flex items-center space-x-2">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+      <span>Color copied to clipboard!</span>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Copy to clipboard functionality
+  const swatches = document.querySelectorAll('.color-swatch');
+  const toast = document.getElementById('copy-toast');
+
+  swatches.forEach(swatch => {
+    swatch.addEventListener('click', async () => {
+      const color = swatch.getAttribute('data-color');
+      if (color) {
+        try {
+          await navigator.clipboard.writeText(color);
+
+          // Show toast
+          if (toast) {
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+              toast.classList.remove('translate-y-0', 'opacity-100');
+              toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2000);
+          }
+        } catch (err) {
+          console.error('Failed to copy:', err);
+        }
+      }
+    });
+  });
+</script>

@@ -1,0 +1,44 @@
+{
+  "name": "subliminal-nightfall",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A dark color scheme featuring deep purple-black backgrounds with carefully calibrated accent colors",
+  "keywords": [
+    "theme",
+    "color-scheme",
+    "vscode",
+    "neovim",
+    "zed",
+    "ghostty",
+    "dark-theme"
+  ],
+  "author": "Michael Hamrah",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mhamrah/subliminal-nightfall.git"
+  },
+  "packageManager": "pnpm@8.15.0",
+  "scripts": {
+    "dev": "pnpm --filter @subliminal/website dev",
+    "build": "pnpm -r --filter './packages/**' build",
+    "build:core": "pnpm --filter @subliminal/core build",
+    "build:vscode": "pnpm --filter @subliminal/vscode build",
+    "build:website": "pnpm --filter @subliminal/website build",
+    "preview": "pnpm --filter @subliminal/website preview",
+    "clean": "pnpm -r --filter './packages/**' clean",
+    "format": "prettier --write \"packages/**/*.{js,ts,json,md,astro,css}\"",
+    "lint": "eslint packages/*/src --ext .js,.ts,.astro",
+    "test": "pnpm -r test"
+  },
+  "devDependencies": {
+    "prettier": "^3.1.0",
+    "prettier-plugin-astro": "^0.12.2",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

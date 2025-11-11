@@ -1,0 +1,270 @@
+---
+const platforms = [
+  {
+    name: 'VS Code / Cursor',
+    icon: '📝',
+    id: 'vscode',
+    instructions: [
+      {
+        title: 'From Marketplace',
+        steps: [
+          'Open VS Code or Cursor',
+          'Go to Extensions (⌘+Shift+X / Ctrl+Shift+X)',
+          'Search for "Subliminal Nightfall"',
+          'Click Install',
+          'Select "Subliminal Nightfall" from the Color Theme dropdown'
+        ]
+      },
+      {
+        title: 'Manual Installation',
+        code: `npm i -g @vscode/vsce
+cd cursor
+vsce package
+# Then in VS Code: Extensions → Install from VSIX`
+      }
+    ],
+    links: [
+      { text: 'VS Code Marketplace', url: 'https://marketplace.visualstudio.com/items?itemName=hamrahm.subliminal-nightfall' },
+      { text: 'Open VSX', url: 'https://open-vsx.org/extension/hamrahm/subliminal-nightfall' }
+    ]
+  },
+  {
+    name: 'Neovim',
+    icon: '🌙',
+    id: 'neovim',
+    instructions: [
+      {
+        title: 'Using lazy.nvim',
+        code: `{
+  "mhamrah/subliminal-nightfall",
+  lazy = false,
+  priority = 1000,
+  config = function()
+    vim.opt.runtimepath:append(vim.fn.stdpath("data") .. "/lazy/subliminal-nightfall/neovim")
+    vim.cmd([[colorscheme subliminal-nightfall]])
+  end,
+}`
+      },
+      {
+        title: 'Manual Installation',
+        code: `git clone https://github.com/mhamrah/subliminal-nightfall.git /tmp/subliminal-nightfall
+mkdir -p ~/.config/nvim/colors
+cp /tmp/subliminal-nightfall/neovim/colors/subliminal-nightfall.lua ~/.config/nvim/colors/`
+      },
+      {
+        title: 'Activate in init.lua',
+        code: `vim.cmd([[colorscheme subliminal-nightfall]])`
+      }
+    ],
+    links: [
+      { text: 'GitHub Repository', url: 'https://github.com/mhamrah/subliminal-nightfall' }
+    ]
+  },
+  {
+    name: 'Zed',
+    icon: '⚡',
+    id: 'zed',
+    instructions: [
+      {
+        title: 'Installation',
+        code: `mkdir -p ~/.config/zed/themes
+cp zed/themes/subliminal-nightfall.json ~/.config/zed/themes/`
+      },
+      {
+        title: 'Activation',
+        steps: [
+          'Open Zed editor',
+          'Press ⌘+K (Mac) or Ctrl+K (Linux/Windows)',
+          'Type "Theme: Select Theme"',
+          'Choose "Subliminal Nightfall"'
+        ]
+      }
+    ],
+    links: [
+      { text: 'Zed Documentation', url: 'https://zed.dev/docs/themes' }
+    ]
+  },
+  {
+    name: 'Ghostty',
+    icon: '👻',
+    id: 'ghostty',
+    instructions: [
+      {
+        title: 'Installation',
+        code: `mkdir -p ~/.config/ghostty/themes
+cp ghostty/subliminal-nightfall ~/.config/ghostty/themes/`
+      },
+      {
+        title: 'Configuration',
+        code: `# Add to ~/.config/ghostty/config
+theme = subliminal-nightfall`
+      }
+    ],
+    links: [
+      { text: 'Ghostty Terminal', url: 'https://ghostty.org/' }
+    ]
+  }
+];
+---
+
+<section id="installation" class="container mx-auto px-4 py-20 bg-sn-bg-alt/30">
+  <div class="text-center mb-12">
+    <h2 class="text-4xl font-bold text-sn-fg mb-4">Installation</h2>
+    <p class="text-sn-fg-muted text-lg max-w-2xl mx-auto">
+      Get started with Subliminal Nightfall on your favorite editor or terminal.
+    </p>
+  </div>
+
+  <div class="max-w-5xl mx-auto">
+    <!-- Platform tabs -->
+    <div class="flex flex-wrap gap-3 mb-6">
+      {platforms.map((platform, index) => (
+        <button
+          class={`platform-tab px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+            index === 0
+              ? 'bg-sn-blue-green text-sn-fg'
+              : 'bg-sn-bg-alt text-sn-fg-muted hover:bg-sn-bg-elevated hover:text-sn-fg'
+          }`}
+          data-platform={platform.id}
+        >
+          <span class="mr-2 text-xl">{platform.icon}</span>
+          {platform.name}
+        </button>
+      ))}
+    </div>
+
+    <!-- Platform content -->
+    {platforms.map((platform, index) => (
+      <div
+        class={`platform-content ${index === 0 ? '' : 'hidden'}`}
+        data-platform={platform.id}
+      >
+        <div class="bg-sn-bg border border-sn-border rounded-lg p-8 shadow-lg">
+          <h3 class="text-2xl font-semibold text-sn-fg mb-6 flex items-center">
+            <span class="text-3xl mr-3">{platform.icon}</span>
+            {platform.name}
+          </h3>
+
+          {platform.instructions.map((instruction) => (
+            <div class="mb-8 last:mb-0">
+              <h4 class="text-lg font-medium text-sn-cyan mb-4">{instruction.title}</h4>
+
+              {instruction.steps && (
+                <ol class="space-y-2 text-sn-fg-muted">
+                  {instruction.steps.map((step, i) => (
+                    <li class="flex items-start">
+                      <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-sn-blue-green text-sn-bg text-sm font-bold mr-3 flex-shrink-0 mt-0.5">
+                        {i + 1}
+                      </span>
+                      <span class="pt-0.5">{step}</span>
+                    </li>
+                  ))}
+                </ol>
+              )}
+
+              {instruction.code && (
+                <div class="relative">
+                  <div class="bg-sn-bg-alt border border-sn-border rounded-lg overflow-hidden">
+                    <div class="flex items-center justify-between px-4 py-2 bg-sn-bg border-b border-sn-border">
+                      <span class="text-xs text-sn-fg-muted font-mono">
+                        {instruction.title.toLowerCase().includes('config') ? 'config' : 'terminal'}
+                      </span>
+                      <button
+                        class="copy-code-btn flex items-center space-x-1 px-2 py-1 text-xs text-sn-fg-muted hover:text-sn-cyan transition-colors"
+                        data-code={instruction.code}
+                      >
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                        <span>Copy</span>
+                      </button>
+                    </div>
+                    <pre class="p-4 overflow-x-auto"><code class="text-sm text-sn-fg font-mono">{instruction.code}</code></pre>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+
+          {platform.links && platform.links.length > 0 && (
+            <div class="mt-6 pt-6 border-t border-sn-border">
+              <div class="flex flex-wrap gap-3">
+                {platform.links.map((link) => (
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center px-4 py-2 bg-sn-bg-alt border border-sn-border rounded-lg text-sn-fg-muted hover:text-sn-cyan hover:border-sn-cyan transition-colors"
+                  >
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    {link.text}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  // Platform tab switching
+  const platformTabs = document.querySelectorAll('.platform-tab');
+  const platformContents = document.querySelectorAll('.platform-content');
+
+  platformTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const platform = tab.getAttribute('data-platform');
+
+      // Update active tab
+      platformTabs.forEach(t => {
+        if (t.getAttribute('data-platform') === platform) {
+          t.classList.remove('bg-sn-bg-alt', 'text-sn-fg-muted', 'hover:bg-sn-bg-elevated');
+          t.classList.add('bg-sn-blue-green', 'text-sn-fg');
+        } else {
+          t.classList.remove('bg-sn-blue-green', 'text-sn-fg');
+          t.classList.add('bg-sn-bg-alt', 'text-sn-fg-muted', 'hover:bg-sn-bg-elevated');
+        }
+      });
+
+      // Update visible content
+      platformContents.forEach(content => {
+        if (content.getAttribute('data-platform') === platform) {
+          content.classList.remove('hidden');
+        } else {
+          content.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // Copy code functionality
+  const copyButtons = document.querySelectorAll('.copy-code-btn');
+
+  copyButtons.forEach(button => {
+    button.addEventListener('click', async () => {
+      const code = button.getAttribute('data-code');
+      if (code) {
+        try {
+          await navigator.clipboard.writeText(code);
+          const span = button.querySelector('span');
+          if (span) {
+            const originalText = span.textContent;
+            span.textContent = 'Copied!';
+            button.classList.add('text-sn-green');
+            setTimeout(() => {
+              span.textContent = originalText;
+              button.classList.remove('text-sn-green');
+            }, 2000);
+          }
+        } catch (err) {
+          console.error('Failed to copy code:', err);
+        }
+      }
+    });
+  });
+</script>
