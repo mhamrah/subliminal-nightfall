@@ -5,9 +5,11 @@
   "colors": {
     "editor.background": "#191724",
     "editor.foreground": "#e0def4",
+    "editorGutter.background": "#1f1d2e",
     "sideBar.background": "#1f1d2e",
+    "sideBar.border": "#484e5b",
     "panel.background": "#1f1d2e",
-    "panel.border": "#363b45CC",
+    "panel.border": "#484e5b",
     "statusBar.background": "#1d1b29",
     "statusBar.noFolderBackground": "#1d1b29",
     "titleBar.activeBackground": "#1d1b29",

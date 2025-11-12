@@ -49,13 +49,13 @@
     /* Headers & subtle variants */
     --color-sn-header: #1d1b29;
     /* header.base */
-    --color-sn-header-translucent: #1d1b29E6;
+    --color-sn-header-translucent: #1d1b29D9;
     /* header.translucent (hazy) */
-    --color-sn-border-subtle: #363b45CC;
+    --color-sn-border-subtle: #363b45D9;
     /* softer border */
     --color-sn-border-soft: #2e32396B;
     /* very soft border */
-    --color-sn-bg-hazy: #191724F2;
+    --color-sn-bg-hazy: #191724D9;
     /* subtle translucency for blurred panels */
 }
 

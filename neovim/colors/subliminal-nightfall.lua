@@ -15,7 +15,7 @@ local colors = {
   bg = '#191724',
   bg_alt = '#1f1d2e',
   bg_highlight = '#26233a',
-  bg_line = '#2e3239',
+  bg_line = '#26233a',
 
   fg = '#e0def4',
   fg_alt = '#d4d4d4',
@@ -69,7 +69,7 @@ hl('CursorLine', { bg = colors.bg_line })
 hl('ColorColumn', { bg = colors.bg_line })
 hl('Cursor', { fg = colors.bg, bg = colors.fg })
 hl('TermCursor', { fg = colors.bg, bg = colors.fg })
-hl('Visual', { bg = colors.selection, fg = colors.fg })
+hl('Visual', { bg = colors.selection, fg = '#ffffff' })
 hl('VisualNOS', { bg = colors.selection })
 hl('Search', { bg = colors.search })
 hl('IncSearch', { bg = colors.cyan, fg = colors.bg })
