@@ -71,15 +71,14 @@ jobs:
 
       - name: Deploy Website to Cloudflare Pages
         if: startsWith(github.ref, 'refs/heads/main')
-        working-directory: website
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_KEY }}
         run: |
           npm install -g wrangler
           if [ -n "$CLOUDFLARE_API_TOKEN" ]; then
-            wrangler pages deploy dist --project-name=subliminal-nightfall || echo "Cloudflare deploy failed"
+            wrangler pages deploy website/dist --project-name=subliminal-nightfall || echo "Cloudflare deploy failed"
           else
-            echo "No CLOUDFLARE_API_TOKEN; skipping deploy"
+            echo "No CLOUDFLARE_KEY; skipping deploy"
           fi
 
       - name: Commit version bump (if any)
