@@ -10,9 +10,6 @@ on:
       - 'zed/**'
       - 'ghostty/**'
       - 'neovim/**'
-  push:
-    branches: [ main ]
-    paths:
       - 'website/**'
   workflow_dispatch:
 
