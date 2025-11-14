@@ -168,34 +168,33 @@ subliminal-nightfall/
 curl https://mise.run | sh
 mise install
 
-# Or ensure you have Node.js 22+ and pnpm 10+
-node --version  # >= 22
-pnpm --version  # >= 10
+# Or ensure you have Node.js, pnpm and Rust managed via mise
+mise install
 
 # Install dependencies
-pnpm install
+mise run install
 ```
 
 ### Development
 
 ```bash
-# Start website dev server
-pnpm dev
-# Visit http://localhost:4321
+# Install tool versions & deps
+mise install && mise run install
 
-# Build all packages
-pnpm build
+# Generate themes
+mise run gen
+
+# Start website
+mise run dev  # Visit http://localhost:4321
+
+# Build everything
+mise run build
 
 # Preview website
-pnpm preview
+mise run preview
 
 # Verify symlink setup
-./scripts/verify-symlinks.sh
-
-# Or use specific package filters
-pnpm --filter website dev
-pnpm --filter website build
-pnpm --filter website preview
+mise run verify
 ```
 
 ### Deploying the Website
@@ -229,25 +228,80 @@ npx wrangler pages deploy dist --project-name=subliminal-nightfall
 The VS Code/Cursor extension automatically publishes to both marketplaces when theme changes are pushed:
 
 **Automatic (via GitHub Actions):**
-- Triggers on changes to `cursor/**` or `packages/core/**`
-- Auto-bumps patch version
-- Publishes to VS Code Marketplace and Open VSX
-- Commits version bump back to repository
+- Triggers on changes to `theme.toml`, `packages/core/**`, platform directories, or `website/**`
+- Generates themes via Rust CLI and rebuilds website
+- Auto-bumps patch versions (Cursor, core if colors changed) and tags `v<cursor-version>` for Zed release PR
+- Publishes VS Code/Cursor extension to Marketplace & Open VSX
+- Opens automated PR to Zed extensions fork for release
+- Commits version bumps back to repository
 
-**Manual:**
+**Manual (VS Code / Cursor):**
 ```bash
-# Trigger workflow from GitHub Actions tab
-# Or manually publish:
+mise install
+mise run gen   # generate themes
 cd cursor
-vsce publish
-ovsx publish
+vsce publish   # requires VSCE_PAT
+ovsx publish   # requires OVSX_PAT
+```
+
+**Manual (Website deploy):**
+```bash
+mise run build:website
+# Deploy manually if needed:
+cd website
+wrangler pages deploy dist --project-name=subliminal-nightfall
+```
+
+**Manual (Zed extension tag + PR):**
+```bash
+# Tag matching cursor version
+VERSION=$(node -e "process.stdout.write(require('./cursor/package.json').version)")
+git tag "v$VERSION" && git push origin "v$VERSION"
+# GitHub Action will open release PR via zed-extension-action
 ```
 
 ### Making Theme Changes
 
-All colors are defined in `packages/core/src/colors.ts` as the single source of truth. Theme files in each platform directory should derive from these core colors.
+Primary source of truth: `theme.toml`.
+Rust generator: `tools/themegen`.
 
-**Note**: The website package is named `website` (not scoped), so use `pnpm --filter website` when working with it directly.
+Workflow:
+```bash
+mise install             # install toolchain versions
+mise run install         # install Node deps
+mise run gen             # generate all theme artifacts
+mise run dev             # start website with generated palette
+```
+Edit colors / variants (base, blurred, hazy) in `theme.toml`, then re-run `mise run gen`.
+
+Legacy TS palette (`packages/core/src/colors.ts`) will be aligned to consume `theme.toml`; prefer editing the TOML.
+
+Color values (2025-11-14):
+- Background: `#191724`
+- Background Alt: `#1f1d2e`
+- Background Elevated: `#26233a`
+- Foreground: `#e0def4`
+- Foreground Muted: `#a0a0a0`
+- Foreground Dim: `#7f7f7f`
+- Selection: `#484e5b`
+- Cursor: `#5fb3b3`
+- Line Highlight: `#2e3239bf`
+
+ANSI Base:
+- Red: `#bf616a` / Bright `#e2848d` / Dim `#85434a`
+- Green: `#a9cfa4` / Bright `#ccf2c7` / Dim `#769072`
+- Yellow: `#ffe2a9` / Bright `#ffffcc` / Dim `#b29e76`
+- Blue: `#6699cc` / Bright `#89bcef` / Dim `#476b8e`
+- Magenta: `#f1a5ab` / Bright `#ffc8ce` / Dim `#a87377`
+- Cyan: `#5fb3b3` / Bright `#82d6d6` / Dim `#427d7d`
+
+Syntax:
+- Teal: `#9ccfd8`
+- Blue Green: `#31748f`
+- Lavender: `#c4a7e7`
+- Gray: `#7f7f7f`
+
+Release tagging: Zed uses `v<cursor-version>`; keep versions in cursor/package.json authoritative.
 
 ## License
 

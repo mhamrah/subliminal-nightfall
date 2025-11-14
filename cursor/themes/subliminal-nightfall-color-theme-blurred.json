@@ -1,9 +1,9 @@
 {
   "colors": {
-    "editor.background": "#191724FF",
+    "editor.background": "#1f1d2ecc",
     "editor.foreground": "#e0def4",
-    "editor.lineHighlightBackground": "#2e3239FF",
-    "editor.selectionBackground": "#484e5bFF",
+    "editor.lineHighlightBackground": "#2e3239CC",
+    "editor.selectionBackground": "#484e5bCC",
     "editorCursor.foreground": "#5fb3b3",
     "sideBar.background": "#1f1d2e",
     "sideBar.border": "#484e5b",
@@ -24,10 +24,10 @@
     "terminal.ansiRed": "#bf616a",
     "terminal.ansiWhite": "#d4d4d4",
     "terminal.ansiYellow": "#ffe2a9",
-    "terminal.background": "#191724FF",
+    "terminal.background": "#1f1d2ecc",
     "terminal.foreground": "#e0def4"
   },
-  "name": "Subliminal Nightfall",
+  "name": "Subliminal Nightfall (Blurred)",
   "tokenColors": [
     {
       "scope": [

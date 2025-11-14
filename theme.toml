@@ -1,0 +1,111 @@
+version = "1"
+
+[meta]
+name = "Subliminal Nightfall"
+author = "Michael Hamrah"
+description = "A dark color scheme featuring deep purple-black backgrounds with carefully calibrated accent colors"
+license = "MIT"
+
+[palette.base.ansi.red]
+base = "#bf616a"
+bright = "#e2848d"
+dim = "#85434a"
+
+[palette.base.ansi.green]
+base = "#a9cfa4"
+bright = "#ccf2c7"
+dim = "#769072"
+
+[palette.base.ansi.yellow]
+base = "#ffe2a9"
+bright = "#ffffcc"
+dim = "#b29e76"
+
+[palette.base.ansi.blue]
+base = "#6699cc"
+bright = "#89bcef"
+dim = "#476b8e"
+
+[palette.base.ansi.magenta]
+base = "#f1a5ab"
+bright = "#ffc8ce"
+dim = "#a87377"
+
+[palette.base.ansi.cyan]
+base = "#5fb3b3"
+bright = "#82d6d6"
+dim = "#427d7d"
+
+[palette.syntax]
+teal = "#9ccfd8"
+blue_green = "#31748f"
+lavender = "#c4a7e7"
+gray = "#7f7f7f"
+
+[palette.ui]
+background = "#191724"
+background_alt = "#1f1d2e"
+background_elevated = "#26233a"
+foreground = "#e0def4"
+foreground_muted = "#a0a0a0"
+foreground_dim = "#7f7f7f"
+selection = "#484e5b"
+cursor = "#5fb3b3"
+line_highlight = "#2e3239bf"
+
+[palette.border]
+border = "#484e5b"
+border_variant = "#363b45"
+border_focused = "#6699cc"
+border_selected = "#5fb3b3"
+
+[[variants]]
+name = "base"
+alpha = 1.0
+
+[[variants]]
+name = "blurred"
+alpha = 0.80
+blur_radius = 12
+# Example overrides for blurred variant
+[variants.overrides.ui]
+background = "#1f1d2ecc"
+
+[[variants]]
+name = "hazy"
+alpha = 0.85
+blur_radius = 20
+# Example overrides for hazy variant
+[variants.overrides.ui]
+background = "#1f1d2ed9"
+
+[[targets]]
+id = "ghostty"
+enabled = true
+path = "ghostty"
+out_names = { base = "subliminal-nightfall", blurred = "subliminal-nightfall-blurred", hazy = "subliminal-nightfall-hazy" }
+
+[[targets]]
+id = "zed"
+enabled = true
+path = "zed/themes"
+# Single JSON file will include all variants
+out_file = "subliminal-nightfall.json"
+
+[[targets]]
+id = "cursor"
+enabled = true
+path = "cursor/themes"
+out_names = { base = "subliminal-nightfall-color-theme.json", blurred = "subliminal-nightfall-color-theme-blurred.json", hazy = "subliminal-nightfall-color-theme-hazy.json" }
+
+[[targets]]
+id = "neovim"
+enabled = true
+path = "neovim/colors"
+out_names = { base = "subliminal-nightfall.lua", blurred = "subliminal-nightfall-blurred.lua", hazy = "subliminal-nightfall-hazy.lua" }
+
+[[targets]]
+id = "website"
+enabled = true
+path = "website/src/data"
+out_file = "palette.json"

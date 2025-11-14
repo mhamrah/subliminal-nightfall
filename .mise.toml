@@ -1,33 +1,40 @@
 # Mise configuration for Subliminal Nightfall
 # https://mise.jdx.dev/configuration.html
 
+# Tools: managed versions for Node, pnpm, Rust
+
 [tools]
-node = "22"
+node = "22.10.0"
 pnpm = "10.11.1"
+rust = "1.81.0"
 
 [env]
 # Force pnpm to use the workspace
 _.file = ".env"
 
 [tasks.install]
-description = "Install all dependencies"
+description = "Install all dependencies (Rust & Node via mise)"
 run = "pnpm install"
 
 [tasks.dev]
-description = "Start website development server"
-run = "pnpm --filter website dev"
+description = "Start website development server (with theme generation)"
+run = "pnpm run gen:themes && pnpm --filter website dev"
+
+[tasks.gen]
+description = "Generate all theme targets from theme.toml"
+run = "pnpm run gen:themes"
 
 [tasks.build]
-description = "Build all packages"
-run = "pnpm build"
+description = "Generate themes then build all packages"
+run = "pnpm run gen:themes && pnpm build"
 
 [tasks."build:website"]
-description = "Build website for production"
-run = "pnpm --filter @subliminal/website build"
+description = "Generate themes then build website for production"
+run = "pnpm run gen:themes && pnpm --filter website build"
 
 [tasks.preview]
-description = "Preview website build"
-run = "pnpm --filter website preview"
+description = "Generate themes then preview website build"
+run = "pnpm run gen:themes && pnpm --filter website preview"
 
 [tasks.verify]
 description = "Verify symlink setup"

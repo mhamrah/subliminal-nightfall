@@ -1,0 +1,90 @@
+{
+  "backgroundColors": [
+    {
+      "hex": "#191724",
+      "name": "Background",
+      "usage": "Deep purple-black editor background"
+    },
+    {
+      "hex": "#1f1d2e",
+      "name": "Background Alt",
+      "usage": "Sidebar, panels, inactive tabs"
+    },
+    {
+      "hex": "#e0def4",
+      "name": "Foreground",
+      "textColor": "#000",
+      "usage": "Soft white text"
+    }
+  ],
+  "colors": [
+    {
+      "base": "#bf616a",
+      "bright": "#e2848d",
+      "dim": "#85434a",
+      "name": "Red",
+      "usage": "Errors, deletions, keywords"
+    },
+    {
+      "base": "#a9cfa4",
+      "bright": "#ccf2c7",
+      "dim": "#769072",
+      "name": "Green",
+      "usage": "Success, additions"
+    },
+    {
+      "base": "#ffe2a9",
+      "bright": "#ffffcc",
+      "dim": "#b29e76",
+      "name": "Yellow",
+      "usage": "Warnings, modifications"
+    },
+    {
+      "base": "#6699cc",
+      "bright": "#89bcef",
+      "dim": "#476b8e",
+      "name": "Blue",
+      "usage": "Info, titles, headings"
+    },
+    {
+      "base": "#f1a5ab",
+      "bright": "#ffc8ce",
+      "dim": "#a87377",
+      "name": "Magenta",
+      "usage": "Attributes, emphasis, operators"
+    },
+    {
+      "base": "#5fb3b3",
+      "bright": "#82d6d6",
+      "dim": "#427d7d",
+      "name": "Cyan",
+      "usage": "Focus borders"
+    }
+  ],
+  "meta": {
+    "author": "Michael Hamrah",
+    "name": "Subliminal Nightfall"
+  },
+  "syntaxColors": [
+    {
+      "hex": "#9ccfd8",
+      "name": "Cyan Teal",
+      "usage": "Functions, methods, strings"
+    },
+    {
+      "hex": "#31748f",
+      "name": "Blue Green",
+      "usage": "Keywords, types, constructors"
+    },
+    {
+      "hex": "#c4a7e7",
+      "name": "Lavender",
+      "usage": "Numbers, constants, inline code"
+    },
+    {
+      "hex": "#7f7f7f",
+      "name": "Gray",
+      "usage": "Comments"
+    }
+  ]
+}

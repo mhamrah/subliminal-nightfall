@@ -20,17 +20,7 @@
   },
   "packageManager": "pnpm@10.11.1",
   "scripts": {
-    "dev": "pnpm --filter website dev",
-    "build": "pnpm -r --filter './packages/**' build",
-    "build:core": "pnpm --filter @subliminal/core build",
-    "build:vscode": "pnpm --filter @subliminal/vscode build",
-    "build:website": "pnpm --filter website build",
-    "build:cloudflare": "pnpm --filter website build",
-    "preview": "pnpm --filter website preview",
-    "clean": "pnpm -r --filter './packages/**' clean",
-    "format": "prettier --write \"packages/**/*.{js,ts,json,md,astro,css}\"",
-    "lint": "eslint packages/*/src --ext .js,.ts,.astro",
-    "test": "pnpm -r test"
+    "gen:themes": "cargo run --manifest-path tools/themegen/Cargo.toml -- -c theme.toml generate"
   },
   "devDependencies": {
     "prettier": "^3.1.0",
