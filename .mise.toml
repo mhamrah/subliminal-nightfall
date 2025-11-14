@@ -6,7 +6,7 @@
 [tools]
 node = "22.10.0"
 pnpm = "10.11.1"
-rust = "1.81.0"
+rust = "1.82.0"
 
 [env]
 # Force pnpm to use the workspace
@@ -18,23 +18,27 @@ run = "pnpm install"
 
 [tasks.dev]
 description = "Start website development server (with theme generation)"
-run = "pnpm run gen:themes && pnpm --filter website dev"
+run = "mise run gen && pnpm --filter website dev"
 
 [tasks.gen]
 description = "Generate all theme targets from theme.toml"
-run = "pnpm run gen:themes"
+run = "cargo run --manifest-path tools/themegen/Cargo.toml -- -c theme.toml generate"
 
 [tasks.build]
 description = "Generate themes then build all packages"
-run = "pnpm run gen:themes && pnpm build"
+run = "mise run gen && pnpm build"
 
 [tasks."build:website"]
 description = "Generate themes then build website for production"
-run = "pnpm run gen:themes && pnpm --filter website build"
+run = "mise run gen && pnpm --filter website build"
+
+[tasks."build:cloudflare"]
+description = "Build website for Cloudflare deployment"
+run = "pnpm --filter website build"
 
 [tasks.preview]
 description = "Generate themes then preview website build"
-run = "pnpm run gen:themes && pnpm --filter website preview"
+run = "mise run gen && pnpm --filter website preview"
 
 [tasks.verify]
 description = "Verify symlink setup"
