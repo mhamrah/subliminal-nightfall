@@ -20,7 +20,8 @@
   },
   "packageManager": "pnpm@10.11.1",
   "scripts": {
-    "gen:themes": "cargo run --manifest-path tools/themegen/Cargo.toml -- -c theme.toml generate"
+    "gen:themes": "cargo run --manifest-path tools/themegen/Cargo.toml -- -c theme.toml generate",
+    "build:cloudflare": "pnpm --filter website build"
   },
   "devDependencies": {
     "prettier": "^3.1.0",
