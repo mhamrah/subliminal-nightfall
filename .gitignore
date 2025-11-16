@@ -37,3 +37,6 @@ yarn-error.log*
 
 # themes/ is a symlink to zed/themes/ for Zed extension compatibility
 # Git tracks symlinks, so no exclusion needed
+
+# Cargo
+target/
