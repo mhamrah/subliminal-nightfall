@@ -1,0 +1,28 @@
+name: Zed Extension Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release-zed-extension:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check configuration
+        run: |
+          if [ -z "${{ vars.ZED_EXTENSIONS_FORK }}" ]; then
+            echo "Missing repo variable ZED_EXTENSIONS_FORK. Set it to your fork, e.g. 'mhamrah/extensions'.";
+            exit 1;
+          fi
+          if [ -z "${{ secrets.COMMITTER_TOKEN }}" ]; then
+            echo "Missing secret COMMITTER_TOKEN (requires repo + workflow scopes).";
+            exit 1;
+          fi
+      - name: Run zed-extension-action
+        uses: huacnlee/zed-extension-action@v1
+        with:
+          extension-name: subliminal-nightfall
+          push-to: ${{ vars.ZED_EXTENSIONS_FORK }}
+        env:
+          COMMITTER_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
