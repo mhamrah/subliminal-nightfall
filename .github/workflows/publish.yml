@@ -11,6 +11,7 @@ on:
       - 'zed/**'
       - 'ghostty/**'
       - 'neovim/**'
+      - 'tools/colorloom/**'
   workflow_dispatch:
 
 jobs:
@@ -22,6 +23,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Detect changed paths
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            theme:
+              - 'theme.toml'
+            website:
+              - 'website/**'
+            cursor:
+              - 'cursor/**'
+            zed:
+              - 'zed/**'
+            neovim:
+              - 'neovim/**'
+            ghostty:
+              - 'ghostty/**'
+            colorloom:
+              - 'tools/colorloom/**'
+
       - name: Install mise
         run: |
           curl https://mise.run | sh
@@ -30,65 +51,121 @@ jobs:
       - name: Install tool versions
         run: mise install
 
-      - name: Install dependencies
+      - name: Install website dependencies
+        if: steps.filter.outputs.website == 'true'
         run: mise run install
 
-      - name: Generate themes
+      - name: Generate themes (colorloom)
         run: mise run gen
 
       - name: Build website
+        if: steps.filter.outputs.website == 'true'
         run: mise run build:website
 
       - name: Upload website artifact
+        if: steps.filter.outputs.website == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: website-dist
           path: website/dist
 
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
       - name: Publish VS Code / Cursor Extension
-        if: startsWith(github.ref, 'refs/heads/')
-        working-directory: cursor
+        if: steps.filter.outputs.cursor == 'true' || steps.filter.outputs.theme == 'true'
         env:
           VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
           OVSX_PAT: ${{ secrets.OVSX_PAT }}
         run: |
-          npm install -g @vscode/vsce ovsx
           # Auto bump patch version
-          jq '(.version) |= (split(".") | .[2] = ((.[2]|tonumber)+1 | tostring) | join("."))' package.json > package.tmp && mv package.tmp package.json
-          vsce publish --pat "$VSCE_TOKEN" || echo "VSCE publish skipped (token missing)"
-          ovsx publish -p "$OVSX_PAT" || echo "OVSX publish skipped (token missing)"
+          jq '(.version) |= (split(".") | .[2] = ((.[2]|tonumber)+1 | tostring) | join("."))' cursor/package.json > cursor/package.tmp && mv cursor/package.tmp cursor/package.json
+          mise run publish:cursor
 
-      - name: Publish Zed Theme
-        env:
-          ZED_AUTH_TOKEN: ${{ secrets.ZED_AUTH_TOKEN }}
+      - name: Compute Zed release version
+        id: zedver
         run: |
-          if [ -n "$ZED_AUTH_TOKEN" ]; then
-            echo "Publishing Zed theme (placeholder)";
-            # Placeholder: replace with actual Zed publish command when available
-          else
-            echo "ZED_AUTH_TOKEN not set; skipping Zed publish";
+          VERSION=""
+          SOURCE=""
+          if [ "${{ steps.filter.outputs.cursor }}" = "true" ] || [ "${{ steps.filter.outputs.theme }}" = "true" ]; then
+            VERSION=$(jq -r '.version' cursor/package.json)
+            SOURCE="cursor"
+          elif [ "${{ steps.filter.outputs.zed }}" = "true" ]; then
+            CUR=$(grep '^version = "' extension.toml | sed -E 's/^version = "([^"]+)".*/\1/')
+            IFS='.' read -r MA MI PA <<< "$CUR"
+            PA=$((PA + 1))
+            VERSION="$MA.$MI.$PA"
+            # Update extension.toml with bumped version
+            sed -E -i "s/^version = \"[^\"]+\"/version = \"$VERSION\"/" extension.toml
+            SOURCE="zed"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "source=$SOURCE" >> $GITHUB_OUTPUT
+
+      - name: Commit version bump (if any)
+        run: |
+          if ! git diff --quiet cursor/package.json; then
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
+            git add cursor/package.json
+            git commit -m "chore: bump cursor extension version" || true
+            git push || echo "Push failed";
+          fi
+          if ! git diff --quiet extension.toml; then
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
+            git add extension.toml
+            git commit -m "chore: sync Zed extension version to cursor" || true
+            git push || echo "Push failed";
           fi
 
+      - name: Tag Zed extension release
+        if: steps.filter.outputs.zed == 'true' || steps.filter.outputs.cursor == 'true' || steps.filter.outputs.theme == 'true'
+        run: |
+          VERSION="${{ steps.zedver.outputs.version }}"
+          if [ -z "$VERSION" ]; then
+            echo "No Zed-related changes; skipping tag"; exit 0;
+          fi
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git tag "v$VERSION" || echo "Tag exists"
+          git push origin "v$VERSION" || echo "Push tag failed"
+
+      - name: Prepare Zed extension artifact
+        if: steps.filter.outputs.zed == 'true' || steps.filter.outputs.theme == 'true' || steps.filter.outputs.cursor == 'true'
+        run: |
+          VERSION="${{ steps.zedver.outputs.version }}"
+          if [ -z "$VERSION" ]; then echo "No version computed; skipping"; exit 0; fi
+          # If source is cursor/theme, sync extension.toml to cursor version
+          if [ "${{ steps.zedver.outputs.source }}" = "cursor" ]; then
+            sed -E -i "s/^version = \"[^\"]+\"/version = \"$VERSION\"/" extension.toml
+          fi
+          # Package Zed extension contents
+          zip -r "zed-extension-$VERSION.zip" extension.toml zed/themes || (sudo apt-get update && sudo apt-get install -y zip && zip -r "zed-extension-$VERSION.zip" extension.toml zed/themes)
+
+      - name: Release Zed extension asset
+        if: steps.filter.outputs.zed == 'true' || steps.filter.outputs.theme == 'true' || steps.filter.outputs.cursor == 'true'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.zedver.outputs.version }}
+          files: |
+            zed-extension-${{ steps.zedver.outputs.version }}.zip
+
       - name: Deploy Website to Cloudflare Pages
-        if: startsWith(github.ref, 'refs/heads/main')
+        if: steps.filter.outputs.website == 'true' && startsWith(github.ref, 'refs/heads/main')
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_KEY }}
         run: |
-          npm install -g wrangler
           if [ -n "$CLOUDFLARE_API_TOKEN" ]; then
-            wrangler pages deploy website/dist --project-name=subliminal-nightfall || echo "Cloudflare deploy failed"
+            mise run deploy:cloudflare || echo "Cloudflare deploy failed"
           else
             echo "No CLOUDFLARE_KEY; skipping deploy"
           fi
 
-      - name: Commit version bump (if any)
+
+      - name: Publish colorloom crate
+        if: steps.filter.outputs.colorloom == 'true'
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
         run: |
-          if git diff --quiet cursor/package.json; then
-            echo "No version changes to commit";
-          else
-            git config user.name "github-actions"
-            git config user.email "github-actions@github.com"
-            git add cursor/package.json
-            git commit -m "chore: bump cursor extension version"
-            git push || echo "Push failed";
-          fi
+          mise run publish:colorloom || echo "Cargo publish skipped"

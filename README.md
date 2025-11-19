@@ -230,9 +230,11 @@ The VS Code/Cursor extension automatically publishes to both marketplaces when t
 **Automatic (via GitHub Actions):**
 - Triggers on changes to `theme.toml`, `packages/core/**`, platform directories, or `website/**`
 - Generates themes via Rust CLI and rebuilds website
-- Auto-bumps patch versions (Cursor, core if colors changed) and tags `v<cursor-version>` for Zed release PR
+- Auto-bumps patch versions (Cursor, core if colors changed)
+- Computes and tags Zed release versions on Cursor, Zed, or Theme changes
 - Publishes VS Code/Cursor extension to Marketplace & Open VSX
-- Opens automated PR to Zed extensions fork for release
+- Packages Zed extension (`extension.toml` + `zed/themes/`) and attaches to release
+- Push of tag `v<version>` triggers Zed release workflow via `huacnlee/zed-extension-action`
 - Commits version bumps back to repository
 
 **Manual (VS Code / Cursor):**
@@ -260,10 +262,28 @@ git tag "v$VERSION" && git push origin "v$VERSION"
 # GitHub Action will open release PR via zed-extension-action
 ```
 
+### Zed Extension Release Workflow
+
+This repo uses `huacnlee/zed-extension-action` to open a PR against the upstream Zed Extensions repo on new tags:
+
+- Workflow file: `.github/workflows/zed-release.yml`
+- Trigger: push of tags `v*`
+- Inputs:
+  - `extension-name`: `subliminal-nightfall`
+  - `push-to`: set via repo variable `ZED_EXTENSIONS_FORK` (e.g., `yourname/extensions` fork)
+- Secrets:
+  - `COMMITTER_TOKEN`: Personal Access Token with `repo` + `workflow` scopes
+
+On tag push, the action creates/updates the PR to release the extension in Zed.
+
+Setup locations in GitHub UI:
+- Set repo variable: Settings → Secrets and variables → Actions → Variables → New variable → Name: `ZED_EXTENSIONS_FORK`, Value: `mhamrah/extensions` (or your fork)
+- Set secret: Settings → Secrets and variables → Actions → New repository secret → Name: `COMMITTER_TOKEN`, Value: your PAT with `repo` and `workflow` scopes
+
 ### Making Theme Changes
 
 Primary source of truth: `theme.toml`.
-Rust generator: `tools/themegen`.
+Rust generator: `tools/colorloom`.
 
 Workflow:
 ```bash

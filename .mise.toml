@@ -12,29 +12,33 @@ rust = "1.82.0"
 # Force pnpm to use the workspace
 _.file = ".env"
 
+[tasks.install]
+description = "Install website and core dependencies"
+run = "pnpm -C website install && pnpm -C packages/core install"
+
 [tasks.dev]
 description = "Start website development server (with theme generation)"
-run = "mise run gen && pnpm --filter website dev"
+run = "mise run gen && pnpm -C website dev"
 
 [tasks.gen]
 description = "Generate all theme targets from theme.toml"
-run = "cargo run --manifest-path tools/themegen/Cargo.toml -- -c theme.toml generate"
+run = "cargo run --manifest-path tools/colorloom/Cargo.toml -- -c theme.toml generate"
 
 [tasks.build]
 description = "Generate themes then build all packages"
-run = "mise run gen && pnpm build"
+run = "mise run gen && pnpm -C website build && pnpm -C packages/core build"
 
 [tasks."build:website"]
-description = "Generate themes then build website for production"
-run = "mise run gen && pnpm --filter website build"
+description = "Build website for production"
+run = "pnpm -C website build"
 
 [tasks."build:cloudflare"]
 description = "Build website for Cloudflare deployment"
-run = "pnpm --filter website build"
+run = "pnpm -C website build"
 
 [tasks.preview]
-description = "Generate themes then preview website build"
-run = "mise run gen && pnpm --filter website preview"
+description = "Preview website build"
+run = "pnpm -C website preview"
 
 [tasks.verify]
 description = "Verify symlink setup"
@@ -51,3 +55,15 @@ run = "pnpm format"
 [tasks.lint]
 description = "Lint code with ESLint"
 run = "pnpm lint"
+
+[tasks."publish:cursor"]
+description = "Publish Cursor/VS Code extension to VSCE and Open VSX"
+run = "pnpm add -g @vscode/vsce ovsx && jq '(.version) |= (split(\".\") | .[2] = ((.[2]|tonumber)+1 | tostring) | join(\".\"))' cursor/package.json > cursor/package.tmp && mv cursor/package.tmp cursor/package.json && (cd cursor && vsce publish --pat \"$VSCE_TOKEN\" || echo \"VSCE publish skipped (token missing)\") && (cd cursor && ovsx publish -p \"$OVSX_PAT\" || echo \"OVSX publish skipped (token missing)\")"
+
+[tasks."publish:colorloom"]
+description = "Publish colorloom to crates.io"
+run = "cargo publish --manifest-path tools/colorloom/Cargo.toml"
+
+[tasks."deploy:cloudflare"]
+description = "Deploy website to Cloudflare Pages"
+run = "pnpm add -g wrangler && wrangler pages deploy website/dist --project-name=subliminal-nightfall"
