@@ -242,9 +242,10 @@ The VS Code/Cursor extension automatically publishes to both marketplaces when t
 mise install
 mise run gen   # generate themes
 cd cursor
-vsce publish   # requires VSCE_PAT
-ovsx publish   # requires OVSX_PAT
+pnpm dlx @vscode/vsce publish   # requires VSCE_PAT
+pnpm dlx ovsx publish           # requires OVSX_PAT
 ```
+pnpm dlx downloads and runs a package binary temporarily without a global install, keeping CI and local environments clean and avoiding global bin issues.
 
 **Manual (Website deploy):**
 ```bash

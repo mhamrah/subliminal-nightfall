@@ -58,7 +58,7 @@ run = "pnpm lint"
 
 [tasks."publish:cursor"]
 description = "Publish Cursor/VS Code extension to VSCE and Open VSX"
-run = "pnpm add -g @vscode/vsce ovsx && jq '(.version) |= (split(\".\") | .[2] = ((.[2]|tonumber)+1 | tostring) | join(\".\"))' cursor/package.json > cursor/package.tmp && mv cursor/package.tmp cursor/package.json && (cd cursor && vsce publish --pat \"$VSCE_TOKEN\" || echo \"VSCE publish skipped (token missing)\") && (cd cursor && ovsx publish -p \"$OVSX_PAT\" || echo \"OVSX publish skipped (token missing)\")"
+run = "(cd cursor && pnpm dlx @vscode/vsce publish --pat \"$VSCE_TOKEN\" || echo \"VSCE publish skipped (token missing)\") && (cd cursor && pnpm dlx ovsx publish -p \"$OVSX_PAT\" || echo \"OVSX publish skipped (token missing)\")"
 
 [tasks."publish:colorloom"]
 description = "Publish colorloom to crates.io"
@@ -66,4 +66,4 @@ run = "cargo publish --manifest-path tools/colorloom/Cargo.toml"
 
 [tasks."deploy:cloudflare"]
 description = "Deploy website to Cloudflare Pages"
-run = "pnpm add -g wrangler && wrangler pages deploy website/dist --project-name=subliminal-nightfall"
+run = "pnpm dlx wrangler pages deploy website/dist --project-name=subliminal-nightfall"
