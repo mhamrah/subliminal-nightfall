@@ -1,6 +1,6 @@
 [package]
 name = "colorloom"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "A theme generator for creating Subliminal Nightfall color schemes."
 authors = ["Michael Hamrah"]
