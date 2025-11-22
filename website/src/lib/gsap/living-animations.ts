@@ -1,5 +1,4 @@
-import { gsap, ScrollTrigger } from './init';
-import { shouldReduceMotion } from './utils';
+import { gsap, ScrollTrigger, shouldReduceMotion } from './init';
 import { createBreathingEffect, createParallaxLayers, createScrollRearrangement, createSlidingGradient } from './breathing-animations';
 
 /**

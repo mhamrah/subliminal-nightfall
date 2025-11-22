@@ -1,5 +1,5 @@
-import { gsap, ScrollTrigger } from './init';
-import { createColorPulse, createRippleEffect, shouldReduceMotion } from './utils';
+import { gsap, ScrollTrigger, shouldReduceMotion } from './init';
+import { createColorPulse, createRippleEffect } from './utils';
 import { createBreathingEffect, createScrollRearrangement, createColorMorph } from './breathing-animations';
 
 /**
