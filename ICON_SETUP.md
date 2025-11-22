@@ -78,3 +78,4 @@ The icon matches the website's hero logo:
 - The SVG source (`icon.svg`) is tracked in git
 - The icon design is consistent across website and extension
 
+
