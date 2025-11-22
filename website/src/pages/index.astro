@@ -5,6 +5,7 @@ import Footer from "../components/Footer.astro";
 import ColorPalette from "../components/ColorPalette.astro";
 import CodePreview from "../components/CodePreview.astro";
 import Installation from "../components/Installation.astro";
+import ColorLoomShowcase from "../components/ColorLoomShowcase.astro";
 ---
 
 <Layout title="Subliminal Nightfall - Dark Color Scheme">
@@ -14,7 +15,8 @@ import Installation from "../components/Installation.astro";
     <section id="home" class="container mx-auto px-4 pt-20 pb-32">
         <div class="max-w-5xl mx-auto text-center">
             <div
-                class="inline-flex items-center justify-center w-24 h-24 mb-8 rounded-2xl bg-gradient-to-br from-sn-cyan via-sn-blue to-sn-magenta"
+                class="inline-flex items-center justify-center w-24 h-24 mb-8 rounded-2xl bg-gradient-to-br from-sn-cyan via-sn-blue to-sn-magenta hero-logo"
+                style="background-size: 200% 200%; background-position: 0% 50%;"
             >
                 <span class="text-sn-bg font-bold text-4xl">SN</span>
             </div>
@@ -205,6 +207,9 @@ import Installation from "../components/Installation.astro";
 
     <!-- Code Examples Section -->
     <CodePreview />
+
+    <!-- ColorLoom Showcase Section -->
+    <ColorLoomShowcase />
 
     <!-- Installation Section -->
     <Installation />

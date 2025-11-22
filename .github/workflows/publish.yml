@@ -19,9 +19,13 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      actions: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
 
       - name: Detect changed paths
         id: filter
@@ -76,7 +80,7 @@ jobs:
         if: steps.filter.outputs.cursor == 'true' || steps.filter.outputs.theme == 'true'
         env:
           VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
-          OVSX_PAT: ${{ secrets.OVSX_PAT }}
+          OVSX_PAT: ${{ secrets.OPEN_VSX_TOKEN }}
         run: |
           # Auto bump patch version
           jq '(.version) |= (split(".") | .[2] = ((.[2]|tonumber)+1 | tostring) | join("."))' cursor/package.json > cursor/package.tmp && mv cursor/package.tmp cursor/package.json
@@ -150,6 +154,29 @@ jobs:
           tag_name: v${{ steps.zedver.outputs.version }}
           files: |
             zed-extension-${{ steps.zedver.outputs.version }}.zip
+
+      - name: Check Zed extension configuration
+        if: steps.filter.outputs.zed == 'true' || steps.filter.outputs.cursor == 'true' || steps.filter.outputs.theme == 'true'
+        run: |
+          if [ -z "${{ vars.ZED_EXTENSIONS_FORK }}" ]; then
+            echo "⚠️  Missing repo variable ZED_EXTENSIONS_FORK. Set it to your fork, e.g. 'mhamrah/extensions'.";
+            echo "Skipping Zed extension release to extensions repo.";
+            exit 0;
+          fi
+          if [ -z "${{ secrets.COMMITTER_TOKEN }}" ]; then
+            echo "⚠️  Missing secret COMMITTER_TOKEN (requires repo + workflow scopes).";
+            echo "Skipping Zed extension release to extensions repo.";
+            exit 0;
+          fi
+
+      - name: Run Zed extension action
+        if: steps.filter.outputs.zed == 'true' || steps.filter.outputs.cursor == 'true' || steps.filter.outputs.theme == 'true'
+        uses: huacnlee/zed-extension-action@v1
+        with:
+          extension-name: subliminal-nightfall
+          push-to: ${{ vars.ZED_EXTENSIONS_FORK }}
+        env:
+          COMMITTER_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
 
       - name: Deploy Website to Cloudflare Pages
         if: steps.filter.outputs.website == 'true' && startsWith(github.ref, 'refs/heads/main')

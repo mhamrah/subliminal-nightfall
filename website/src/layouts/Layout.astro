@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import GSAPInit from '../components/GSAPInit.astro';
 
 interface Props {
   title: string;
@@ -37,6 +38,11 @@ const canonicalURL = new URL(Astro.url.pathname, baseUrl);
     <title>{title}</title>
   </head>
   <body class="min-h-screen">
-    <slot />
+    <div id="smooth-wrapper">
+      <div id="smooth-content">
+        <slot />
+      </div>
+    </div>
+    <GSAPInit />
   </body>
 </html>

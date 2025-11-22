@@ -272,18 +272,28 @@ const { colors, syntaxColors, backgroundColors } = palette as any;
                 try {
                     await navigator.clipboard.writeText(color);
 
-                    // Show toast
+                    // Show toast with GSAP animation if available
                     if (toast) {
-                        toast.classList.remove("translate-y-20", "opacity-0");
-                        toast.classList.add("translate-y-0", "opacity-100");
+                        if ((toast as any).gsapShow) {
+                            (toast as any).gsapShow();
+                            setTimeout(() => {
+                                if ((toast as any).gsapHide) {
+                                    (toast as any).gsapHide();
+                                }
+                            }, 2000);
+                        } else {
+                            // Fallback to CSS classes
+                            toast.classList.remove("translate-y-20", "opacity-0");
+                            toast.classList.add("translate-y-0", "opacity-100");
 
-                        setTimeout(() => {
-                            toast.classList.remove(
-                                "translate-y-0",
-                                "opacity-100",
-                            );
-                            toast.classList.add("translate-y-20", "opacity-0");
-                        }, 2000);
+                            setTimeout(() => {
+                                toast.classList.remove(
+                                    "translate-y-0",
+                                    "opacity-100",
+                                );
+                                toast.classList.add("translate-y-20", "opacity-0");
+                            }, 2000);
+                        }
                     }
                 } catch (err) {
                     console.error("Failed to copy:", err);

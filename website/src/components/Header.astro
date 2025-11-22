@@ -23,7 +23,8 @@ const navItems = [
         {navItems.map((item) => (
           <a
             href={item.href}
-            class="text-sn-fg-muted hover:text-sn-cyan transition-colors duration-200"
+            class="text-sn-fg-muted hover:text-sn-cyan transition-colors duration-200 nav-link"
+            data-href={item.href}
           >
             {item.name}
           </a>
@@ -76,6 +77,8 @@ const navItems = [
 </header>
 
 <script>
+  import { gsap, ScrollSmoother } from '../lib/gsap/init';
+
   const button = document.getElementById('mobile-menu-button');
   const menu = document.getElementById('mobile-menu');
 
@@ -88,6 +91,26 @@ const navItems = [
   mobileLinks?.forEach(link => {
     link.addEventListener('click', () => {
       menu?.classList.add('hidden');
+    });
+  });
+
+  // Smooth scroll for navigation links
+  const navLinks = document.querySelectorAll('.nav-link, a[href^="#"]');
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) {
+          const smoother = ScrollSmoother.get();
+          if (smoother) {
+            smoother.scrollTo(target, true, 'top top');
+          } else {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      }
     });
   });
 </script>

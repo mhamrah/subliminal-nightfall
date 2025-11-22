@@ -1,1 +1,5 @@
+# VSIX packages
 *.vsix
+
+# Generated icon (keep SVG, generate PNG when needed)
+icon.png

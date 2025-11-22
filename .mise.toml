@@ -58,7 +58,7 @@ run = "pnpm lint"
 
 [tasks."publish:cursor"]
 description = "Publish Cursor/VS Code extension to VSCE and Open VSX"
-run = "(cd cursor && pnpm dlx @vscode/vsce publish --pat \"$VSCE_TOKEN\" || echo \"VSCE publish skipped (token missing)\") && (cd cursor && pnpm dlx ovsx publish -p \"$OVSX_PAT\" || echo \"OVSX publish skipped (token missing)\")"
+run = "(cd cursor && pnpm dlx @vscode/vsce publish --pat \"$VSCE_TOKEN\" || echo \"VSCE publish skipped (token missing)\") && (cd cursor && pnpm dlx ovsx publish -p \"$OPEN_VSX_TOKEN\" || echo \"OVSX publish skipped (token missing)\")"
 
 [tasks."publish:colorloom"]
 description = "Publish colorloom to crates.io"

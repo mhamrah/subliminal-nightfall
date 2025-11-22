@@ -84,6 +84,70 @@ html {
     scroll-behavior: smooth;
 }
 
+/* GSAP ScrollSmoother wrapper styles */
+#smooth-wrapper {
+    overflow: hidden;
+    position: relative;
+}
+
+#smooth-content {
+    will-change: transform;
+}
+
+/* Performance optimizations */
+.hero-char,
+.color-swatch,
+.code-panel,
+.output-file-card,
+.bg-sn-box,
+section h2,
+section h3 {
+    will-change: transform, opacity, filter;
+}
+
+/* Smooth color transitions */
+* {
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    #smooth-wrapper {
+        overflow: visible;
+    }
+
+    #smooth-content {
+        transform: none !important;
+    }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    /* Reduce animation complexity on mobile */
+    .hero-char {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    /* Disable ScrollSmoother on mobile for better performance */
+    #smooth-wrapper {
+        overflow: visible;
+    }
+
+    #smooth-content {
+        transform: none !important;
+    }
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
     width: 10px;

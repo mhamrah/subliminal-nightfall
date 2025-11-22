@@ -1,0 +1,218 @@
+---
+const terminalCommands = [
+  { text: '$ cargo install colorloom', delay: 0 },
+  { text: '    Updating crates.io index', delay: 500 },
+  { text: '    Downloading colorloom v0.1.1', delay: 1000 },
+  { text: '    Compiling colorloom v0.1.1', delay: 1500 },
+  { text: '     Finished release [optimized] target(s)', delay: 2000 },
+  { text: '    Installed package `colorloom v0.1.1`', delay: 2500 },
+  { text: '', delay: 3000 },
+  { text: '$ colorloom generate', delay: 3500 },
+  { text: 'Generated themes for 5 targets', delay: 4000 },
+  { text: '  ✓ neovim/colors/subliminal-nightfall.lua', delay: 4500 },
+  { text: '  ✓ cursor/themes/subliminal-nightfall-color-theme.json', delay: 5000 },
+  { text: '  ✓ zed/themes/subliminal-nightfall.json', delay: 5500 },
+  { text: '  ✓ ghostty/subliminal-nightfall', delay: 6000 },
+];
+
+const outputFiles = [
+  { name: 'Neovim', icon: '🌙', file: 'subliminal-nightfall.lua', color: 'sn-green' },
+  { name: 'VS Code', icon: '📝', file: 'subliminal-nightfall.json', color: 'sn-blue' },
+  { name: 'Zed', icon: '⚡', file: 'subliminal-nightfall.json', color: 'sn-cyan' },
+  { name: 'Ghostty', icon: '👻', file: 'subliminal-nightfall', color: 'sn-magenta' },
+];
+---
+
+<section id="colorloom" class="container mx-auto px-4 py-20">
+    <div class="text-center mb-12">
+        <h2 class="text-4xl font-bold text-sn-fg mb-4">ColorLoom Tool</h2>
+        <p class="text-sn-fg-muted text-lg max-w-2xl mx-auto">
+            A powerful Rust tool for generating Subliminal Nightfall themes across multiple editors and terminals from a single configuration file.
+        </p>
+    </div>
+
+    <div class="max-w-6xl mx-auto">
+        <!-- Pinned container for scroll animation -->
+        <div class="colorloom-pinned-container">
+            <!-- Terminal Output -->
+            <div class="mb-12">
+                <div class="bg-sn-bg border border-sn-border rounded-lg overflow-hidden shadow-2xl">
+                    <div class="flex items-center justify-between px-4 py-3 bg-sn-header-translucent border-b border-sn-border-subtle">
+                        <div class="flex items-center space-x-2">
+                            <div class="flex space-x-1.5">
+                                <div class="w-3 h-3 rounded-full bg-sn-red" />
+                                <div class="w-3 h-3 rounded-full bg-sn-yellow" />
+                                <div class="w-3 h-3 rounded-full bg-sn-green" />
+                            </div>
+                            <span class="text-sm text-sn-fg-muted ml-4 font-mono">Terminal</span>
+                        </div>
+                    </div>
+                    <div class="p-6 font-mono text-sm">
+                        <div id="terminal-output" class="space-y-1">
+                            <!-- Terminal output will be animated here -->
+                        </div>
+                        <div class="flex items-center mt-4">
+                            <span class="text-sn-cyan">$</span>
+                            <span class="ml-2 text-sn-fg" id="terminal-cursor">█</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Config Preview and Output Files -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Config Preview -->
+                <div class="bg-sn-box border border-sn-border rounded-lg overflow-hidden">
+                    <div class="flex items-center justify-between px-4 py-3 bg-sn-header-translucent border-b border-sn-border-subtle">
+                        <div class="flex items-center space-x-2">
+                            <div class="flex space-x-1.5">
+                                <div class="w-3 h-3 rounded-full bg-sn-red" />
+                                <div class="w-3 h-3 rounded-full bg-sn-yellow" />
+                                <div class="w-3 h-3 rounded-full bg-sn-green" />
+                            </div>
+                            <span class="text-sm text-sn-fg-muted ml-4 font-mono">theme.toml</span>
+                        </div>
+                    </div>
+                    <div class="p-4 overflow-x-auto">
+                        <pre class="text-xs font-mono text-sn-fg"><code id="config-preview">[meta]
+name = "Subliminal Nightfall"
+author = "Michael Hamrah"
+
+[palette.base.ansi.red]
+base = "#bf616a"
+bright = "#e2848d"
+dim = "#85434a"
+
+[palette.syntax]
+teal = "#9ccfd8"
+blue_green = "#31748f"
+lavender = "#c4a7e7"</code></pre>
+                    </div>
+                </div>
+
+                <!-- Output Files -->
+                <div>
+                    <h3 class="text-xl font-semibold text-sn-fg mb-4">Generated Files</h3>
+                    <div class="space-y-4" id="output-files-container">
+                        {outputFiles.map((file, index) => (
+                            <div
+                                class="bg-sn-box border border-sn-border rounded-lg p-4 hover:border-sn-cyan transition-colors output-file-card"
+                                data-index={index}
+                                style="opacity: 0; transform: translateY(20px);"
+                            >
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-2xl">{file.icon}</span>
+                                        <div>
+                                            <h4 class="text-lg font-semibold text-sn-fg">{file.name}</h4>
+                                            <code class="text-sm text-sn-fg-muted font-mono">{file.file}</code>
+                                        </div>
+                                    </div>
+                                    <div class={`w-3 h-3 rounded-full bg-${file.color}`}></div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Installation Instructions -->
+            <div class="mt-12 bg-gradient-to-br from-sn-blue-green/20 to-sn-cyan/20 border border-sn-cyan/50 rounded-2xl p-8">
+                <h3 class="text-2xl font-semibold text-sn-fg mb-4">Get Started</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-lg font-medium text-sn-cyan mb-2">Install</h4>
+                        <code class="block bg-sn-bg-alt border border-sn-border rounded p-3 text-sm font-mono text-sn-fg">
+                            cargo install colorloom
+                        </code>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-medium text-sn-cyan mb-2">Generate</h4>
+                        <code class="block bg-sn-bg-alt border border-sn-border rounded p-3 text-sm font-mono text-sn-fg">
+                            colorloom generate
+                        </code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    import { gsap, ScrollTrigger } from '../lib/gsap/init';
+
+    // Animate terminal output
+    function animateTerminal() {
+        const terminalOutput = document.getElementById('terminal-output');
+        const cursor = document.getElementById('terminal-cursor');
+        if (!terminalOutput || !cursor) return;
+
+        const commands = [
+            { text: '$ cargo install colorloom', delay: 0 },
+            { text: '    Updating crates.io index', delay: 500 },
+            { text: '    Downloading colorloom v0.1.1', delay: 1000 },
+            { text: '    Compiling colorloom v0.1.1', delay: 1500 },
+            { text: '     Finished release [optimized] target(s)', delay: 2000 },
+            { text: '    Installed package `colorloom v0.1.1`', delay: 2500 },
+            { text: '', delay: 3000 },
+            { text: '$ colorloom generate', delay: 3500 },
+            { text: 'Generated themes for 5 targets', delay: 4000 },
+            { text: '  ✓ neovim/colors/subliminal-nightfall.lua', delay: 4500 },
+            { text: '  ✓ cursor/themes/subliminal-nightfall-color-theme.json', delay: 5000 },
+            { text: '  ✓ zed/themes/subliminal-nightfall.json', delay: 5500 },
+            { text: '  ✓ ghostty/subliminal-nightfall', delay: 6000 },
+        ];
+
+        // Animate cursor blink
+        gsap.to(cursor, {
+            opacity: 0,
+            duration: 0.5,
+            repeat: -1,
+            yoyo: true,
+            ease: 'power1.inOut',
+        });
+
+        // Type out commands
+        commands.forEach((cmd, index) => {
+            setTimeout(() => {
+                const line = document.createElement('div');
+                line.className = 'text-sn-fg';
+                line.textContent = cmd.text;
+                line.style.opacity = '0';
+                terminalOutput.appendChild(line);
+                
+                gsap.to(line, {
+                    opacity: 1,
+                    duration: 0.3,
+                    ease: 'power2.out',
+                });
+            }, cmd.delay);
+        });
+    }
+
+    // Animate output file cards
+    function animateOutputFiles() {
+        const cards = document.querySelectorAll('.output-file-card');
+        cards.forEach((card, index) => {
+            gsap.to(card, {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                delay: 7 + index * 0.2,
+                ease: 'power3.out',
+            });
+        });
+    }
+
+    // Initialize on scroll into view
+    ScrollTrigger.create({
+        trigger: '#colorloom',
+        start: 'top 80%',
+        onEnter: () => {
+            animateTerminal();
+            animateOutputFiles();
+        },
+        once: true,
+    });
+</script>
+
