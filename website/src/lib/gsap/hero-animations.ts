@@ -1,5 +1,5 @@
-import { gsap, ScrollTrigger } from './init';
-import { createMagneticEffect, createFloatingAnimation, shouldReduceMotion } from './utils';
+import { gsap, ScrollTrigger, shouldReduceMotion } from './init';
+import { createMagneticEffect, createFloatingAnimation } from './utils';
 import { createBreathingEffect, createSlidingGradient } from './breathing-animations';
 
 /**
