@@ -3,14 +3,7 @@
  * Creates editor-specific theme objects from core color definitions
  */
 
-import {
-  baseColors,
-  syntaxColors,
-  backgroundColors,
-  borderColors,
-  uiColors,
-  palette
-} from './colors.js';
+import { palette } from './colors.js';
 
 export interface ThemeColors {
   // Base ANSI colors

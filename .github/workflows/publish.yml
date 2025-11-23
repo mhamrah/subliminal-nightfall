@@ -95,10 +95,12 @@ jobs:
         with:
           script: |
             const {owner, repo} = context.repo;
+            const workflowRef = process.env.GITHUB_WORKFLOW_REF || '';
+            const workflowId = workflowRef.split('@')[0] || '.github/workflows/publish.yml';
             const runs = await github.rest.actions.listWorkflowRuns({
               owner,
               repo,
-              workflow_id: context.workflow,
+              workflow_id: workflowId,
               branch: 'main',
               status: 'success',
               per_page: 10

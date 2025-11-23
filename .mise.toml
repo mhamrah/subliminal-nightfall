@@ -54,7 +54,11 @@ run = "pnpm format"
 
 [tasks.lint]
 description = "Lint code with ESLint"
-run = "pnpm lint"
+run = """
+set -euo pipefail
+pnpm -C website exec astro check
+pnpm -C packages/core exec tsc --noEmit
+"""
 
 [tasks."publish:cursor"]
 description = "Publish Cursor/VS Code extension to VSCE and Open VSX"

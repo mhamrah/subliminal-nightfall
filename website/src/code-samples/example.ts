@@ -264,13 +264,16 @@ async function main() {
 }
 
 // Export for use in other modules
-export {
+export type {
   User,
   Post,
   ApiResponse,
   PaginatedResponse,
-  ApiError,
   Repository,
+};
+
+export {
+  ApiError,
   ApiClient,
   UserService,
   processUsersBatch,

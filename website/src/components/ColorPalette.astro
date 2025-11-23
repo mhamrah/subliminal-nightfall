@@ -1,6 +1,32 @@
 ---
 import palette from "../data/palette.json";
-const { colors, syntaxColors, backgroundColors } = palette as any;
+
+type BaseColor = {
+    name: string;
+    base: string;
+    bright: string;
+    dim: string;
+    usage: string;
+};
+
+type SyntaxColor = {
+    name: string;
+    hex: string;
+    usage: string;
+};
+
+type BackgroundColor = {
+    name: string;
+    hex: string;
+    usage: string;
+    textColor?: string;
+};
+
+const { colors, syntaxColors, backgroundColors } = palette as {
+    colors: BaseColor[];
+    syntaxColors: SyntaxColor[];
+    backgroundColors: BackgroundColor[];
+};
 ---
 
 <section id="colors" class="container mx-auto px-4 py-20">
