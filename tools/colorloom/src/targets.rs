@@ -185,6 +185,8 @@ fn gen_cursor(cfg: &Config, target: &crate::config::Target, root: &PathBuf) -> R
                 "editor.lineHighlightBackground": ui.line_highlight,
                 "editor.selectionBackground": ui.selection,
                 "editorCursor.foreground": ui.cursor,
+                "activityBar.background": ui.background,
+                "statusBarItem.remoteBackground": cfg.palette.base.ansi.blue.base,
                 "sideBar.background": cfg.palette.ui.background_alt,
                 "sideBar.foreground": cfg.palette.ui.foreground,
                 "sideBar.border": cfg.palette.border.border,

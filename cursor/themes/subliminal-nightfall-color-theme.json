@@ -1,5 +1,6 @@
 {
   "colors": {
+    "activityBar.background": "#191724FF",
     "editor.background": "#191724FF",
     "editor.foreground": "#e0def4",
     "editor.lineHighlightBackground": "#2e3239FF",
@@ -8,6 +9,7 @@
     "sideBar.background": "#1f1d2e",
     "sideBar.border": "#484e5b",
     "sideBar.foreground": "#e0def4",
+    "statusBarItem.remoteBackground": "#6699cc",
     "terminal.ansiBlack": "#7f7f7f",
     "terminal.ansiBlue": "#6699cc",
     "terminal.ansiBrightBlack": "#7f7f7f",
