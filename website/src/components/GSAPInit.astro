@@ -5,23 +5,11 @@
 <script>
   import { initAnimations } from '../lib/gsap/client-init.ts';
   
-  // Wait for DOM to be fully ready
-  function initialize() {
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(() => {
-          console.log('🚀 Starting GSAP initialization...');
-          initAnimations();
-        }, 200);
-      });
-    } else {
-      setTimeout(() => {
-        console.log('🚀 Starting GSAP initialization...');
-        initAnimations();
-      }, 200);
-    }
+  // Initialize immediately when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAnimations);
+  } else {
+    initAnimations();
   }
-  
-  initialize();
 </script>
 

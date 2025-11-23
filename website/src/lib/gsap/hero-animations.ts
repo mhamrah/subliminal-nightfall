@@ -8,43 +8,43 @@ import { createBreathingEffect, createSlidingGradient } from './breathing-animat
 export function initHeroAnimations(): () => void {
   if (shouldReduceMotion()) {
     console.log('⚠️ Reduced motion preference detected, skipping animations');
-    return () => {};
+    return () => { };
   }
 
   const cleanupFunctions: (() => void)[] = [];
-  
+
   const homeSection = document.querySelector('#home');
   if (!homeSection) {
     console.warn('⚠️ Hero section (#home) not found');
-    return () => {};
+    return () => { };
   }
 
   // Morphing gradient background with sliding colors
-  const gradientBox = document.querySelector('#home .hero-logo') || 
-                      document.querySelector('#home .inline-flex.items-center.justify-center.w-24');
+  const gradientBox = document.querySelector('#home .hero-logo') ||
+    document.querySelector('#home .inline-flex.items-center.justify-center.w-24');
   if (gradientBox) {
     console.log('✅ Found hero logo, applying animations');
-    
+
     // Simple visible test animation first
-    gsap.fromTo(gradientBox, 
+    gsap.fromTo(gradientBox,
       { scale: 0.8, opacity: 0.5, rotation: -10 },
-      { 
-        scale: 1, 
-        opacity: 1, 
+      {
+        scale: 1,
+        opacity: 1,
         rotation: 0,
         duration: 1,
         ease: 'back.out(1.7)',
         delay: 0.2
       }
     );
-    
+
     const colors = ['#5fb3b3', '#6699cc', '#c4a7e7', '#f1a5ab'];
     const gradientCleanup = createSlidingGradient(gradientBox as HTMLElement, colors, {
       duration: 12,
       angle: 135,
     });
     cleanupFunctions.push(gradientCleanup);
-    
+
     // Add breathing effect
     const breathingCleanup = createBreathingEffect(gradientBox as HTMLElement, {
       duration: 4,
@@ -71,7 +71,7 @@ export function initHeroAnimations(): () => void {
   const title = document.querySelector('#home h1');
   if (title) {
     const isMobile = window.innerWidth < 768;
-    
+
     if (isMobile) {
       // Simple fade-in on mobile
       gsap.fromTo(
@@ -86,11 +86,16 @@ export function initHeroAnimations(): () => void {
         }
       );
     } else {
-      const titleText = title.textContent || '';
-      const chars = titleText.split('').filter(char => char.trim() !== '');
-      title.innerHTML = chars.map((char, i) => 
-        `<span class="hero-char" style="display: inline-block; opacity: 0;">${char === ' ' ? '&nbsp;' : char}</span>`
-      ).join('');
+      const titleText = title.textContent?.trim() || '';
+      // Split text into characters but preserve spaces
+      const chars = titleText.split('');
+
+      title.innerHTML = chars.map((char, i) => {
+        if (char === ' ') {
+          return ' ';
+        }
+        return `<span class="hero-char" style="display: inline-block; opacity: 0;">${char}</span>`;
+      }).join('');
 
       const charElements = title.querySelectorAll('.hero-char');
       gsap.fromTo(
