@@ -13,22 +13,64 @@ on:
       - 'neovim/**'
       - 'tools/colorloom/**'
   workflow_dispatch:
+    inputs:
+      force_all:
+        description: Force all jobs to run
+        type: boolean
+        default: false
+      force_website:
+        description: Force website build/deploy
+        type: boolean
+        default: false
+      force_cursor:
+        description: Force Cursor extension publish
+        type: boolean
+        default: false
+      force_zed:
+        description: Force Zed extension release
+        type: boolean
+        default: false
+      force_colorloom:
+        description: Force colorloom crate publish
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
 
 jobs:
-  build-and-publish:
+  detect-changes:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      actions: write
+    outputs:
+      changed_theme: ${{ steps.changed.outputs.theme }}
+      changed_website: ${{ steps.changed.outputs.website }}
+      changed_cursor: ${{ steps.changed.outputs.cursor }}
+      changed_zed: ${{ steps.changed.outputs.zed }}
+      changed_neovim: ${{ steps.changed.outputs.neovim }}
+      changed_ghostty: ${{ steps.changed.outputs.ghostty }}
+      changed_colorloom: ${{ steps.changed.outputs.colorloom }}
+      since_success_theme: ${{ steps.since-success.outputs.theme || steps.since-success-default.outputs.theme || 'false' }}
+      since_success_website: ${{ steps.since-success.outputs.website || steps.since-success-default.outputs.website || 'false' }}
+      since_success_cursor: ${{ steps.since-success.outputs.cursor || steps.since-success-default.outputs.cursor || 'false' }}
+      since_success_zed: ${{ steps.since-success.outputs.zed || steps.since-success-default.outputs.zed || 'false' }}
+      since_success_neovim: ${{ steps.since-success.outputs.neovim || steps.since-success-default.outputs.neovim || 'false' }}
+      since_success_ghostty: ${{ steps.since-success.outputs.ghostty || steps.since-success-default.outputs.ghostty || 'false' }}
+      since_success_colorloom: ${{ steps.since-success.outputs.colorloom || steps.since-success-default.outputs.colorloom || 'false' }}
+      force_all: ${{ steps.force-overrides.outputs.all || steps.force-defaults.outputs.all }}
+      force_website: ${{ steps.force-overrides.outputs.website || steps.force-defaults.outputs.website }}
+      force_cursor: ${{ steps.force-overrides.outputs.cursor || steps.force-defaults.outputs.cursor }}
+      force_zed: ${{ steps.force-overrides.outputs.zed || steps.force-defaults.outputs.zed }}
+      force_colorloom: ${{ steps.force-overrides.outputs.colorloom || steps.force-defaults.outputs.colorloom }}
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           fetch-tags: true
 
       - name: Detect changed paths
-        id: filter
+        id: changed
         uses: dorny/paths-filter@v3
         with:
           filters: |
@@ -47,66 +89,164 @@ jobs:
             colorloom:
               - 'tools/colorloom/**'
 
-      - name: Install mise
-        run: |
-          curl https://mise.run | sh
-          echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
+      - name: Find last successful publish run
+        id: last-success
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const {owner, repo} = context.repo;
+            const runs = await github.rest.actions.listWorkflowRuns({
+              owner,
+              repo,
+              workflow_id: context.workflow,
+              branch: 'main',
+              status: 'success',
+              per_page: 10
+            });
+            const lastRun = runs.data.workflow_runs.find(run => run.head_sha !== context.sha);
+            core.setOutput('sha', lastRun ? lastRun.head_sha : '');
 
-      - name: Install tool versions
-        run: mise install
+      - name: Detect paths since last success
+        if: steps.last-success.outputs.sha != ''
+        id: since-success
+        uses: dorny/paths-filter@v3
+        with:
+          base: ${{ steps.last-success.outputs.sha }}
+          filters: |
+            theme:
+              - 'theme.toml'
+            website:
+              - 'website/**'
+            cursor:
+              - 'cursor/**'
+            zed:
+              - 'zed/**'
+            neovim:
+              - 'neovim/**'
+            ghostty:
+              - 'ghostty/**'
+            colorloom:
+              - 'tools/colorloom/**'
+
+      - name: Default since-last-success outputs
+        if: steps.last-success.outputs.sha == ''
+        id: since-success-default
+        run: |
+          for target in theme website cursor zed neovim ghostty colorloom; do
+            echo "$target=false" >> "$GITHUB_OUTPUT"
+          done
+
+      - name: Default force overrides
+        id: force-defaults
+        run: |
+          for target in all website cursor zed colorloom; do
+            echo "$target=false" >> "$GITHUB_OUTPUT"
+          done
+
+      - name: Capture workflow_dispatch overrides
+        if: github.event_name == 'workflow_dispatch'
+        id: force-overrides
+        run: |
+          echo "all=${{ github.event.inputs.force_all == 'true' && 'true' || 'false' }}" >> "$GITHUB_OUTPUT"
+          echo "website=${{ github.event.inputs.force_website == 'true' && 'true' || 'false' }}" >> "$GITHUB_OUTPUT"
+          echo "cursor=${{ github.event.inputs.force_cursor == 'true' && 'true' || 'false' }}" >> "$GITHUB_OUTPUT"
+          echo "zed=${{ github.event.inputs.force_zed == 'true' && 'true' || 'false' }}" >> "$GITHUB_OUTPUT"
+          echo "colorloom=${{ github.event.inputs.force_colorloom == 'true' && 'true' || 'false' }}" >> "$GITHUB_OUTPUT"
+
+  website:
+    needs: detect-changes
+    runs-on: ubuntu-latest
+    if: |
+      needs.detect-changes.outputs.force_all == 'true' ||
+      needs.detect-changes.outputs.force_website == 'true' ||
+      needs.detect-changes.outputs.changed_website == 'true' ||
+      needs.detect-changes.outputs.since_success_website == 'true'
+    steps:
+      - uses: ./.github/actions/setup
 
       - name: Install website dependencies
-        if: steps.filter.outputs.website == 'true'
         run: mise run install
 
-      - name: Generate themes (colorloom)
+      - name: Generate themes
         run: mise run gen
 
       - name: Build website
-        if: steps.filter.outputs.website == 'true'
         run: mise run build:website
 
       - name: Upload website artifact
-        if: steps.filter.outputs.website == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: website-dist
           path: website/dist
 
+  deploy-website:
+    needs:
+      - detect-changes
+      - website
+    runs-on: ubuntu-latest
+    if: |
+      (needs.detect-changes.outputs.force_all == 'true' ||
+       needs.detect-changes.outputs.force_website == 'true' ||
+       needs.detect-changes.outputs.changed_website == 'true' ||
+       needs.detect-changes.outputs.since_success_website == 'true') &&
+      needs.website.result == 'success' &&
+      startsWith(github.ref, 'refs/heads/main')
+    steps:
+      - uses: ./.github/actions/setup
+
+      - name: Download website artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: website-dist
+          path: website/dist
+
+      - name: Deploy Website to Cloudflare Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [ -n "$CLOUDFLARE_API_TOKEN" ]; then
+            mise run deploy:cloudflare || echo "Cloudflare deploy failed"
+          else
+            echo "No CLOUDFLARE_API_TOKEN; skipping deploy"
+          fi
+
+  cursor:
+    needs: detect-changes
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.cursor-version.outputs.version }}
+    if: |
+      needs.detect-changes.outputs.force_all == 'true' ||
+      needs.detect-changes.outputs.force_cursor == 'true' ||
+      needs.detect-changes.outputs.changed_cursor == 'true' ||
+      needs.detect-changes.outputs.changed_theme == 'true' ||
+      needs.detect-changes.outputs.since_success_cursor == 'true' ||
+      needs.detect-changes.outputs.since_success_theme == 'true'
+    steps:
+      - uses: ./.github/actions/setup
+
+      - name: Generate themes
+        run: mise run gen
+
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
+      - name: Bump Cursor extension version
+        if: |
+          needs.detect-changes.outputs.changed_cursor == 'true' ||
+          needs.detect-changes.outputs.changed_theme == 'true' ||
+          needs.detect-changes.outputs.force_cursor == 'true' ||
+          needs.detect-changes.outputs.force_all == 'true'
+        run: |
+          jq '(.version) |= (split(".") | .[2] = ((.[2]|tonumber)+1 | tostring) | join("."))' cursor/package.json > cursor/package.tmp && mv cursor/package.tmp cursor/package.json
+
       - name: Publish VS Code / Cursor Extension
-        if: steps.filter.outputs.cursor == 'true' || steps.filter.outputs.theme == 'true'
         env:
           VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
           OVSX_PAT: ${{ secrets.OPEN_VSX_TOKEN }}
-        run: |
-          # Auto bump patch version
-          jq '(.version) |= (split(".") | .[2] = ((.[2]|tonumber)+1 | tostring) | join("."))' cursor/package.json > cursor/package.tmp && mv cursor/package.tmp cursor/package.json
-          mise run publish:cursor
+        run: mise run publish:cursor
 
-      - name: Compute Zed release version
-        id: zedver
-        run: |
-          VERSION=""
-          SOURCE=""
-          if [ "${{ steps.filter.outputs.cursor }}" = "true" ] || [ "${{ steps.filter.outputs.theme }}" = "true" ]; then
-            VERSION=$(jq -r '.version' cursor/package.json)
-            SOURCE="cursor"
-          elif [ "${{ steps.filter.outputs.zed }}" = "true" ]; then
-            CUR=$(grep '^version = "' extension.toml | sed -E 's/^version = "([^"]+)".*/\1/')
-            IFS='.' read -r MA MI PA <<< "$CUR"
-            PA=$((PA + 1))
-            VERSION="$MA.$MI.$PA"
-            # Update extension.toml with bumped version
-            sed -E -i "s/^version = \"[^\"]+\"/version = \"$VERSION\"/" extension.toml
-            SOURCE="zed"
-          fi
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "source=$SOURCE" >> $GITHUB_OUTPUT
-
-      - name: Commit version bump (if any)
+      - name: Commit Cursor version bump
         run: |
           if ! git diff --quiet cursor/package.json; then
             git config user.name "github-actions"
@@ -115,40 +255,92 @@ jobs:
             git commit -m "chore: bump cursor extension version" || true
             git push || echo "Push failed";
           fi
+
+      - name: Output Cursor version
+        id: cursor-version
+        run: |
+          VERSION=$(jq -r '.version' cursor/package.json)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+  zed:
+    needs:
+      - detect-changes
+      - cursor
+    runs-on: ubuntu-latest
+    if: |
+      (needs.detect-changes.outputs.force_all == 'true' ||
+       needs.detect-changes.outputs.force_zed == 'true' ||
+       needs.detect-changes.outputs.changed_zed == 'true' ||
+       needs.detect-changes.outputs.changed_theme == 'true' ||
+       needs.detect-changes.outputs.changed_cursor == 'true' ||
+       needs.detect-changes.outputs.since_success_zed == 'true' ||
+       needs.detect-changes.outputs.since_success_theme == 'true' ||
+       needs.detect-changes.outputs.since_success_cursor == 'true') &&
+      (needs.cursor.result == 'success' || needs.cursor.result == 'skipped')
+    steps:
+      - uses: ./.github/actions/setup
+
+      - name: Generate themes
+        run: mise run gen
+
+      - name: Determine Zed release version
+        id: zedver
+        env:
+          CURSOR_VERSION: ${{ needs.cursor.outputs.version }}
+          CHANGED_ZED: ${{ needs.detect-changes.outputs.changed_zed }}
+          SINCE_ZED: ${{ needs.detect-changes.outputs.since_success_zed }}
+          FORCE_ZED: ${{ needs.detect-changes.outputs.force_zed }}
+          FORCE_ALL: ${{ needs.detect-changes.outputs.force_all }}
+        run: |
+          VERSION=""
+          SOURCE=""
+          if [ -n "$CURSOR_VERSION" ]; then
+            VERSION="$CURSOR_VERSION"
+            SOURCE="cursor"
+          elif [ "$CHANGED_ZED" = "true" ]; then
+            CUR=$(grep '^version = "' extension.toml | sed -E 's/^version = "([^"]+)".*/\1/')
+            IFS='.' read -r MA MI PA <<< "$CUR"
+            PA=$((PA + 1))
+            VERSION="$MA.$MI.$PA"
+            sed -E -i "s/^version = \"[^\"]+\"/version = \"$VERSION\"/" extension.toml
+            SOURCE="zed"
+          elif [ "$SINCE_ZED" = "true" ] || [ "$FORCE_ZED" = "true" ] || [ "$FORCE_ALL" = "true" ]; then
+            VERSION=$(grep '^version = "' extension.toml | sed -E 's/^version = "([^"]+)".*/\1/')
+            SOURCE="zed"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "source=$SOURCE" >> "$GITHUB_OUTPUT"
+
+      - name: Commit Zed version bump
+        if: steps.zedver.outputs.version != ''
+        run: |
           if ! git diff --quiet extension.toml; then
             git config user.name "github-actions"
             git config user.email "github-actions@github.com"
             git add extension.toml
-            git commit -m "chore: sync Zed extension version to cursor" || true
+            git commit -m "chore: sync Zed extension version" || true
             git push || echo "Push failed";
           fi
 
       - name: Tag Zed extension release
-        if: steps.filter.outputs.zed == 'true' || steps.filter.outputs.cursor == 'true' || steps.filter.outputs.theme == 'true'
+        if: steps.zedver.outputs.version != ''
         run: |
-          VERSION="${{ steps.zedver.outputs.version }}"
-          if [ -z "$VERSION" ]; then
-            echo "No Zed-related changes; skipping tag"; exit 0;
-          fi
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git tag "v$VERSION" || echo "Tag exists"
-          git push origin "v$VERSION" || echo "Push tag failed"
+          git tag "v${{ steps.zedver.outputs.version }}" || echo "Tag exists"
+          git push origin "v${{ steps.zedver.outputs.version }}" || echo "Push tag failed"
 
       - name: Prepare Zed extension artifact
-        if: steps.filter.outputs.zed == 'true' || steps.filter.outputs.theme == 'true' || steps.filter.outputs.cursor == 'true'
+        if: steps.zedver.outputs.version != ''
         run: |
           VERSION="${{ steps.zedver.outputs.version }}"
-          if [ -z "$VERSION" ]; then echo "No version computed; skipping"; exit 0; fi
-          # If source is cursor/theme, sync extension.toml to cursor version
           if [ "${{ steps.zedver.outputs.source }}" = "cursor" ]; then
             sed -E -i "s/^version = \"[^\"]+\"/version = \"$VERSION\"/" extension.toml
           fi
-          # Package Zed extension contents
           zip -r "zed-extension-$VERSION.zip" extension.toml zed/themes || (sudo apt-get update && sudo apt-get install -y zip && zip -r "zed-extension-$VERSION.zip" extension.toml zed/themes)
 
       - name: Release Zed extension asset
-        if: steps.filter.outputs.zed == 'true' || steps.filter.outputs.theme == 'true' || steps.filter.outputs.cursor == 'true'
+        if: steps.zedver.outputs.version != ''
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ steps.zedver.outputs.version }}
@@ -156,7 +348,7 @@ jobs:
             zed-extension-${{ steps.zedver.outputs.version }}.zip
 
       - name: Check Zed extension configuration
-        if: steps.filter.outputs.zed == 'true' || steps.filter.outputs.cursor == 'true' || steps.filter.outputs.theme == 'true'
+        if: steps.zedver.outputs.version != ''
         run: |
           if [ -z "${{ vars.ZED_EXTENSIONS_FORK }}" ]; then
             echo "⚠️  Missing repo variable ZED_EXTENSIONS_FORK. Set it to your fork, e.g. 'mhamrah/extensions'.";
@@ -170,7 +362,7 @@ jobs:
           fi
 
       - name: Run Zed extension action
-        if: steps.filter.outputs.zed == 'true' || steps.filter.outputs.cursor == 'true' || steps.filter.outputs.theme == 'true'
+        if: steps.zedver.outputs.version != ''
         uses: huacnlee/zed-extension-action@v1
         with:
           extension-name: subliminal-nightfall
@@ -178,20 +370,18 @@ jobs:
         env:
           COMMITTER_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
 
-      - name: Deploy Website to Cloudflare Pages
-        if: steps.filter.outputs.website == 'true' && startsWith(github.ref, 'refs/heads/main')
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        run: |
-          if [ -n "$CLOUDFLARE_API_TOKEN" ]; then
-            mise run deploy:cloudflare || echo "Cloudflare deploy failed"
-          else
-            echo "No CLOUDFLARE_API_TOKEN; skipping deploy"
-          fi
-
+  colorloom:
+    needs: detect-changes
+    runs-on: ubuntu-latest
+    if: |
+      needs.detect-changes.outputs.force_all == 'true' ||
+      needs.detect-changes.outputs.force_colorloom == 'true' ||
+      needs.detect-changes.outputs.changed_colorloom == 'true' ||
+      needs.detect-changes.outputs.since_success_colorloom == 'true'
+    steps:
+      - uses: ./.github/actions/setup
 
       - name: Publish colorloom crate
-        if: steps.filter.outputs.colorloom == 'true'
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
         run: |

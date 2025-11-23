@@ -61,3 +61,4 @@ This icon will be used in:
 - Open VSX marketplace
 
 
+

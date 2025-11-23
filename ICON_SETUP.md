@@ -79,3 +79,4 @@ The icon matches the website's hero logo:
 - The icon design is consistent across website and extension
 
 
+
