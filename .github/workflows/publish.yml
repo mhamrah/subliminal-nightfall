@@ -95,8 +95,7 @@ jobs:
         with:
           script: |
             const {owner, repo} = context.repo;
-            const workflowRef = process.env.GITHUB_WORKFLOW_REF || '';
-            const workflowId = workflowRef.split('@')[0] || '.github/workflows/publish.yml';
+            const workflowId = '.github/workflows/publish.yml';
             const runs = await github.rest.actions.listWorkflowRuns({
               owner,
               repo,
