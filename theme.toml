@@ -65,7 +65,7 @@ alpha = 1.0
 
 [[variants]]
 name = "blurred"
-alpha = 0.80
+alpha = 0.75
 blur_radius = 12
 # Example overrides for blurred variant
 [variants.overrides.ui]

@@ -163,6 +163,9 @@ jobs:
       needs.detect-changes.outputs.changed_website == 'true' ||
       needs.detect-changes.outputs.since_success_website == 'true'
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - uses: ./.github/actions/setup
 
       - name: Install website dependencies
@@ -193,6 +196,9 @@ jobs:
       needs.website.result == 'success' &&
       startsWith(github.ref, 'refs/heads/main')
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - uses: ./.github/actions/setup
 
       - name: Download website artifact
@@ -224,6 +230,9 @@ jobs:
       needs.detect-changes.outputs.since_success_cursor == 'true' ||
       needs.detect-changes.outputs.since_success_theme == 'true'
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - uses: ./.github/actions/setup
 
       - name: Generate themes
@@ -279,6 +288,9 @@ jobs:
        needs.detect-changes.outputs.since_success_cursor == 'true') &&
       (needs.cursor.result == 'success' || needs.cursor.result == 'skipped')
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - uses: ./.github/actions/setup
 
       - name: Generate themes
@@ -380,6 +392,9 @@ jobs:
       needs.detect-changes.outputs.changed_colorloom == 'true' ||
       needs.detect-changes.outputs.since_success_colorloom == 'true'
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - uses: ./.github/actions/setup
 
       - name: Publish colorloom crate

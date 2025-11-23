@@ -26,7 +26,7 @@
     "terminal.ansiRed": "#bf616a",
     "terminal.ansiWhite": "#d4d4d4",
     "terminal.ansiYellow": "#ffe2a9",
-    "terminal.background": "#191724FF",
+    "terminal.background": "#191724",
     "terminal.foreground": "#e0def4"
   },
   "name": "Subliminal Nightfall",

@@ -5,7 +5,7 @@ vim.g.colors_name = 'Subliminal Nightfall (Blurred)'
 vim.o.background = 'dark'
 local c = {
   bg = '#1f1d2ecc', bg_alt = '#1f1d2e', fg = '#e0def4', fg_muted = '#a0a0a0', fg_dim = '#7f7f7f',
-  selection = '#484e5bCC', cursor = '#5fb3b3', line = '#2e3239CC',
+  selection = '#484e5bBF', cursor = '#5fb3b3', line = '#2e3239BF',
   red = '#bf616a', green = '#a9cfa4', yellow = '#ffe2a9', blue = '#6699cc', magenta = '#f1a5ab', cyan = '#5fb3b3', purple = '#c4a7e7', teal = '#9ccfd8', dark_blue = '#31748f'
 }
 local function hl(g, o) vim.api.nvim_set_hl(0, g, o) end

@@ -88,6 +88,13 @@ fn gen_ghostty(cfg: &Config, target: &crate::config::Target, root: &PathBuf) -> 
         out.push_str("cursor-text = #ffffff\n");
         out.push_str(&format!("selection-background = {}\n", strip_alpha(&ui.selection)));
         out.push_str("selection-foreground = #ffffff\n");
+        if let Some(alpha) = v.alpha {
+            if alpha < 1.0 {
+                out.push_str(&format!("background-opacity = {}\n", alpha));
+                out.push_str("background-blur = true\n");
+                out.push_str("window-decoration = true\n");
+            }
+        }
         fs::write(dir.join(name), out)?;
     }
     Ok(())
@@ -190,7 +197,7 @@ fn gen_cursor(cfg: &Config, target: &crate::config::Target, root: &PathBuf) -> R
                 "sideBar.background": cfg.palette.ui.background_alt,
                 "sideBar.foreground": cfg.palette.ui.foreground,
                 "sideBar.border": cfg.palette.border.border,
-                "terminal.background": ui.background,
+                "terminal.background": strip_alpha(&ui.background),
                 "terminal.foreground": ui.foreground,
                 "terminal.ansiBlack": cfg.palette.ui.foreground_dim,
                 "terminal.ansiRed": cfg.palette.base.ansi.red.base,

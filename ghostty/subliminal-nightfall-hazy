@@ -21,3 +21,6 @@ cursor-color = #5fb3b3
 cursor-text = #ffffff
 selection-background = #484e5b
 selection-foreground = #ffffff
+background-opacity = 0.85
+background-blur = true
+window-decoration = true
