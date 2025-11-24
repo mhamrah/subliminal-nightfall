@@ -73,6 +73,7 @@ jobs:
         id: changed
         uses: dorny/paths-filter@v3
         with:
+          base: HEAD~1
           filters: |
             theme:
               - 'theme.toml'

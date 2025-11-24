@@ -3,7 +3,7 @@
   "displayName": "Subliminal Nightfall",
   "publisher": "hamrahm",
   "version": "0.1.9",
-  "icon": "icon.png",
+  "icon": "icon.svg",
   "engines": {
     "vscode": ">=1.70.0"
   },
