@@ -380,6 +380,9 @@ jobs:
         with:
           extension-name: subliminal-nightfall
           push-to: ${{ vars.ZED_EXTENSIONS_FORK }}
+          tag: v${{ steps.zedver.outputs.version }}
+          commit-message: "Update subliminal-nightfall to v${{ steps.zedver.outputs.version }}"
+          release-notes: "https://github.com/${{ github.repository }}/releases/tag/v${{ steps.zedver.outputs.version }}"
         env:
           COMMITTER_TOKEN: ${{ secrets.ZED_COMMITTER_TOKEN }}
 
