@@ -368,8 +368,8 @@ jobs:
             echo "Skipping Zed extension release to extensions repo.";
             exit 0;
           fi
-          if [ -z "${{ secrets.COMMITTER_TOKEN }}" ]; then
-            echo "⚠️  Missing secret COMMITTER_TOKEN (requires repo + workflow scopes).";
+          if [ -z "${{ secrets.ZED_COMMITTER_TOKEN }}" ]; then
+            echo "⚠️  Missing secret ZED_COMMITTER_TOKEN (requires repo + workflow scopes).";
             echo "Skipping Zed extension release to extensions repo.";
             exit 0;
           fi
@@ -381,7 +381,7 @@ jobs:
           extension-name: subliminal-nightfall
           push-to: ${{ vars.ZED_EXTENSIONS_FORK }}
         env:
-          COMMITTER_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
+          COMMITTER_TOKEN: ${{ secrets.ZED_COMMITTER_TOKEN }}
 
   colorloom:
     needs: detect-changes
