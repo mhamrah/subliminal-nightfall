@@ -1,7 +1,8 @@
 id = "subliminal-nightfall"
 name = "Subliminal Nightfall"
-version = "0.1.2"
+version = "0.1.9"
 schema_version = 1
 authors = ["Mike Hamrah"]
 description = "Dark Subliminal-based theme with Rosé Pine-inspired accents for Rust, TypeScript, Go, Swift, and Python."
 repository = "https://github.com/mhamrah/subliminal-nightfall"
+icon = "extension/icon.png"
