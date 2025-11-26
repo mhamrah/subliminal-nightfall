@@ -40,7 +40,29 @@ permissions:
   actions: write
 
 jobs:
+  validate-versions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract and validate versions
+        run: |
+          ZED_VERSION=$(grep '^version = ' extension.toml | sed 's/version = "\(.*\)"/\1/')
+          CURSOR_VERSION=$(jq -r '.version' cursor/package.json)
+          
+          echo "Zed extension.toml version: $ZED_VERSION"
+          echo "Cursor package.json version: $CURSOR_VERSION"
+          
+          if [ "$ZED_VERSION" != "$CURSOR_VERSION" ]; then
+            echo "::error::Version mismatch detected!"
+            echo "::error::  extension.toml (Zed): $ZED_VERSION"
+            echo "::error::  cursor/package.json:  $CURSOR_VERSION"
+            exit 1
+          fi
+          echo "All versions match: $ZED_VERSION"
+
   detect-changes:
+    needs: validate-versions
     runs-on: ubuntu-latest
     outputs:
       changed_theme: ${{ steps.changed.outputs.theme }}
@@ -211,11 +233,11 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
-          if [ -n "$CLOUDFLARE_API_TOKEN" ]; then
-            mise run deploy:cloudflare || echo "Cloudflare deploy failed"
-          else
-            echo "No CLOUDFLARE_API_TOKEN; skipping deploy"
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "::error::CLOUDFLARE_API_TOKEN secret is not set"
+            exit 1
           fi
+          mise run deploy:cloudflare
 
   cursor:
     needs: detect-changes
@@ -380,9 +402,8 @@ jobs:
         with:
           extension-name: subliminal-nightfall
           push-to: ${{ vars.ZED_EXTENSIONS_FORK }}
-          tag: v${{ steps.zedver.outputs.version }}
-          commit-message: "Update subliminal-nightfall to v${{ steps.zedver.outputs.version }}"
-          release-notes: "https://github.com/${{ github.repository }}/releases/tag/v${{ steps.zedver.outputs.version }}"
+          tag-name: v${{ steps.zedver.outputs.version }}
+          commit-message: "Update subliminal-nightfall to v${{ steps.zedver.outputs.version }}\n\nRelease notes: https://github.com/${{ github.repository }}/releases/tag/v${{ steps.zedver.outputs.version }}"
         env:
           COMMITTER_TOKEN: ${{ secrets.ZED_COMMITTER_TOKEN }}
 

@@ -1,0 +1,62 @@
+name: Validate Versions
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-versions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract versions from files
+        id: versions
+        run: |
+          # Extract version from extension.toml (Zed)
+          ZED_VERSION=$(grep '^version = ' extension.toml | sed 's/version = "\(.*\)"/\1/')
+          echo "zed_version=$ZED_VERSION" >> $GITHUB_OUTPUT
+          
+          # Extract version from cursor/package.json
+          CURSOR_VERSION=$(jq -r '.version' cursor/package.json)
+          echo "cursor_version=$CURSOR_VERSION" >> $GITHUB_OUTPUT
+          
+          echo "Zed extension.toml version: $ZED_VERSION"
+          echo "Cursor package.json version: $CURSOR_VERSION"
+
+      - name: Validate versions match
+        run: |
+          ZED_VERSION="${{ steps.versions.outputs.zed_version }}"
+          CURSOR_VERSION="${{ steps.versions.outputs.cursor_version }}"
+          
+          if [ "$ZED_VERSION" != "$CURSOR_VERSION" ]; then
+            echo "::error::Version mismatch detected!"
+            echo "::error::  extension.toml (Zed): $ZED_VERSION"
+            echo "::error::  cursor/package.json:  $CURSOR_VERSION"
+            echo ""
+            echo "All version files must have the same version."
+            exit 1
+          fi
+          
+          echo "✓ All versions match: $ZED_VERSION"
+
+      - name: Validate tag matches version (on tag push)
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          TAG_VERSION="${GITHUB_REF#refs/tags/v}"
+          FILE_VERSION="${{ steps.versions.outputs.zed_version }}"
+          
+          if [ "$TAG_VERSION" != "$FILE_VERSION" ]; then
+            echo "::error::Tag version does not match file versions!"
+            echo "::error::  Git tag:      v$TAG_VERSION"
+            echo "::error::  File version: $FILE_VERSION"
+            echo ""
+            echo "The git tag must match the version in extension.toml and package.json."
+            echo "Please update the version files before tagging, or delete and recreate the tag."
+            exit 1
+          fi
+          
+          echo "✓ Tag v$TAG_VERSION matches file version $FILE_VERSION"
