@@ -245,12 +245,13 @@ jobs:
     outputs:
       version: ${{ steps.cursor-version.outputs.version }}
     if: |
-      needs.detect-changes.outputs.force_all == 'true' ||
-      needs.detect-changes.outputs.force_cursor == 'true' ||
-      needs.detect-changes.outputs.changed_cursor == 'true' ||
-      needs.detect-changes.outputs.changed_theme == 'true' ||
-      needs.detect-changes.outputs.since_success_cursor == 'true' ||
-      needs.detect-changes.outputs.since_success_theme == 'true'
+      (needs.detect-changes.outputs.force_all == 'true' ||
+       needs.detect-changes.outputs.force_cursor == 'true' ||
+       needs.detect-changes.outputs.changed_cursor == 'true' ||
+       needs.detect-changes.outputs.changed_theme == 'true' ||
+       needs.detect-changes.outputs.since_success_cursor == 'true' ||
+       needs.detect-changes.outputs.since_success_theme == 'true') &&
+      needs.detect-changes.outputs.force_website != 'true'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -308,7 +309,8 @@ jobs:
        needs.detect-changes.outputs.since_success_zed == 'true' ||
        needs.detect-changes.outputs.since_success_theme == 'true' ||
        needs.detect-changes.outputs.since_success_cursor == 'true') &&
-      (needs.cursor.result == 'success' || needs.cursor.result == 'skipped')
+      (needs.cursor.result == 'success' || needs.cursor.result == 'skipped') &&
+      needs.detect-changes.outputs.force_website != 'true'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -411,10 +413,11 @@ jobs:
     needs: detect-changes
     runs-on: ubuntu-latest
     if: |
-      needs.detect-changes.outputs.force_all == 'true' ||
-      needs.detect-changes.outputs.force_colorloom == 'true' ||
-      needs.detect-changes.outputs.changed_colorloom == 'true' ||
-      needs.detect-changes.outputs.since_success_colorloom == 'true'
+      (needs.detect-changes.outputs.force_all == 'true' ||
+       needs.detect-changes.outputs.force_colorloom == 'true' ||
+       needs.detect-changes.outputs.changed_colorloom == 'true' ||
+       needs.detect-changes.outputs.since_success_colorloom == 'true') &&
+      needs.detect-changes.outputs.force_website != 'true'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
