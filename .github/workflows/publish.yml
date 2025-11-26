@@ -265,11 +265,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y jq
 
       - name: Bump Cursor extension version
-        if: |
-          needs.detect-changes.outputs.changed_cursor == 'true' ||
-          needs.detect-changes.outputs.changed_theme == 'true' ||
-          needs.detect-changes.outputs.force_cursor == 'true' ||
-          needs.detect-changes.outputs.force_all == 'true'
+        if: needs.detect-changes.outputs.changed_theme == 'true'
         run: |
           jq '(.version) |= (split(".") | .[2] = ((.[2]|tonumber)+1 | tostring) | join("."))' cursor/package.json > cursor/package.tmp && mv cursor/package.tmp cursor/package.json
 
@@ -324,24 +320,24 @@ jobs:
         id: zedver
         env:
           CURSOR_VERSION: ${{ needs.cursor.outputs.version }}
-          CHANGED_ZED: ${{ needs.detect-changes.outputs.changed_zed }}
-          SINCE_ZED: ${{ needs.detect-changes.outputs.since_success_zed }}
-          FORCE_ZED: ${{ needs.detect-changes.outputs.force_zed }}
-          FORCE_ALL: ${{ needs.detect-changes.outputs.force_all }}
+          CHANGED_THEME: ${{ needs.detect-changes.outputs.changed_theme }}
         run: |
           VERSION=""
           SOURCE=""
           if [ -n "$CURSOR_VERSION" ]; then
+            # Use cursor version (only set when theme.toml changed)
             VERSION="$CURSOR_VERSION"
             SOURCE="cursor"
-          elif [ "$CHANGED_ZED" = "true" ]; then
+          elif [ "$CHANGED_THEME" = "true" ]; then
+            # Theme changed but cursor didn't run - bump zed version
             CUR=$(grep '^version = "' extension.toml | sed -E 's/^version = "([^"]+)".*/\1/')
             IFS='.' read -r MA MI PA <<< "$CUR"
             PA=$((PA + 1))
             VERSION="$MA.$MI.$PA"
             sed -E -i "s/^version = \"[^\"]+\"/version = \"$VERSION\"/" extension.toml
             SOURCE="zed"
-          elif [ "$SINCE_ZED" = "true" ] || [ "$FORCE_ZED" = "true" ] || [ "$FORCE_ALL" = "true" ]; then
+          else
+            # No theme change - use current version without bumping
             VERSION=$(grep '^version = "' extension.toml | sed -E 's/^version = "([^"]+)".*/\1/')
             SOURCE="zed"
           fi
