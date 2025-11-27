@@ -1,0 +1,446 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+const features = [
+    { icon: "📄", title: "Single Source of Truth", desc: "Define colors once in theme.toml, generate for all platforms" },
+    { icon: "🎨", title: "Variant Support", desc: "Automatically generates base, hazy (75%), and cloudy (90%) variants" },
+    { icon: "✨", title: "Blur Effects", desc: "Full support for Zed's background.appearance: \"blurred\"" },
+    { icon: "🎯", title: "Comprehensive Coverage", desc: "100+ color settings per target for complete UI theming" },
+];
+
+const targets = [
+    { name: "Zed", output: "Single JSON with all variants", variants: "base, hazy, cloudy", icon: "⚡" },
+    { name: "VS Code / Cursor", output: "Separate JSON per variant", variants: "base, hazy, cloudy", icon: "📝" },
+    { name: "Neovim", output: "Lua colorscheme files", variants: "base, hazy, cloudy", icon: "🌙" },
+    { name: "Ghostty", output: "Terminal palette files", variants: "base, hazy, cloudy", icon: "👻" },
+    { name: "Website", output: "JSON for web showcase", variants: "palette data", icon: "🌐" },
+];
+
+const variants = [
+    { name: "Base", alpha: "100%", editorBg: "Opaque (#191724FF)", appearance: "opaque" },
+    { name: "Hazy", alpha: "75%", editorBg: "Transparent (#19172400)", appearance: "blurred" },
+    { name: "Cloudy", alpha: "90%", editorBg: "Transparent (#19172400)", appearance: "blurred" },
+];
+
+const configExample = `version = "1"
+
+[meta]
+name = "Subliminal Nightfall"
+author = "Michael Hamrah"
+description = "A dark color scheme with purple-black backgrounds"
+license = "MIT"
+
+# ANSI terminal colors with base/bright/dim variants
+[palette.base.ansi.red]
+base = "#bf616a"
+bright = "#e2848d"
+dim = "#85434a"
+
+[palette.base.ansi.green]
+base = "#a9cfa4"
+bright = "#ccf2c7"
+dim = "#769072"
+
+# Syntax highlighting colors
+[palette.syntax]
+teal = "#9ccfd8"
+blue_green = "#31748f"
+lavender = "#c4a7e7"
+gray = "#7f7f7f"
+
+# UI colors
+[palette.ui]
+background = "#191724"
+background_alt = "#1f1d2e"
+background_elevated = "#26233a"
+foreground = "#e0def4"
+foreground_muted = "#a0a0a0"
+foreground_dim = "#7f7f7f"
+selection = "#484e5b"
+cursor = "#5fb3b3"
+line_highlight = "#2e3239bf"
+
+# Border colors
+[palette.border]
+border = "#484e5b"
+border_variant = "#363b45"
+border_focused = "#6699cc"
+border_selected = "#5fb3b3"
+
+# Theme variants
+[[variants]]
+name = "base"
+alpha = 1.0
+
+[[variants]]
+name = "hazy"
+alpha = 0.75
+blur_radius = 20
+
+[[variants]]
+name = "cloudy"
+alpha = 0.90
+blur_radius = 12
+
+# Target configurations
+[[targets]]
+id = "zed"
+enabled = true
+path = "zed/themes"
+out_file = "subliminal-nightfall.json"
+
+[[targets]]
+id = "cursor"
+enabled = true
+path = "cursor/themes"
+out_names = { 
+  base = "subliminal-nightfall-color-theme.json",
+  hazy = "subliminal-nightfall-color-theme-hazy.json",
+  cloudy = "subliminal-nightfall-color-theme-cloudy.json"
+}`;
+---
+
+<Layout title="ColorLoom - Theme Generator | Subliminal Nightfall">
+    <Header />
+
+    <!-- Hero Section -->
+    <section class="container mx-auto px-4 pt-20 pb-16">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="inline-flex items-center justify-center w-20 h-20 mb-6 rounded-2xl bg-gradient-to-br from-sn-cyan via-sn-blue to-sn-magenta">
+                <span class="text-sn-bg font-bold text-3xl">CL</span>
+            </div>
+
+            <h1 class="text-5xl md:text-6xl font-bold text-sn-fg mb-6">
+                ColorLoom
+            </h1>
+
+            <p class="text-xl text-sn-fg-muted mb-8 max-w-2xl mx-auto">
+                A powerful Rust CLI for generating consistent color themes across multiple editors and terminals from a single <code class="text-sn-cyan bg-sn-bg-alt px-2 py-1 rounded">theme.toml</code> configuration.
+            </p>
+
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a
+                    href="https://crates.io/crates/colorloom"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center px-6 py-3 bg-sn-cyan hover:bg-sn-cyan-bright text-sn-bg rounded-lg font-semibold transition-all duration-200"
+                >
+                    <svg class="w-5 h-5 mr-2" viewBox="0 0 512 512" fill="currentColor">
+                        <path d="M239.1 6.3l-208 78c-18.7 7-31.1 25-31.1 45v225.1c0 18.2 10.3 34.8 26.5 42.9l208 104c13.5 6.8 29.4 6.8 42.9 0l208-104c16.3-8.1 26.5-24.8 26.5-42.9V129.3c0-20-12.4-37.9-31.1-44.9l-208-78C262.9 2.2 249.1 2.2 239.1 6.3zM256 68.4l192 72v1.1l-192 78-192-78v-1.1l192-72zm32 356V275.5l160-65v133.9l-160 80z"/>
+                    </svg>
+                    View on crates.io
+                </a>
+                <a
+                    href="https://github.com/mhamrah/subliminal-nightfall/tree/main/tools/colorloom"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center px-6 py-3 bg-sn-bg-alt hover:bg-sn-bg-elevated text-sn-fg border border-sn-border hover:border-sn-cyan rounded-lg font-semibold transition-all duration-200"
+                >
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path>
+                    </svg>
+                    View Source
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="container mx-auto px-4 py-16">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold text-sn-fg text-center mb-12">Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {features.map((feature) => (
+                    <div class="bg-sn-box border border-sn-border rounded-lg p-6 hover:border-sn-cyan transition-colors">
+                        <div class="flex items-start space-x-4">
+                            <span class="text-3xl">{feature.icon}</span>
+                            <div>
+                                <h3 class="text-lg font-semibold text-sn-fg mb-2">{feature.title}</h3>
+                                <p class="text-sn-fg-muted">{feature.desc}</p>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation -->
+    <section id="installation" class="container mx-auto px-4 py-16">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-sn-fg text-center mb-12">Installation</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-sn-box border border-sn-border rounded-lg overflow-hidden">
+                    <div class="px-4 py-3 bg-sn-bg-alt border-b border-sn-border">
+                        <h3 class="text-lg font-semibold text-sn-fg">From crates.io</h3>
+                    </div>
+                    <div class="p-4">
+                        <pre class="bg-sn-bg rounded p-4 overflow-x-auto"><code class="text-sm font-mono text-sn-fg">cargo install colorloom</code></pre>
+                    </div>
+                </div>
+
+                <div class="bg-sn-box border border-sn-border rounded-lg overflow-hidden">
+                    <div class="px-4 py-3 bg-sn-bg-alt border-b border-sn-border">
+                        <h3 class="text-lg font-semibold text-sn-fg">From source</h3>
+                    </div>
+                    <div class="p-4">
+                        <pre class="bg-sn-bg rounded p-4 overflow-x-auto"><code class="text-sm font-mono text-sn-fg">cd tools/colorloom
+cargo install --path .</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Usage -->
+    <section id="usage" class="container mx-auto px-4 py-16">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-sn-fg text-center mb-12">Usage</h2>
+            
+            <div class="bg-sn-box border border-sn-border rounded-lg overflow-hidden">
+                <div class="flex items-center px-4 py-3 bg-sn-bg-alt border-b border-sn-border">
+                    <div class="flex space-x-1.5">
+                        <div class="w-3 h-3 rounded-full bg-sn-red"></div>
+                        <div class="w-3 h-3 rounded-full bg-sn-yellow"></div>
+                        <div class="w-3 h-3 rounded-full bg-sn-green"></div>
+                    </div>
+                    <span class="text-sm text-sn-fg-muted ml-4 font-mono">Terminal</span>
+                </div>
+                <div class="p-6 font-mono text-sm space-y-4">
+                    <div>
+                        <span class="text-sn-fg-muted"># Generate all themes (default command)</span>
+                        <div class="text-sn-fg">$ <span class="text-sn-cyan">colorloom</span> generate</div>
+                    </div>
+                    <div>
+                        <span class="text-sn-fg-muted"># Validate configuration</span>
+                        <div class="text-sn-fg">$ <span class="text-sn-cyan">colorloom</span> validate</div>
+                    </div>
+                    <div>
+                        <span class="text-sn-fg-muted"># List targets and variants</span>
+                        <div class="text-sn-fg">$ <span class="text-sn-cyan">colorloom</span> list</div>
+                    </div>
+                    <div>
+                        <span class="text-sn-fg-muted"># Use custom config file</span>
+                        <div class="text-sn-fg">$ <span class="text-sn-cyan">colorloom</span> -c custom-theme.toml generate</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Supported Targets -->
+    <section id="targets" class="container mx-auto px-4 py-16">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold text-sn-fg text-center mb-12">Supported Targets</h2>
+            
+            <div class="bg-sn-box border border-sn-border rounded-lg overflow-hidden">
+                <table class="w-full text-left">
+                    <thead class="bg-sn-bg-alt border-b border-sn-border">
+                        <tr>
+                            <th class="px-6 py-4 text-sm font-semibold text-sn-fg">Target</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-sn-fg">Output</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-sn-fg">Variants</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {targets.map((target, index) => (
+                            <tr class={index !== targets.length - 1 ? "border-b border-sn-border" : ""}>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xl">{target.icon}</span>
+                                        <span class="text-sn-fg font-medium">{target.name}</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sn-fg-muted">{target.output}</td>
+                                <td class="px-6 py-4">
+                                    <code class="text-sm text-sn-cyan font-mono">{target.variants}</code>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Transparency & Blur -->
+    <section id="transparency" class="container mx-auto px-4 py-16">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold text-sn-fg text-center mb-4">Transparency & Blur</h2>
+            <p class="text-sn-fg-muted text-center mb-12 max-w-2xl mx-auto">
+                ColorLoom automatically handles transparency for blur-enabled variants, creating a seamless experience across Zed's blurred window modes.
+            </p>
+            
+            <div class="bg-sn-box border border-sn-border rounded-lg overflow-hidden">
+                <table class="w-full text-left">
+                    <thead class="bg-sn-bg-alt border-b border-sn-border">
+                        <tr>
+                            <th class="px-6 py-4 text-sm font-semibold text-sn-fg">Variant</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-sn-fg">Alpha</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-sn-fg">Editor Background</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-sn-fg">Appearance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {variants.map((variant, index) => (
+                            <tr class={index !== variants.length - 1 ? "border-b border-sn-border" : ""}>
+                                <td class="px-6 py-4 text-sn-fg font-medium">{variant.name}</td>
+                                <td class="px-6 py-4 text-sn-fg-muted">{variant.alpha}</td>
+                                <td class="px-6 py-4">
+                                    <code class="text-xs text-sn-lavender font-mono bg-sn-bg px-2 py-1 rounded">{variant.editorBg}</code>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${variant.appearance === 'blurred' ? 'bg-sn-cyan/20 text-sn-cyan' : 'bg-sn-fg-dim/20 text-sn-fg-muted'}`}>
+                                        {variant.appearance}
+                                    </span>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-sn-box border border-sn-border rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-sn-fg mb-3">For Blurred Variants</h3>
+                    <ul class="space-y-2 text-sn-fg-muted text-sm">
+                        <li class="flex items-start">
+                            <span class="text-sn-cyan mr-2">•</span>
+                            Editor and gutter backgrounds are fully transparent (<code class="text-sn-lavender">00</code>) to show blur
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-sn-cyan mr-2">•</span>
+                            Surfaces and panels use variant alpha for layering
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-sn-cyan mr-2">•</span>
+                            Tabs and toolbars use reduced opacity for subtle differentiation
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-sn-box border border-sn-border rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-sn-fg mb-3">Zed Integration</h3>
+                    <ul class="space-y-2 text-sn-fg-muted text-sm">
+                        <li class="flex items-start">
+                            <span class="text-sn-cyan mr-2">•</span>
+                            Sets <code class="text-sn-lavender">background.appearance: "blurred"</code>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-sn-cyan mr-2">•</span>
+                            Works with macOS window vibrancy
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-sn-cyan mr-2">•</span>
+                            Graceful fallback on unsupported platforms
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Configuration -->
+    <section id="configuration" class="container mx-auto px-4 py-16">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold text-sn-fg text-center mb-4">Configuration</h2>
+            <p class="text-sn-fg-muted text-center mb-12 max-w-2xl mx-auto">
+                ColorLoom reads from <code class="text-sn-cyan">theme.toml</code> in the current directory. Here's an example configuration:
+            </p>
+            
+            <div class="bg-sn-box border border-sn-border rounded-lg overflow-hidden">
+                <div class="flex items-center justify-between px-4 py-3 bg-sn-bg-alt border-b border-sn-border">
+                    <div class="flex items-center">
+                        <div class="flex space-x-1.5">
+                            <div class="w-3 h-3 rounded-full bg-sn-red"></div>
+                            <div class="w-3 h-3 rounded-full bg-sn-yellow"></div>
+                            <div class="w-3 h-3 rounded-full bg-sn-green"></div>
+                        </div>
+                        <span class="text-sm text-sn-fg-muted ml-4 font-mono">theme.toml</span>
+                    </div>
+                </div>
+                <div class="p-4 overflow-x-auto max-h-[600px] overflow-y-auto">
+                    <pre class="text-xs font-mono"><code class="language-toml text-sn-fg">{configExample}</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture -->
+    <section id="architecture" class="container mx-auto px-4 py-16">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-sn-fg text-center mb-12">Architecture</h2>
+            
+            <div class="bg-sn-box border border-sn-border rounded-lg overflow-hidden">
+                <div class="px-4 py-3 bg-sn-bg-alt border-b border-sn-border">
+                    <span class="text-sm text-sn-fg-muted font-mono">Project Structure</span>
+                </div>
+                <div class="p-6">
+                    <pre class="text-sm font-mono text-sn-fg"><code>colorloom/
+├── src/
+│   ├── <span class="text-sn-cyan">main.rs</span>      <span class="text-sn-fg-muted"># CLI entry point</span>
+│   ├── <span class="text-sn-cyan">config.rs</span>    <span class="text-sn-fg-muted"># TOML configuration types</span>
+│   └── <span class="text-sn-cyan">targets.rs</span>   <span class="text-sn-fg-muted"># Theme generators per target</span>
+├── Cargo.toml
+└── README.md</code></pre>
+                </div>
+            </div>
+
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-sn-box border border-sn-border rounded-lg p-6 text-center">
+                    <div class="text-3xl mb-3">📄</div>
+                    <h3 class="text-lg font-semibold text-sn-fg mb-2">main.rs</h3>
+                    <p class="text-sm text-sn-fg-muted">CLI parsing with clap, command routing</p>
+                </div>
+                <div class="bg-sn-box border border-sn-border rounded-lg p-6 text-center">
+                    <div class="text-3xl mb-3">⚙️</div>
+                    <h3 class="text-lg font-semibold text-sn-fg mb-2">config.rs</h3>
+                    <p class="text-sm text-sn-fg-muted">Serde structs for theme.toml parsing</p>
+                </div>
+                <div class="bg-sn-box border border-sn-border rounded-lg p-6 text-center">
+                    <div class="text-3xl mb-3">🎨</div>
+                    <h3 class="text-lg font-semibold text-sn-fg mb-2">targets.rs</h3>
+                    <p class="text-sm text-sn-fg-muted">Platform-specific theme generators</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="container mx-auto px-4 py-16">
+        <div class="max-w-4xl mx-auto bg-gradient-to-br from-sn-blue-green/20 to-sn-cyan/20 border border-sn-cyan/50 rounded-2xl p-12 text-center">
+            <h2 class="text-3xl font-bold text-sn-fg mb-4">
+                Ready to generate your themes?
+            </h2>
+            <p class="text-lg text-sn-fg-muted mb-8">
+                Install ColorLoom and start creating consistent themes across all your editors.
+            </p>
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a
+                    href="https://crates.io/crates/colorloom"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center px-8 py-4 bg-sn-cyan hover:bg-sn-cyan-bright text-sn-bg rounded-lg font-semibold transition-all duration-200"
+                >
+                    Install from crates.io
+                </a>
+                <a
+                    href="/"
+                    class="inline-flex items-center px-8 py-4 bg-sn-bg-alt hover:bg-sn-bg-elevated text-sn-fg border border-sn-border hover:border-sn-cyan rounded-lg font-semibold transition-all duration-200"
+                >
+                    ← Back to Theme
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <Footer />
+</Layout>
+
+<style>
+    section[id] {
+        scroll-margin-top: 80px;
+    }
+</style>

@@ -3,7 +3,7 @@
   "displayName": "Subliminal Nightfall",
   "publisher": "hamrahm",
   "version": "0.1.11",
-  "icon": "icon.svg",
+  "icon": "icon.png",
   "engines": {
     "vscode": ">=1.70.0"
   },
@@ -31,6 +31,16 @@
         "label": "Subliminal Nightfall",
         "uiTheme": "vs-dark",
         "path": "./themes/subliminal-nightfall-color-theme.json"
+      },
+      {
+        "label": "Subliminal Nightfall (Hazy)",
+        "uiTheme": "vs-dark",
+        "path": "./themes/subliminal-nightfall-color-theme-hazy.json"
+      },
+      {
+        "label": "Subliminal Nightfall (Cloudy)",
+        "uiTheme": "vs-dark",
+        "path": "./themes/subliminal-nightfall-color-theme-cloudy.json"
       }
     ]
   }

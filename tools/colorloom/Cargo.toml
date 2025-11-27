@@ -2,10 +2,15 @@
 name = "colorloom"
 version = "0.1.1"
 edition = "2021"
-description = "A theme generator for creating Subliminal Nightfall color schemes."
+description = "A powerful Rust CLI for generating consistent color themes across multiple editors and terminals from a single TOML configuration."
 authors = ["Michael Hamrah"]
 license = "MIT"
 repository = "https://github.com/mhamrah/subliminal-nightfall"
+homepage = "https://subliminal-nightfall.hamrah.com/colorloom"
+documentation = "https://subliminal-nightfall.hamrah.com/colorloom"
+readme = "README.md"
+keywords = ["theme", "colorscheme", "zed", "neovim", "vscode"]
+categories = ["command-line-utilities", "development-tools"]
 
 [dependencies]
 anyhow = "1"

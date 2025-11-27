@@ -5,7 +5,6 @@ import Footer from "../components/Footer.astro";
 import ColorPalette from "../components/ColorPalette.astro";
 import CodePreview from "../components/CodePreview.astro";
 import Installation from "../components/Installation.astro";
-import ColorLoomShowcase from "../components/ColorLoomShowcase.astro";
 ---
 
 <Layout title="Subliminal Nightfall - Dark Color Scheme">
@@ -32,10 +31,10 @@ import ColorLoomShowcase from "../components/ColorLoomShowcase.astro";
                     >deep purple-black</span
                 > backgrounds with <span class="text-sn-cyan"
                     >carefully calibrated</span
-                > accent colors for multiple editors and terminals, including refined
-                <span class="text-sn-blue">Blurred (≈80%)</span> and
-                <span class="text-sn-magenta">Hazy (≈85%)</span> Zed variants featuring
-                a darker code pane and distinct gutter separation for clarity.
+                > accent colors for multiple editors and terminals, including
+                <span class="text-sn-blue">Hazy (75%)</span> and
+                <span class="text-sn-magenta">Cloudy (90%)</span> Zed variants with
+                window blur effects for a refined transparent experience.
             </p>
 
             <div class="flex flex-wrap gap-4 justify-center mb-16">
@@ -136,9 +135,8 @@ import ColorLoomShowcase from "../components/ColorLoomShowcase.astro";
                         Multi-Platform
                     </h3>
                     <p class="text-sm text-sn-fg-muted">
-                        Available for VS Code, Neovim, Zed (with refined Blurred
-                        ≈80% and Hazy ≈85% variants featuring distinct code pane
-                        & gutter separation), and Ghostty terminal
+                        Available for VS Code, Neovim, Zed (with Hazy 75% and Cloudy
+                        90% blur variants), and Ghostty terminal
                     </p>
                 </div>
 
@@ -209,7 +207,25 @@ import ColorLoomShowcase from "../components/ColorLoomShowcase.astro";
     <CodePreview />
 
     <!-- ColorLoom Showcase Section -->
-    <ColorLoomShowcase />
+    <section id="colorloom-teaser" class="container mx-auto px-4 py-20">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl font-bold text-sn-fg mb-4">Built with ColorLoom</h2>
+            <p class="text-sn-fg-muted text-lg mb-8 max-w-2xl mx-auto">
+                All themes are generated from a single <code class="text-sn-cyan">theme.toml</code> configuration using ColorLoom, our powerful Rust CLI tool.
+            </p>
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a
+                    href="/colorloom"
+                    class="inline-flex items-center px-6 py-3 bg-sn-cyan hover:bg-sn-cyan-bright text-sn-bg rounded-lg font-semibold transition-all duration-200"
+                >
+                    Learn More About ColorLoom
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
 
     <!-- Installation Section -->
     <Installation />

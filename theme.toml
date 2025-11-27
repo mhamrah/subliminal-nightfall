@@ -64,26 +64,20 @@ name = "base"
 alpha = 1.0
 
 [[variants]]
-name = "blurred"
+name = "hazy"
 alpha = 0.75
-blur_radius = 12
-# Example overrides for blurred variant
-[variants.overrides.ui]
-background = "#1f1d2ecc"
+blur_radius = 20
 
 [[variants]]
-name = "hazy"
-alpha = 0.85
-blur_radius = 20
-# Example overrides for hazy variant
-[variants.overrides.ui]
-background = "#1f1d2ed9"
+name = "cloudy"
+alpha = 0.90
+blur_radius = 12
 
 [[targets]]
 id = "ghostty"
 enabled = true
 path = "ghostty"
-out_names = { base = "subliminal-nightfall", blurred = "subliminal-nightfall-blurred", hazy = "subliminal-nightfall-hazy" }
+out_names = { base = "subliminal-nightfall", hazy = "subliminal-nightfall-hazy", cloudy = "subliminal-nightfall-cloudy" }
 
 [[targets]]
 id = "zed"
@@ -96,13 +90,13 @@ out_file = "subliminal-nightfall.json"
 id = "cursor"
 enabled = true
 path = "cursor/themes"
-out_names = { base = "subliminal-nightfall-color-theme.json", blurred = "subliminal-nightfall-color-theme-blurred.json", hazy = "subliminal-nightfall-color-theme-hazy.json" }
+out_names = { base = "subliminal-nightfall-color-theme.json", hazy = "subliminal-nightfall-color-theme-hazy.json", cloudy = "subliminal-nightfall-color-theme-cloudy.json" }
 
 [[targets]]
 id = "neovim"
 enabled = true
 path = "neovim/colors"
-out_names = { base = "subliminal-nightfall.lua", blurred = "subliminal-nightfall-blurred.lua", hazy = "subliminal-nightfall-hazy.lua" }
+out_names = { base = "subliminal-nightfall.lua", hazy = "subliminal-nightfall-hazy.lua", cloudy = "subliminal-nightfall-cloudy.lua" }
 
 [[targets]]
 id = "website"

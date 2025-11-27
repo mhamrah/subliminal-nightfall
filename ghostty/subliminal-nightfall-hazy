@@ -15,12 +15,12 @@ palette = 12=#89bcef
 palette = 13=#ffc8ce
 palette = 14=#82d6d6
 palette = 15=#ffffff
-background = #1f1d2e
+background = #191724
 foreground = #e0def4
 cursor-color = #5fb3b3
 cursor-text = #ffffff
 selection-background = #484e5b
 selection-foreground = #ffffff
-background-opacity = 0.85
+background-opacity = 0.75
 background-blur = true
 window-decoration = true

@@ -28,9 +28,9 @@ code --install-extension hamrahm.subliminal-nightfall
 5. Select theme: `theme selector: toggle` → Subliminal Nightfall
 
 **Theme Variants:**
-- **Subliminal Nightfall** - Standard opaque theme
-- **Subliminal Nightfall Blurred** - Transparent blurred variant at ~80% opacity; editor uses a darker code pane and a distinct gutter background for clarity
-- **Subliminal Nightfall Hazy** - Higher-opacity blurred variant (≈85% opacity); editor uses a darker code pane and a distinct gutter background for enhanced separation
+- **Subliminal Nightfall** - Standard opaque theme (100% opacity)
+- **Subliminal Nightfall Hazy** - Transparent blurred variant (75% opacity) with window blur effect
+- **Subliminal Nightfall Cloudy** - Semi-transparent blurred variant (90% opacity) for subtle blur
 
 Or install as dev extension:
 ```bash
@@ -134,11 +134,18 @@ Subliminal Nightfall is designed for extended coding sessions with:
 
 ### Theme Variants
 
-**Subliminal Nightfall Hazy** (Zed only) offers a transparent, blurred experience:
-- Background blur effects that integrate with your desktop
-- ≈85% opacity with a darker code pane and a distinct gutter background for improved readability
-- All UI surfaces (editor, panels, toolbar, terminal) support transparency
-- Maintains full syntax color readability despite transparency
+**Subliminal Nightfall Hazy** and **Cloudy** (Zed only) offer transparent, blurred experiences:
+
+| Variant | Opacity | Best For |
+|---------|---------|----------|
+| **Hazy** | 75% | Maximum blur effect, desktop integration |
+| **Cloudy** | 90% | Subtle transparency, enhanced readability |
+
+Both variants feature:
+- Background blur effects that integrate with your desktop (`background.appearance: "blurred"`)
+- Fully transparent editor backgrounds to show blur through
+- Semi-transparent panels, sidebars, and status bars with subtle variance
+- Full syntax color readability despite transparency
 - Perfect for those who prefer a less visually heavy workspace
 
 ## Repository Overview
@@ -147,6 +154,7 @@ This is a monorepo containing themes for multiple platforms:
 
 ```
 subliminal-nightfall/
+├── tools/colorloom/    # Rust theme generator CLI
 ├── packages/
 │   ├── core/           # Color definitions (TypeScript)
 │   └── website/        # Showcase site (Astro)
@@ -154,10 +162,58 @@ subliminal-nightfall/
 ├── cursor/             # VS Code/Cursor extension
 ├── neovim/             # Neovim colorscheme
 ├── ghostty/            # Ghostty terminal theme
+├── theme.toml          # Single source of truth for colors
 └── themes/             # Symlink to zed/themes/ (for Zed extension)
 ```
 
 **Note**: The `themes/` directory is a symlink to `zed/themes/` to satisfy Zed's extension requirements while keeping the repository organized.
+
+## ColorLoom Theme Generator
+
+[ColorLoom](./tools/colorloom) is a powerful Rust CLI tool that generates all theme files from a single `theme.toml` configuration.
+
+### Quick Start
+
+```bash
+# Install (from source)
+cd tools/colorloom && cargo install --path .
+
+# Generate all themes
+colorloom generate
+
+# Validate configuration
+colorloom validate
+
+# List targets and variants
+colorloom list
+```
+
+### Features
+
+- **Single Source of Truth**: Define colors once in `theme.toml`, generate for all platforms
+- **Variant Support**: Automatically generates base, hazy (75%), and cloudy (90%) variants
+- **Blur Effects**: Full support for Zed's `background.appearance: "blurred"`
+- **Comprehensive Coverage**: 100+ color settings per target for complete UI theming
+
+### Supported Targets
+
+| Target | Output | Variants |
+|--------|--------|----------|
+| **Zed** | Single JSON with all variants | base, hazy, cloudy |
+| **VS Code/Cursor** | Separate JSON per variant | base, hazy, cloudy |
+| **Neovim** | Lua colorscheme files | base, hazy, cloudy |
+| **Ghostty** | Terminal palette files | base, hazy, cloudy |
+| **Website** | JSON for web showcase | palette data |
+
+### Transparency Levels
+
+| Variant | Alpha | Editor BG | Appearance |
+|---------|-------|-----------|------------|
+| Base | 100% | Opaque | `opaque` |
+| Hazy | 75% | Transparent | `blurred` |
+| Cloudy | 90% | Transparent | `blurred` |
+
+For detailed documentation, see the [ColorLoom README](./tools/colorloom/README.md).
 
 ## Contributing
 
@@ -293,7 +349,7 @@ mise run install         # install Node deps
 mise run gen             # generate all theme artifacts
 mise run dev             # start website with generated palette
 ```
-Edit colors / variants (base, blurred, hazy) in `theme.toml`, then re-run `mise run gen`.
+Edit colors / variants (base, hazy, cloudy) in `theme.toml`, then re-run `mise run gen`.
 
 Legacy TS palette (`packages/core/src/colors.ts`) will be aligned to consume `theme.toml`; prefer editing the TOML.
 
