@@ -2,16 +2,16 @@ name: Publish Themes and Website
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - 'theme.toml'
-      - 'packages/core/**'
-      - 'website/**'
-      - 'cursor/**'
-      - 'zed/**'
-      - 'ghostty/**'
-      - 'neovim/**'
-      - 'tools/colorloom/**'
+      - "theme.toml"
+      - "packages/core/**"
+      - "website/**"
+      - "cursor/**"
+      - "zed/**"
+      - "ghostty/**"
+      - "neovim/**"
+      - "tools/colorloom/**"
   workflow_dispatch:
     inputs:
       force_all:
@@ -49,10 +49,10 @@ jobs:
         run: |
           ZED_VERSION=$(grep '^version = ' extension.toml | sed 's/version = "\(.*\)"/\1/')
           CURSOR_VERSION=$(jq -r '.version' cursor/package.json)
-          
+
           echo "Zed extension.toml version: $ZED_VERSION"
           echo "Cursor package.json version: $CURSOR_VERSION"
-          
+
           if [ "$ZED_VERSION" != "$CURSOR_VERSION" ]; then
             echo "::error::Version mismatch detected!"
             echo "::error::  extension.toml (Zed): $ZED_VERSION"
@@ -119,15 +119,15 @@ jobs:
           IFS='.' read -r MA MI PA <<< "$CUR"
           PA=$((PA + 1))
           NEW_VERSION="$MA.$MI.$PA"
-          
+
           echo "Bumping version from $CUR to $NEW_VERSION"
-          
+
           # Update extension.toml
           sed -E -i "s/^version = \"[^\"]+\"/version = \"$NEW_VERSION\"/" extension.toml
-          
+
           # Update cursor/package.json
           jq ".version = \"$NEW_VERSION\"" cursor/package.json > cursor/package.tmp && mv cursor/package.tmp cursor/package.json
-          
+
           echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Commit version bump
@@ -199,6 +199,7 @@ jobs:
       - name: Deploy Website to Cloudflare Pages
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
             echo "::error::CLOUDFLARE_API_TOKEN secret is not set"
