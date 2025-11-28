@@ -92,6 +92,8 @@ pub struct Variant {
     #[serde(default)]
     pub blur_radius: Option<u32>,
     #[serde(default)]
+    pub appearance: Option<String>,
+    #[serde(default)]
     pub overrides: Option<Overrides>,
 }
 
@@ -125,7 +127,9 @@ pub struct Target {
     pub out_names: Option<std::collections::HashMap<String, String>>, // variant -> filename
 }
 
-fn default_true() -> bool { true }
+fn default_true() -> bool {
+    true
+}
 
 impl Config {
     pub fn variant_names(&self) -> Vec<String> {

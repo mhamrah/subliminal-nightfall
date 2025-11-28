@@ -73,6 +73,11 @@ name = "cloudy"
 alpha = 0.90
 blur_radius = 12
 
+[[variants]]
+name = "clear"
+alpha = 0.90
+appearance = "transparent"
+
 [[targets]]
 id = "ghostty"
 enabled = true
