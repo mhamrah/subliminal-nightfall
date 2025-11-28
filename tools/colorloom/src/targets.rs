@@ -34,12 +34,29 @@ fn player_entry(color: &str) -> Value {
     })
 }
 
+#[derive(Clone)]
+struct BlurLayers {
+    surface: String,
+    elevated: String,
+    panel: String,
+    overlay: String,
+    toolbar: String,
+    soft: String,
+    status: String,
+    terminal: String,
+    inactive_title: String,
+}
+
 fn syntax_entry(color: &str, font_style: Option<&str>, font_weight: Option<u32>) -> Value {
-    json!({
-        "color": color,
-        "font_style": font_style,
-        "font_weight": font_weight
-    })
+    let mut map = Map::new();
+    map.insert("color".into(), Value::String(color.to_string()));
+    if let Some(style) = font_style {
+        map.insert("font_style".into(), Value::String(style.to_string()));
+    }
+    if let Some(weight) = font_weight {
+        map.insert("font_weight".into(), json!(weight));
+    }
+    Value::Object(map)
 }
 
 fn ui_with_variant(cfg: &Config, variant: &Variant) -> crate::config::UiPalette {
@@ -218,12 +235,10 @@ fn gen_zed(cfg: &Config, target: &crate::config::Target, root: &PathBuf) -> Resu
             other => format!("{} {}", cfg.meta.name, capitalize(other)),
         };
         let style = build_zed_style(cfg, v, &ui);
-        let syntax = build_zed_syntax(cfg, &ui);
         themes.push(json!({
             "name": title,
             "appearance": "dark",
-            "style": style,
-            "syntax": syntax
+            "style": style
         }));
     }
     let root_obj = json!({
@@ -250,60 +265,65 @@ fn build_zed_style(cfg: &Config, variant: &Variant, ui: &crate::config::UiPalett
         }
     });
     let uses_tiers = alpha < 1.0 || appearance == "transparent";
+    let tint_alpha = match variant.name.as_str() {
+        "cloudy" => 0xD9 as f32 / 255.0,
+        "hazy" => 0xB3 as f32 / 255.0,
+        _ => alpha,
+    };
     let background_alpha = if uses_tiers {
-        alpha.clamp(0.65, 0.95)
+        tint_alpha.clamp(0.65, 0.95)
     } else {
         1.0
     };
     let surface_alpha = if uses_tiers {
-        (alpha * 0.9).clamp(0.5, 0.95)
+        (tint_alpha * 0.9).clamp(0.5, 0.95)
     } else {
         1.0
     };
     let elevated_alpha = if uses_tiers {
-        (alpha * 1.05).clamp(0.6, 1.0)
+        (tint_alpha * 1.05).clamp(0.6, 1.0)
     } else {
         1.0
     };
     let panel_alpha = if uses_tiers {
-        (alpha * 0.85).clamp(0.45, 0.92)
+        (tint_alpha * 0.85).clamp(0.45, 0.92)
     } else {
         1.0
     };
     let overlay_alpha = if uses_tiers {
-        (alpha * 0.95).clamp(0.55, 1.0)
+        (tint_alpha * 0.95).clamp(0.55, 1.0)
     } else {
         1.0
     };
     let subtle_alpha = if uses_tiers {
-        (alpha * 0.6).clamp(0.3, 0.85)
+        (tint_alpha * 0.6).clamp(0.3, 0.85)
     } else {
         0.65
     };
     let ghost_alpha = if uses_tiers {
-        (alpha * 0.35).clamp(0.2, 0.65)
+        (tint_alpha * 0.35).clamp(0.2, 0.65)
     } else {
         0.35
     };
     let tab_active_alpha = if uses_tiers {
-        (alpha * 0.55).clamp(0.35, 0.85)
+        (tint_alpha * 0.55).clamp(0.35, 0.85)
     } else {
         0.5
     };
     let tab_inactive_alpha = if uses_tiers {
-        (alpha * 0.35).clamp(0.2, 0.7)
+        (tint_alpha * 0.35).clamp(0.2, 0.7)
     } else {
         0.5
     };
     let track_alpha = if uses_tiers {
-        (alpha * 0.25).clamp(0.15, 0.45)
+        (tint_alpha * 0.25).clamp(0.15, 0.45)
     } else {
         0.3
     };
     let status_alpha = if uses_tiers { 0.18 } else { 0.24 };
-    let accent_alpha = if alpha <= 0.78 {
+    let accent_alpha = if tint_alpha <= 0.78 {
         0.45
-    } else if alpha < 0.95 {
+    } else if tint_alpha < 0.95 {
         0.6
     } else {
         0.72
@@ -318,26 +338,90 @@ fn build_zed_style(cfg: &Config, variant: &Variant, ui: &crate::config::UiPalett
     let border_variant = strip_alpha(&cfg.palette.border.border_variant);
     let border_selected = strip_alpha(&cfg.palette.border.border_selected);
 
-    let background = apply_alpha(&base_bg, background_alpha);
-    let surface = apply_alpha(&alt_bg, surface_alpha);
-    let elevated_surface = apply_alpha(&elevated_bg, elevated_alpha);
-    let panel_background = apply_alpha(&alt_bg, panel_alpha);
-    let overlay_background = apply_alpha(&elevated_bg, overlay_alpha);
-    let toolbar_background = apply_alpha(&alt_bg, subtle_alpha);
-    let tab_bar_background = apply_alpha(&alt_bg, tab_inactive_alpha);
-    let tab_inactive_background = tab_bar_background.clone();
-    let tab_active_background = apply_alpha(&base_bg, tab_active_alpha);
+    let blur_layers = if uses_tiers {
+        let tint = |mult: f32, min_v: f32, max_v: f32| -> String {
+            apply_alpha(&base_bg, (tint_alpha * mult).clamp(min_v, max_v))
+        };
+        Some(BlurLayers {
+            surface: tint(1.05, 0.55, 0.98),
+            elevated: tint(1.25, 0.6, 1.0),
+            panel: tint(0.92, 0.45, 0.95),
+            overlay: tint(1.35, 0.7, 1.0),
+            toolbar: tint(0.65, 0.35, 0.88),
+            soft: tint(0.5, 0.25, 0.8),
+            status: tint(1.05, 0.55, 0.98),
+            terminal: tint(0.9, 0.45, 0.95),
+            inactive_title: tint(0.6, 0.35, 0.85),
+        })
+    } else {
+        None
+    };
+
+    let mut background = apply_alpha(&base_bg, background_alpha);
+    let surface = blur_layers
+        .as_ref()
+        .map(|layers| layers.surface.clone())
+        .unwrap_or_else(|| apply_alpha(&alt_bg, surface_alpha));
+    let mut elevated_surface = blur_layers
+        .as_ref()
+        .map(|layers| layers.elevated.clone())
+        .unwrap_or_else(|| apply_alpha(&elevated_bg, elevated_alpha));
+    let mut panel_background = blur_layers
+        .as_ref()
+        .map(|layers| layers.panel.clone())
+        .unwrap_or_else(|| apply_alpha(&alt_bg, panel_alpha));
+    let overlay_background = blur_layers
+        .as_ref()
+        .map(|layers| layers.overlay.clone())
+        .unwrap_or_else(|| apply_alpha(&elevated_bg, overlay_alpha));
+    let mut toolbar_background = blur_layers
+        .as_ref()
+        .map(|layers| layers.toolbar.clone())
+        .unwrap_or_else(|| apply_alpha(&alt_bg, subtle_alpha));
+    let mut tab_bar_background = blur_layers
+        .as_ref()
+        .map(|layers| layers.soft.clone())
+        .unwrap_or_else(|| apply_alpha(&alt_bg, tab_inactive_alpha));
+    let mut tab_inactive_background = tab_bar_background.clone();
+    let mut tab_active_background = blur_layers
+        .as_ref()
+        .map(|layers| layers.surface.clone())
+        .unwrap_or_else(|| apply_alpha(&base_bg, tab_active_alpha));
     let scrollbar_track = apply_alpha(&alt_bg, track_alpha);
-    let element_background = apply_alpha(&alt_bg, (subtle_alpha + 0.1).min(1.0));
-    let element_hover = apply_alpha(&elevated_bg, (subtle_alpha + 0.2).min(1.0));
+    let mut element_background = if uses_tiers {
+        apply_alpha(&base_bg, (tint_alpha * 0.78).clamp(0.45, 0.98))
+    } else {
+        apply_alpha(&alt_bg, (subtle_alpha + 0.1).min(1.0))
+    };
+    let element_hover = if uses_tiers {
+        apply_alpha(&base_bg, (tint_alpha * 0.95).clamp(0.55, 1.0))
+    } else {
+        apply_alpha(&elevated_bg, (subtle_alpha + 0.2).min(1.0))
+    };
     let element_active = apply_alpha(&selection, 0.85);
     let element_selected = apply_alpha(&selection, 0.8);
-    let element_disabled = apply_alpha(&alt_bg, (subtle_alpha * 0.6).max(0.2));
-    let ghost_background = apply_alpha(&alt_bg, ghost_alpha);
-    let ghost_hover = apply_alpha(&alt_bg, (ghost_alpha + 0.15).min(0.75));
+    let element_disabled = if uses_tiers {
+        apply_alpha(&base_bg, (tint_alpha * 0.35).clamp(0.2, 0.65))
+    } else {
+        apply_alpha(&alt_bg, (subtle_alpha * 0.6).max(0.2))
+    };
+    let mut ghost_background = if uses_tiers {
+        apply_alpha(&base_bg, (tint_alpha * 0.4).clamp(0.2, 0.75))
+    } else {
+        apply_alpha(&alt_bg, ghost_alpha)
+    };
+    let ghost_hover = if uses_tiers {
+        apply_alpha(&base_bg, (tint_alpha * 0.5).clamp(0.25, 0.85))
+    } else {
+        apply_alpha(&alt_bg, (ghost_alpha + 0.15).min(0.75))
+    };
     let ghost_active = apply_alpha(&selection, 0.6);
     let ghost_selected = apply_alpha(&selection, 0.7);
-    let ghost_disabled = apply_alpha(&alt_bg, (ghost_alpha * 0.5).max(0.15));
+    let ghost_disabled = if uses_tiers {
+        apply_alpha(&base_bg, (tint_alpha * 0.22).clamp(0.15, 0.55))
+    } else {
+        apply_alpha(&alt_bg, (ghost_alpha * 0.5).max(0.15))
+    };
     let drop_target = shaded(&cfg.palette.base.ansi.blue.base, 0.35);
     let panel_indent = apply_alpha(&border_variant, 0.65);
     let pane_group_border = apply_alpha(&border_variant, 0.45);
@@ -345,23 +429,39 @@ fn build_zed_style(cfg: &Config, variant: &Variant, ui: &crate::config::UiPalett
     let minimap_thumb = apply_alpha(&border_base, 0.35);
     let minimap_thumb_hover = shaded(&cfg.palette.base.ansi.magenta.base, 0.45);
     let minimap_thumb_active = shaded(&cfg.palette.base.ansi.magenta.base, 0.65);
-    let editor_background = if uses_tiers {
-        apply_alpha(&base_bg, (alpha * 0.45).clamp(0.3, 0.8))
+    let mut editor_background = if uses_tiers {
+        apply_alpha(&base_bg, (tint_alpha * 0.45).clamp(0.3, 0.8))
     } else {
         apply_alpha(&base_bg, 1.0)
     };
-    let editor_gutter = editor_background.clone();
-    let editor_active_line = apply_alpha(&highlight, (alpha * 0.8).clamp(0.35, 1.0));
+    let mut editor_gutter = editor_background.clone();
+    let mut editor_active_line = apply_alpha(&highlight, (tint_alpha * 0.8).clamp(0.35, 1.0));
     let inline_highlight = shaded(&cfg.palette.base.ansi.blue.base, 0.12);
     let doc_highlight_bracket = shaded(&cfg.palette.base.ansi.magenta.base, 0.15);
     let doc_highlight_read = shaded(&cfg.palette.base.ansi.blue.base, 0.2);
     let doc_highlight_write = shaded(&cfg.palette.base.ansi.cyan.base, 0.25);
     let editor_selection = apply_alpha(&selection, 0.9);
     let search_background = shaded(&cfg.palette.base.ansi.yellow.base, 0.2);
-    let hidden_background = apply_alpha(&alt_bg, (subtle_alpha * 0.8).max(0.25));
-    let ignored_background = apply_alpha(&alt_bg, (subtle_alpha * 0.6).max(0.2));
-    let hint_background = apply_alpha(&elevated_bg, (subtle_alpha * 0.9).max(0.35));
-    let predictive_background = apply_alpha(&elevated_bg, 0.45);
+    let hidden_background = if uses_tiers {
+        apply_alpha(&base_bg, (tint_alpha * 0.35).clamp(0.2, 0.65))
+    } else {
+        apply_alpha(&alt_bg, (subtle_alpha * 0.8).max(0.25))
+    };
+    let ignored_background = if uses_tiers {
+        apply_alpha(&base_bg, (tint_alpha * 0.28).clamp(0.2, 0.6))
+    } else {
+        apply_alpha(&alt_bg, (subtle_alpha * 0.6).max(0.2))
+    };
+    let hint_background = if uses_tiers {
+        apply_alpha(&base_bg, (tint_alpha * 0.55).clamp(0.3, 0.85))
+    } else {
+        apply_alpha(&elevated_bg, (subtle_alpha * 0.9).max(0.35))
+    };
+    let predictive_background = if uses_tiers {
+        apply_alpha(&base_bg, (tint_alpha * 0.5).clamp(0.3, 0.85))
+    } else {
+        apply_alpha(&elevated_bg, 0.45)
+    };
     let renamed_background = shaded(&cfg.palette.base.ansi.blue.base, status_alpha);
     let info_background = shaded(&cfg.palette.base.ansi.blue.base, status_alpha);
     let success_background = shaded(&cfg.palette.base.ansi.green.base, status_alpha);
@@ -372,12 +472,65 @@ fn build_zed_style(cfg: &Config, variant: &Variant, ui: &crate::config::UiPalett
     let modified_background = shaded(&cfg.palette.base.ansi.yellow.base, status_alpha);
     let deleted_background = shaded(&cfg.palette.base.ansi.red.base, status_alpha);
     let conflict_background = shaded(&cfg.palette.base.ansi.magenta.base, status_alpha);
-    let status_bar_background = surface.clone();
-    let title_bar_background = surface.clone();
-    let title_bar_inactive = apply_alpha(&alt_bg, (surface_alpha * 0.9).clamp(0.4, 0.95));
-    let terminal_background = panel_background.clone();
-    let terminal_ansi_background = panel_background.clone();
+    let status_bar_background = blur_layers
+        .as_ref()
+        .map(|layers| layers.status.clone())
+        .unwrap_or_else(|| surface.clone());
+    let title_bar_background = blur_layers
+        .as_ref()
+        .map(|layers| layers.status.clone())
+        .unwrap_or_else(|| surface.clone());
+    let title_bar_inactive = blur_layers
+        .as_ref()
+        .map(|layers| layers.inactive_title.clone())
+        .unwrap_or_else(|| apply_alpha(&alt_bg, (surface_alpha * 0.9).clamp(0.4, 0.95)));
+    let mut terminal_background = blur_layers
+        .as_ref()
+        .map(|layers| layers.terminal.clone())
+        .unwrap_or_else(|| panel_background.clone());
+    let mut terminal_ansi_background = blur_layers
+        .as_ref()
+        .map(|layers| layers.terminal.clone())
+        .unwrap_or_else(|| panel_background.clone());
     let debugger_active_line = shaded(&cfg.palette.base.ansi.yellow.base, 0.15);
+
+    let variant_name = variant.name.as_str();
+    if matches!(variant_name, "cloudy" | "hazy" | "clear") {
+        let base_override = match variant_name {
+            "cloudy" => Some(0xD9 as f32 / 255.0),
+            "hazy" => Some(0xB3 as f32 / 255.0),
+            _ => None,
+        };
+        if let Some(alpha_override) = base_override {
+            background = apply_alpha(&base_bg, alpha_override);
+        }
+        let gutter_alpha = 0x22 as f32 / 255.0;
+        let tab_bar_alpha = 0x11 as f32 / 255.0;
+        let tab_inactive_alpha_override = 0x22 as f32 / 255.0;
+        let tab_active_override = 0x80 as f32 / 255.0;
+        let terminal_alpha = if variant_name == "clear" {
+            0.0
+        } else {
+            0x22 as f32 / 255.0
+        };
+        let toolbar_alpha = 0x1A as f32 / 255.0;
+        editor_background = apply_alpha(&base_bg, 0.0);
+        editor_gutter = apply_alpha(&base_bg, gutter_alpha);
+        tab_bar_background = apply_alpha(&base_bg, tab_bar_alpha);
+        tab_inactive_background = apply_alpha(&base_bg, tab_inactive_alpha_override);
+        tab_active_background = apply_alpha(&base_bg, tab_active_override);
+        editor_active_line = apply_alpha(&highlight, 0xDD as f32 / 255.0);
+        panel_background = apply_alpha(&base_bg, 0.0);
+        toolbar_background = apply_alpha(&base_bg, toolbar_alpha);
+        terminal_background = apply_alpha(&base_bg, terminal_alpha);
+        terminal_ansi_background = terminal_background.clone();
+        let element_alpha = 0x22 as f32 / 255.0;
+        let elevated_alpha = 0x44 as f32 / 255.0;
+        let ghost_alpha_override = 0x11 as f32 / 255.0;
+        element_background = apply_alpha(&base_bg, element_alpha);
+        elevated_surface = apply_alpha(&base_bg, elevated_alpha);
+        ghost_background = apply_alpha(&base_bg, ghost_alpha_override);
+    }
 
     let accent_sources = vec![
         cfg.palette.base.ansi.blue.base.as_str(),
@@ -805,7 +958,7 @@ fn build_zed_style(cfg: &Config, variant: &Variant, ui: &crate::config::UiPalett
         Value::String(apply_alpha(
             &border_base,
             if uses_tiers {
-                (alpha * 0.6).clamp(0.35, 0.85)
+                (tint_alpha * 0.6).clamp(0.35, 0.85)
             } else {
                 0.8
             },
@@ -824,7 +977,7 @@ fn build_zed_style(cfg: &Config, variant: &Variant, ui: &crate::config::UiPalett
         Value::String(apply_alpha(
             &border_selected,
             if uses_tiers {
-                (alpha * 0.85).clamp(0.5, 1.0)
+                (tint_alpha * 0.85).clamp(0.5, 1.0)
             } else {
                 1.0
             },
@@ -994,6 +1147,7 @@ fn build_zed_style(cfg: &Config, variant: &Variant, ui: &crate::config::UiPalett
         "vim.replace.background".into(),
         Value::String(cfg.palette.base.ansi.red.base.clone()),
     );
+    style.insert("syntax".into(), build_zed_syntax(cfg, ui));
 
     Value::Object(style)
 }
