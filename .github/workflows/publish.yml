@@ -11,7 +11,6 @@ on:
       - "zed/**"
       - "ghostty/**"
       - "neovim/**"
-      - "tools/colorloom/**"
   workflow_dispatch:
     inputs:
       force_all:
@@ -297,12 +296,12 @@ jobs:
           if [ -z "${{ vars.ZED_EXTENSIONS_FORK }}" ]; then
             echo "⚠️  Missing repo variable ZED_EXTENSIONS_FORK. Set it to your fork, e.g. 'mhamrah/extensions'.";
             echo "Skipping Zed extension release to extensions repo.";
-            exit 0;
+            exit 1;
           fi
           if [ -z "${{ secrets.ZED_COMMITTER_TOKEN }}" ]; then
             echo "⚠️  Missing secret ZED_COMMITTER_TOKEN (requires repo + workflow scopes).";
             echo "Skipping Zed extension release to extensions repo.";
-            exit 0;
+            exit 1;
           fi
 
       - name: Run Zed extension action

@@ -1,0 +1,38 @@
+name: Autoupdate colorloom version
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "tools/colorloom/**"
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Bump version
+        id: bump
+        run: |
+          # Get current version from Cargo.toml
+          CUR=$(grep '^version = "' tools/colorloom/Cargo.toml | sed -E 's/^version = "([^"]+)".*/\1/')
+          IFS='.' read -r MA MI PA <<< "$CUR"
+          PA=$((PA + 1))
+          NEW_VERSION="$MA.$MI.$PA"
+
+          echo "Bumping version from $CUR to $NEW_VERSION"
+
+          # Update Cargo.toml
+          sed -E -i "s/^version = \"[^\" ]+\"/version = \"$NEW_VERSION\"/" tools/colorloom/Cargo.toml
+
+          echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Commit version bump
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add tools/colorloom/Cargo.toml
+          git commit -m "chore(colorloom): bump version to ${{ steps.bump.outputs.version }}"
+          git push
