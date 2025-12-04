@@ -68,50 +68,26 @@ export function initHeroAnimations(): () => void {
   }
 
   // Staggered text reveals (simplified on mobile)
-  const title = document.querySelector('#home h1');
+  const title = document.querySelector('#hero-title');
   if (title) {
-    const isMobile = window.innerWidth < 768;
+    const tl = gsap.timeline();
 
-    if (isMobile) {
-      // Simple fade-in on mobile
-      gsap.fromTo(
-        title,
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          delay: 0.3,
-        }
-      );
-    } else {
-      const titleText = title.textContent?.trim() || '';
-      // Split text into characters but preserve spaces
-      const chars = titleText.split('');
+    // Stage 1: Fade in text as white
+    tl.fromTo(title,
+        { opacity: 0, color: '#e0def4' },
+        { opacity: 1, duration: 1, ease: 'power2.out' }
+    );
 
-      title.innerHTML = chars.map((char, i) => {
-        if (char === ' ') {
-          return ' ';
-        }
-        return `<span class="hero-char" style="display: inline-block; opacity: 0;">${char}</span>`;
-      }).join('');
-
-      const charElements = title.querySelectorAll('.hero-char');
-      gsap.fromTo(
-        charElements,
-        { opacity: 0, y: 50, rotationX: -90 },
-        {
-          opacity: 1,
-          y: 0,
-          rotationX: 0,
-          duration: 0.8,
-          ease: 'back.out(1.7)',
-          stagger: 0.03,
-          delay: 0.3,
-        }
-      );
-    }
+    // Stage 2: Animate to gradient
+    tl.to(title, {
+        duration: 2,
+        backgroundImage: 'linear-gradient(90deg, #5fb3b3, #6699cc, #c4a7e7, #f1a5ab)',
+        backgroundSize: '100% 100%',
+        webkitBackgroundClip: 'text',
+        backgroundClip: 'text',
+        color: 'transparent',
+        ease: 'power2.inOut',
+    }, '+=0.5'); // Start 0.5s after the fade-in completes
   }
 
   // Subtitle animation

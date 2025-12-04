@@ -1,6 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import ColorPalette from "../components/ColorPalette.astro";
 import CodePreview from "../components/CodePreview.astro";
@@ -8,7 +7,6 @@ import Installation from "../components/Installation.astro";
 ---
 
 <Layout title="Subliminal Nightfall - Dark Color Scheme">
-    <Header />
 
     <!-- Hero Section -->
     <section id="home" class="container mx-auto px-4 pt-20 pb-32">
@@ -20,7 +18,7 @@ import Installation from "../components/Installation.astro";
                 <span class="text-sn-bg font-bold text-4xl">SN</span>
             </div>
 
-            <h1 class="text-5xl md:text-7xl font-bold text-sn-fg mb-6">
+            <h1 id="hero-title" class="text-5xl md:text-7xl font-bold text-sn-fg mb-6">
                 Subliminal Nightfall
             </h1>
 

@@ -64,11 +64,33 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: #1a1a2e; /* Fallback color */
     background-image:
-        radial-gradient(at 20% 30%, rgba(95, 179, 179, 0.08) 0px, transparent 50%),
-        radial-gradient(at 80% 60%, rgba(102, 153, 204, 0.08) 0px, transparent 50%),
-        radial-gradient(at 50% 80%, rgba(196, 167, 231, 0.05) 0px, transparent 50%);
-    background-attachment: fixed;
+        radial-gradient(at 27% 37%, hsla(0,0%,100%,0.1) 0px, transparent 50%),
+        radial-gradient(at 73% 63%, hsla(0,0%,100%,0.08) 0px, transparent 50%),
+        radial-gradient(at 10% 90%, hsla(0,0%,100%,0.05) 0px, transparent 50%),
+        radial-gradient(at 90% 10%, hsla(0,0%,100%,0.08) 0px, transparent 50%),
+        radial-gradient(at 50% 50%, hsla(0,0%,100%,0.1) 0px, transparent 50%);
+    background-size: 400% 400%;
+    animation: gradient-animation 15s ease infinite;
+}
+
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 0%;
+    }
+    25% {
+        background-position: 100% 0%;
+    }
+    50% {
+        background-position: 100% 100%;
+    }
+    75% {
+        background-position: 0% 100%;
+    }
+    100% {
+        background-position: 0% 0%;
+    }
 }
 
 code {
