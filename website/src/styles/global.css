@@ -66,13 +66,13 @@ body {
     -moz-osx-font-smoothing: grayscale;
     background-color: #1a1a2e; /* Fallback color */
     background-image:
-        radial-gradient(at 27% 37%, hsla(0,0%,100%,0.1) 0px, transparent 50%),
-        radial-gradient(at 73% 63%, hsla(0,0%,100%,0.08) 0px, transparent 50%),
-        radial-gradient(at 10% 90%, hsla(0,0%,100%,0.05) 0px, transparent 50%),
-        radial-gradient(at 90% 10%, hsla(0,0%,100%,0.08) 0px, transparent 50%),
-        radial-gradient(at 50% 50%, hsla(0,0%,100%,0.1) 0px, transparent 50%);
-    background-size: 400% 400%;
-    animation: gradient-animation 15s ease infinite;
+        radial-gradient(at 27% 37%, hsla(0,0%,100%,0.15) 0px, transparent 50%),
+        radial-gradient(at 73% 63%, hsla(0,0%,100%,0.12) 0px, transparent 50%),
+        radial-gradient(at 10% 90%, hsla(0,0%,100%,0.1) 0px, transparent 50%),
+        radial-gradient(at 90% 10%, hsla(0,0%,100%,0.12) 0px, transparent 50%),
+        radial-gradient(at 50% 50%, hsla(0,0%,100%,0.15) 0px, transparent 50%);
+    background-size: 800% 800%; /* Increased size */
+    animation: gradient-animation 60s ease infinite; /* Slower animation */
 }
 
 @keyframes gradient-animation {
