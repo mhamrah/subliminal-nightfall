@@ -82,10 +82,11 @@ export function initHeroAnimations(): () => void {
   const title = document.querySelector('#hero-title');
   if (title) {
     const isMobile = window.innerWidth < 768;
+    const tl = gsap.timeline({ delay: 0.5 }); // Overall delay for the title animation
 
     if (isMobile) {
       // Simple fade-in on mobile
-      gsap.fromTo(
+      tl.fromTo(
         title,
         { opacity: 0, y: 20, color: '#e0def4' },
         {
@@ -93,78 +94,81 @@ export function initHeroAnimations(): () => void {
           y: 0,
           duration: 0.8,
           ease: 'power3.out',
-          delay: 0.3,
         }
       );
       // Ensure gradient is applied even on mobile after fade-in
-      gsap.set(title, {
+      tl.set(title, {
         backgroundImage: 'linear-gradient(90deg, #5fb3b3, #6699cc, #c4a7e7, #f1a5ab)',
         backgroundSize: '100% 100%',
         webkitBackgroundClip: 'text',
         backgroundClip: 'text',
         color: 'transparent',
-        delay: 1.1, // After fade-in
-      });
-
+      }, '+=0.3'); // A small delay after the fade-in
     } else {
       const titleText = title.textContent?.trim() || '';
       const words = titleText.split(' ');
 
-      // Wrap each word in a span for individual animation
+      // Step 1: Fade in words as white
+      // Temporarily set innerHTML to words for the initial fade-in
       title.innerHTML = words.map(word => `<span class="hero-word" style="display: inline-block; white-space: nowrap;">${word}</span>`).join(' ');
-
       const wordElements = title.querySelectorAll('.hero-word');
 
-      // Colors from the theme for random selection
-      const themeColors = ['#5fb3b3', '#6699cc', '#c4a7e7', '#f1a5ab', '#e0def4'];
+      tl.fromTo(wordElements,
+        { opacity: 0, y: 50, rotationX: -90, color: '#e0def4' },
+        {
+          opacity: 1,
+          y: 0,
+          rotationX: 0,
+          duration: 0.8,
+          ease: 'back.out(1.7)',
+          stagger: 0.08,
+        }
+      );
 
-      gsap.timeline({ delay: 0.5 })
-        .fromTo(wordElements,
-          { opacity: 0, y: 50, rotationX: -90, color: '#e0def4' },
-          {
-            opacity: 1,
-            y: 0,
-            rotationX: 0,
-            duration: 0.8,
-            ease: 'back.out(1.7)',
-            stagger: 0.08,
-            onComplete: () => {
-              // Apply gradient to the whole title element after initial animation
-              gsap.set(title, {
-                backgroundImage: 'linear-gradient(90deg, #5fb3b3, #6699cc, #c4a7e7, #f1a5ab)',
-                backgroundSize: '100% 100%',
-                webkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                color: 'transparent',
-              });
+      // Step 2: After words fade in, re-structure for characters and apply gradient to parent
+      tl.add(() => {
+        // Colors from the theme for random selection
+        const themeColors = ['#5fb3b3', '#6699cc', '#c4a7e7', '#f1a5ab', '#e0def4'];
 
-              // Random color and flip animation for individual characters
-              title.innerHTML = words.map(word =>
-                word.split('').map(char =>
-                  `<span class="hero-char" style="display: inline-block; perspective: 1000px; transform-style: preserve-3d;">
-                     <span class="hero-char-inner" style="display: inline-block; backface-visibility: hidden;">${char}</span>
-                   </span>`
-                ).join('')
-              ).join(' ');
+        // Apply gradient to the whole title element
+        gsap.set(title, {
+          backgroundImage: 'linear-gradient(90deg, #5fb3b3, #6699cc, #c4a7e7, #f1a5ab)',
+          backgroundSize: '100% 100%',
+          webkitBackgroundClip: 'text',
+          backgroundClip: 'text',
+          color: 'transparent', // The parent color is transparent, child spans will get their own colors
+        });
 
-              const charElements = title.querySelectorAll('.hero-char-inner');
+        // Re-structure innerHTML to wrap each character in spans
+        let charIndex = 0;
+        title.innerHTML = words.map(word =>
+          word.split('').map(char => {
+            const charSpan = `<span class="hero-char" style="display: inline-block; perspective: 1000px; transform-style: preserve-3d;">
+                                 <span class="hero-char-inner" style="display: inline-block; backface-visibility: hidden;">${char}</span>
+                               </span>`;
+            charIndex++;
+            return charSpan;
+          }).join('') + (word === words[words.length - 1] ? '' : ' ') // Add space between words
+        ).join(''); // Already joined words with space above
 
-              charElements.forEach((char, i) => {
-                gsap.to(char, {
-                  rotationY: gsap.utils.random([-360, 360]),
-                  rotationX: gsap.utils.random([-360, 360]),
-                  color: gsap.utils.random(themeColors),
-                  duration: 0.5,
-                  delay: i * 0.05 + 0.5, // Staggered delay after initial word animation
-                  ease: 'power1.inOut',
-                  repeat: -1, // Repeat indefinitely
-                  yoyo: true, // Go back and forth
-                  repeatDelay: gsap.utils.random(2, 5), // Random delay between repeats
-                });
-              });
-            }
-          }
-        );
+
+        const charElements = title.querySelectorAll('.hero-char-inner');
+
+        // Step 3: Animate individual character spans
+        charElements.forEach((char, i) => {
+          gsap.to(char, {
+            rotationY: gsap.utils.random([-360, 360]),
+            rotationX: gsap.utils.random([-360, 360]),
+            color: gsap.utils.random(themeColors),
+            duration: 0.5,
+            delay: i * 0.05, // Staggered delay for character animation
+            ease: 'power1.inOut',
+            repeat: -1, // Repeat indefinitely
+            yoyo: true, // Go back and forth
+            repeatDelay: gsap.utils.random(2, 5), // Random delay between repeats
+          });
+        });
+      }, '+=0.5'); // Start this step 0.5s after the word fade-in completes
     }
   }
 
