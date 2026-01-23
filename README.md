@@ -289,7 +289,7 @@ The VS Code/Cursor extension automatically publishes to both marketplaces when t
 - Auto-bumps patch versions (Cursor, core if colors changed)
 - Computes and tags Zed release versions on Cursor, Zed, or Theme changes
 - Publishes VS Code/Cursor extension to Marketplace & Open VSX
-- Packages Zed extension (`extension.toml` + `zed/themes/`) and attaches to release
+- Packages Zed extension (`extension.toml` + `extension/icon.png` + `zed/themes/`) and attaches to release
 - Push of tag `v<version>` triggers Zed release workflow via `huacnlee/zed-extension-action`
 - Commits version bumps back to repository
 

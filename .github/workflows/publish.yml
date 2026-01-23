@@ -282,7 +282,7 @@ jobs:
       - name: Prepare Zed extension artifact
         run: |
           VERSION="${{ steps.version.outputs.version }}"
-          zip -r "zed-extension-$VERSION.zip" extension.toml zed/themes || (sudo apt-get update && sudo apt-get install -y zip && zip -r "zed-extension-$VERSION.zip" extension.toml zed/themes)
+          zip -r "zed-extension-$VERSION.zip" extension.toml extension/icon.png zed/themes || (sudo apt-get update && sudo apt-get install -y zip && zip -r "zed-extension-$VERSION.zip" extension.toml extension/icon.png zed/themes)
 
       - name: Release Zed extension asset
         uses: softprops/action-gh-release@v1
@@ -349,7 +349,10 @@ jobs:
         id: colorloom-version
         run: |
           VERSION=$(grep '^version = "' tools/colorloom/Cargo.toml | sed -E 's/^version = "([^"]+)".*/\1/')
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://crates.io/api/v1/crates/colorloom/$VERSION")
+          STATUS=$(curl -sS -o /dev/null -w "%{http_code}" \
+            -H "User-Agent: subliminal-nightfall-ci" \
+            -H "Accept: application/json" \
+            "https://crates.io/api/v1/crates/colorloom/$VERSION")
           if [ "$STATUS" = "200" ]; then
             echo "::notice::colorloom $VERSION already published; skipping."
             echo "publish=false" >> "$GITHUB_OUTPUT"
