@@ -42,7 +42,7 @@ Base colors with bright and dim variants:
 ## Syntax Highlighting
 
 - **Functions**: Cyan (#9ccfd8)
-- **Types/Keywords**: Blue-green (#31748f)
+- **Types/Keywords**: Blue-green (#6699cc)
 - **Strings**: Cyan (#9ccfd8)
 - **Numbers**: Lavender (#c4a7e7)
 - **Attributes/Macros**: Pink (#f1a5ab)

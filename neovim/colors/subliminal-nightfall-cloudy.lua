@@ -4,9 +4,9 @@ if vim.fn.exists('syntax_on') then vim.cmd('syntax reset') end
 vim.g.colors_name = 'Subliminal Nightfall (Cloudy)'
 vim.o.background = 'dark'
 local c = {
-  bg = '#191724E6', bg_alt = '#1f1d2e', fg = '#e0def4', fg_muted = '#a0a0a0', fg_dim = '#7f7f7f',
+  bg = '#03021aE6', bg_alt = '#0a0921', fg = '#e0def4', fg_muted = '#a0a0a0', fg_dim = '#7f7f7f',
   selection = '#484e5bE6', cursor = '#5fb3b3', line = '#2e3239E6',
-  red = '#bf616a', green = '#a9cfa4', yellow = '#ffe2a9', blue = '#6699cc', magenta = '#f1a5ab', cyan = '#5fb3b3', purple = '#c4a7e7', teal = '#9ccfd8', dark_blue = '#31748f'
+  red = '#bf616a', green = '#a9cfa4', yellow = '#fcb832', blue = '#6699cc', magenta = '#f1a5ab', cyan = '#5fb3b3', purple = '#c4a7e7', teal = '#9ccfd8', dark_blue = '#6699cc'
 }
 local function hl(g, o) vim.api.nvim_set_hl(0, g, o) end
 hl('Normal', { fg = c.fg, bg = c.bg })

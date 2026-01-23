@@ -28,6 +28,10 @@ run = "cargo run --manifest-path tools/colorloom/Cargo.toml -- -c theme.toml gen
 description = "Generate themes then build all packages"
 run = "mise run gen && pnpm -C website build && pnpm -C packages/core build"
 
+[tasks."build:vsix"]
+description = "Generate themes then package the Cursor/VS Code extension"
+run = "mise run gen && (cd cursor && pnpm dlx @vscode/vsce package)"
+
 [tasks."build:website"]
 description = "Build website for production"
 run = "pnpm -C website build"

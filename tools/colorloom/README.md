@@ -76,7 +76,7 @@ dim = "#769072"
 # Syntax highlighting colors
 [palette.syntax]
 teal = "#9ccfd8"
-blue_green = "#31748f"
+blue_green = "#6699cc"
 lavender = "#c4a7e7"
 gray = "#7f7f7f"
 

@@ -1,12 +1,12 @@
 {
   "backgroundColors": [
     {
-      "hex": "#191724",
+      "hex": "#03021a",
       "name": "Background",
       "usage": "Deep purple-black editor background"
     },
     {
-      "hex": "#1f1d2e",
+      "hex": "#0a0921",
       "name": "Background Alt",
       "usage": "Sidebar, panels, inactive tabs"
     },
@@ -33,9 +33,9 @@
       "usage": "Success, additions"
     },
     {
-      "base": "#ffe2a9",
-      "bright": "#ffffcc",
-      "dim": "#b29e76",
+      "base": "#fcb832",
+      "bright": "#ffd266",
+      "dim": "#b48228",
       "name": "Yellow",
       "usage": "Warnings, modifications"
     },
@@ -72,7 +72,7 @@
       "usage": "Functions, methods, strings"
     },
     {
-      "hex": "#31748f",
+      "hex": "#6699cc",
       "name": "Blue Green",
       "usage": "Keywords, types, constructors"
     },

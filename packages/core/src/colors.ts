@@ -98,7 +98,7 @@ export const baseColors = {
  */
 export const syntaxColors: SyntaxColors = {
   teal: '#9ccfd8',      // Functions, methods, strings
-  blueGreen: '#31748f', // Keywords, types, constructors
+  blueGreen: '#6699cc', // Keywords, types, constructors
   lavender: '#c4a7e7',  // Numbers, constants, inline code
   gray: '#7f7f7f'       // Comments
 } as const;

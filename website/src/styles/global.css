@@ -4,9 +4,9 @@
     /* Subliminal Nightfall Color Palette */
 
     /* Background & Foreground */
-    --color-sn-bg: #191724;
-    --color-sn-bg-alt: #1f1d2e;
-    --color-sn-bg-elevated: #26233a;
+    --color-sn-bg: #03021a;
+    --color-sn-bg-alt: #0a0921;
+    --color-sn-bg-elevated: #111028;
     --color-sn-fg: #e0def4;
     --color-sn-fg-muted: #a0a0a0;
     --color-sn-fg-dim: #7f7f7f;
@@ -20,9 +20,9 @@
     --color-sn-green-bright: #ccf2c7;
     --color-sn-green-dim: #769072;
 
-    --color-sn-yellow: #ffe2a9;
-    --color-sn-yellow-bright: #ffffcc;
-    --color-sn-yellow-dim: #b29e76;
+    --color-sn-yellow: #fcb832;
+    --color-sn-yellow-bright: #ffd266;
+    --color-sn-yellow-dim: #b48228;
 
     --color-sn-blue: #6699cc;
     --color-sn-blue-bright: #89bcef;
@@ -38,7 +38,7 @@
 
     /* Syntax Colors */
     --color-sn-teal: #9ccfd8;
-    --color-sn-blue-green: #31748f;
+    --color-sn-blue-green: #6699cc;
     --color-sn-lavender: #c4a7e7;
 
     /* Borders & UI */
@@ -47,15 +47,15 @@
     --color-sn-selection: #484e5b;
 
     /* Headers & subtle variants */
-    --color-sn-header: #1d1b29;
+    --color-sn-header: #0d0c21;
     /* header.base */
-    --color-sn-header-translucent: #1d1b29D9;
+    --color-sn-header-translucent: #0d0c21D9;
     /* header.translucent (hazy) */
     --color-sn-border-subtle: #363b45D9;
     /* softer border */
     --color-sn-border-soft: #2e32396B;
     /* very soft border */
-    --color-sn-bg-hazy: #191724D9;
+    --color-sn-bg-hazy: #03021aD9;
     /* subtle translucency for blurred panels */
 }
 
@@ -64,7 +64,7 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #1a1a2e; /* Fallback color */
+    background-color: #03021a; /* Fallback color */
     background-image:
         radial-gradient(at 27% 37%, hsla(0,0%,100%,0.15) 0px, transparent 50%),
         radial-gradient(at 73% 63%, hsla(0,0%,100%,0.12) 0px, transparent 50%),

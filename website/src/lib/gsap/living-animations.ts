@@ -134,7 +134,7 @@ export function initLivingAnimations(): () => void {
   // Add sliding gradient to CTA sections
   const ctaSections = document.querySelectorAll('section[class*="gradient"]');
   ctaSections.forEach((section) => {
-    const colors = ['#31748f', '#5fb3b3', '#6699cc', '#c4a7e7'];
+    const colors = ['#6699cc', '#5fb3b3', '#6699cc', '#c4a7e7'];
     const gradient = createSlidingGradient(section as HTMLElement, colors, {
       duration: 15,
       angle: 45,

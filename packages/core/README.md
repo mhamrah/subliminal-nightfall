@@ -85,7 +85,7 @@ All base ANSI colors follow a three-level system:
 | Color | Hex | Usage |
 |-------|-----|-------|
 | Cyan Teal | `#9ccfd8` | Functions, methods, strings |
-| Blue Green | `#31748f` | Keywords, types, constructors |
+| Blue Green | `#6699cc` | Keywords, types, constructors |
 | Lavender | `#c4a7e7` | Numbers, constants, inline code |
 | Gray | `#7f7f7f` | Comments |
 

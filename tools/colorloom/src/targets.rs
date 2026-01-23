@@ -1633,6 +1633,9 @@ fn gen_cursor(cfg: &Config, target: &crate::config::Target, root: &PathBuf) -> R
                 "activityBar.background": sidebar_bg,
                 "activityBar.foreground": ui.foreground,
                 "activityBar.inactiveForeground": cfg.palette.ui.foreground_muted,
+                "activityBar.activeBackground": sidebar_bg,
+                "activityBar.activeBorder": cfg.palette.border.border_selected,
+                "activityBar.activeFocusBorder": cfg.palette.border.border_focused,
                 "activityBar.border": cfg.palette.border.border_variant,
                 "activityBarBadge.background": cfg.palette.base.ansi.blue.base,
                 "activityBarBadge.foreground": "#ffffff",
@@ -1702,6 +1705,12 @@ fn gen_cursor(cfg: &Config, target: &crate::config::Target, root: &PathBuf) -> R
                 "inputOption.activeBackground": cfg.palette.border.border_variant,
                 "inputValidation.errorBackground": cfg.palette.base.ansi.red.dim,
                 "inputValidation.errorBorder": cfg.palette.base.ansi.red.base,
+
+                // Chat (Cursor / VS Code chat input)
+                "chat.inputBackground": elevated_bg,
+                "chat.inputForeground": ui.foreground,
+                "chat.inputBorder": cfg.palette.border.border,
+                "chat.inputPlaceholderForeground": cfg.palette.ui.foreground_dim,
 
                 // Dropdowns
                 "dropdown.background": elevated_bg,
@@ -1814,9 +1823,10 @@ fn gen_cursor(cfg: &Config, target: &crate::config::Target, root: &PathBuf) -> R
                 {"scope": ["constant.numeric", "constant.language"], "settings": {"foreground": cfg.palette.syntax.lavender}},
                 {"scope": ["comment", "punctuation.definition.comment"], "settings": {"foreground": cfg.palette.syntax.gray, "fontStyle": "italic"}},
                 {"scope": ["variable", "variable.other"], "settings": {"foreground": ui.foreground}},
-                {"scope": ["entity.name.type", "entity.name.class", "support.type", "support.class"], "settings": {"foreground": cfg.palette.base.ansi.yellow.base}},
+                {"scope": ["entity.name.type", "entity.name.class", "support.type", "support.class"], "settings": {"foreground": cfg.palette.base.ansi.magenta.base}},
                 {"scope": ["entity.name.tag"], "settings": {"foreground": cfg.palette.base.ansi.red.base}},
                 {"scope": ["entity.other.attribute-name"], "settings": {"foreground": cfg.palette.base.ansi.magenta.base, "fontStyle": "italic"}},
+                {"scope": ["support.type.property-name", "meta.object-literal.key"], "settings": {"foreground": ui.foreground}},
                 {"scope": ["punctuation"], "settings": {"foreground": cfg.palette.ui.foreground_muted}},
                 {"scope": ["meta.embedded", "source.groovy.embedded"], "settings": {"foreground": ui.foreground}}
             ]

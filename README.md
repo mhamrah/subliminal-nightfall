@@ -102,7 +102,7 @@ theme = subliminal-nightfall
 
 ### Expanded Editor Syntax Palette
 - ![#9ccfd8](https://img.shields.io/badge/Teal-9ccfd8?style=for-the-badge&color=9ccfd8) `#9ccfd8` - Functions, methods, strings
-- ![#31748f](https://img.shields.io/badge/Blue--Green-31748f?style=for-the-badge&color=31748f) `#31748f` - Keywords, types, constructors
+- ![#6699cc](https://img.shields.io/badge/Blue--Green-6699cc?style=for-the-badge&color=6699cc) `#6699cc` - Keywords, types, constructors
 - ![#c4a7e7](https://img.shields.io/badge/Lavender-c4a7e7?style=for-the-badge&color=c4a7e7) `#c4a7e7` - Numbers, constants, enums
 - ![#7f7f7f](https://img.shields.io/badge/Gray-7f7f7f?style=for-the-badge&color=7f7f7f) `#7f7f7f` - Comments
 
@@ -374,7 +374,7 @@ ANSI Base:
 
 Syntax:
 - Teal: `#9ccfd8`
-- Blue Green: `#31748f`
+- Blue Green: `#6699cc`
 - Lavender: `#c4a7e7`
 - Gray: `#7f7f7f`
 

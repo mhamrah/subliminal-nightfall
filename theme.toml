@@ -17,9 +17,9 @@ bright = "#ccf2c7"
 dim = "#769072"
 
 [palette.base.ansi.yellow]
-base = "#ffe2a9"
-bright = "#ffffcc"
-dim = "#b29e76"
+base = "#fcb832"
+bright = "#ffd266"
+dim = "#b48228"
 
 [palette.base.ansi.blue]
 base = "#6699cc"
@@ -38,14 +38,14 @@ dim = "#427d7d"
 
 [palette.syntax]
 teal = "#9ccfd8"
-blue_green = "#31748f"
+blue_green = "#6699cc"
 lavender = "#c4a7e7"
 gray = "#7f7f7f"
 
 [palette.ui]
-background = "#191724"
-background_alt = "#1f1d2e"
-background_elevated = "#26233a"
+background = "#03021a"
+background_alt = "#0a0921"
+background_elevated = "#111028"
 foreground = "#e0def4"
 foreground_muted = "#a0a0a0"
 foreground_dim = "#7f7f7f"
@@ -55,7 +55,7 @@ line_highlight = "#2e3239bf"
 
 [palette.border]
 border = "#484e5b"
-border_variant = "#363b45"
+border_variant = "#484e5b"
 border_focused = "#6699cc"
 border_selected = "#5fb3b3"
 
