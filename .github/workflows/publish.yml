@@ -292,19 +292,36 @@ jobs:
             zed-extension-${{ steps.version.outputs.version }}.zip
 
       - name: Check Zed extension configuration
+        id: zed-config
         run: |
           if [ -z "${{ vars.ZED_EXTENSIONS_FORK }}" ]; then
-            echo "⚠️  Missing repo variable ZED_EXTENSIONS_FORK. Set it to your fork, e.g. 'mhamrah/extensions'.";
-            echo "Skipping Zed extension release to extensions repo.";
-            exit 1;
+            echo "::warning::Missing repo variable ZED_EXTENSIONS_FORK. Set it to your fork, e.g. 'mhamrah/extensions'.";
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
           if [ -z "${{ secrets.ZED_COMMITTER_TOKEN }}" ]; then
-            echo "⚠️  Missing secret ZED_COMMITTER_TOKEN (requires repo + workflow scopes).";
-            echo "Skipping Zed extension release to extensions repo.";
-            exit 1;
+            echo "::warning::Missing secret ZED_COMMITTER_TOKEN (requires repo + workflow scopes).";
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "ok=true" >> "$GITHUB_OUTPUT"
+
+      - name: Validate Zed committer token
+        id: zed-token
+        if: steps.zed-config.outputs.ok == 'true'
+        env:
+          COMMITTER_TOKEN: ${{ secrets.ZED_COMMITTER_TOKEN }}
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: token $COMMITTER_TOKEN" https://api.github.com/repos/zed-industries/extensions)
+          if [ "$STATUS" = "200" ]; then
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::ZED_COMMITTER_TOKEN cannot access zed-industries/extensions (HTTP $STATUS). Skipping."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Run Zed extension action
+        if: steps.zed-token.outputs.ok == 'true'
         uses: huacnlee/zed-extension-action@v1
         with:
           extension-name: subliminal-nightfall
@@ -328,7 +345,23 @@ jobs:
 
       - uses: ./.github/actions/setup
 
+      - name: Check colorloom version on crates.io
+        id: colorloom-version
+        run: |
+          VERSION=$(grep '^version = "' tools/colorloom/Cargo.toml | sed -E 's/^version = "([^"]+)".*/\1/')
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://crates.io/api/v1/crates/colorloom/$VERSION")
+          if [ "$STATUS" = "200" ]; then
+            echo "::notice::colorloom $VERSION already published; skipping."
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          elif [ "$STATUS" = "404" ]; then
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::Unexpected crates.io status $STATUS"
+            exit 1
+          fi
+
       - name: Publish colorloom crate
+        if: steps.colorloom-version.outputs.publish == 'true'
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
         run: |
