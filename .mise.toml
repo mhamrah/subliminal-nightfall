@@ -66,7 +66,25 @@ pnpm -C packages/core exec tsc --noEmit
 
 [tasks."publish:cursor"]
 description = "Publish Cursor/VS Code extension to VSCE and Open VSX"
-run = "(cd cursor && pnpm dlx @vscode/vsce publish --pat \"$VSCE_TOKEN\" || echo \"VSCE publish skipped (token missing)\") && (cd cursor && pnpm dlx ovsx publish -p \"$OPEN_VSX_TOKEN\" || echo \"OVSX publish skipped (token missing)\")"
+run = """
+set -euo pipefail
+cd cursor
+
+if [ -z "${VSCE_TOKEN:-}" ]; then
+  echo "VSCE_TOKEN is required for VSCE publish" >&2
+  exit 1
+fi
+
+pnpm dlx @vscode/vsce publish --pat "$VSCE_TOKEN"
+
+OVSX_TOKEN="${OPEN_VSX_TOKEN:-${OVSX_PAT:-}}"
+if [ -z "${OVSX_TOKEN}" ]; then
+  echo "OPEN_VSX_TOKEN or OVSX_PAT is required for Open VSX publish" >&2
+  exit 1
+fi
+
+pnpm dlx ovsx publish -p "$OVSX_TOKEN"
+"""
 
 [tasks."publish:colorloom"]
 description = "Publish colorloom to crates.io"
