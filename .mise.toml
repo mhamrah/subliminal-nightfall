@@ -59,7 +59,7 @@ run = "pnpm format"
 [tasks.lint]
 description = "Lint code with ESLint"
 run = """
-set -euo pipefail
+set -eu
 pnpm -C website exec astro check
 pnpm -C packages/core exec tsc --noEmit
 """
@@ -67,7 +67,7 @@ pnpm -C packages/core exec tsc --noEmit
 [tasks."publish:cursor"]
 description = "Publish Cursor/VS Code extension to VSCE and Open VSX"
 run = """
-set -euo pipefail
+set -eu
 cd cursor
 
 if [ -z "${VSCE_TOKEN:-}" ]; then
