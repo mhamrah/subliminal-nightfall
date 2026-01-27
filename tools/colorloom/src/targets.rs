@@ -1497,7 +1497,7 @@ fn build_zed_syntax(cfg: &Config, ui: &crate::config::UiPalette) -> Value {
     );
     syntax.insert(
         "text.literal".into(),
-        syntax_entry(&cfg.palette.syntax.teal, None, None),
+        syntax_entry(&cfg.palette.syntax.lavender, None, None),
     );
     syntax.insert(
         "concept".into(),
@@ -1553,7 +1553,7 @@ fn build_zed_syntax(cfg: &Config, ui: &crate::config::UiPalette) -> Value {
     );
     syntax.insert(
         "title".into(),
-        syntax_entry(&ui.foreground, None, Some(800)),
+        syntax_entry(&cfg.palette.base.ansi.blue.base, None, Some(800)),
     );
     syntax.insert(
         "variant".into(),
@@ -1827,8 +1827,13 @@ fn gen_cursor(cfg: &Config, target: &crate::config::Target, root: &PathBuf) -> R
                 {"scope": ["entity.name.tag"], "settings": {"foreground": cfg.palette.base.ansi.red.base}},
                 {"scope": ["entity.other.attribute-name"], "settings": {"foreground": cfg.palette.base.ansi.magenta.base, "fontStyle": "italic"}},
                 {"scope": ["support.type.property-name", "meta.object-literal.key"], "settings": {"foreground": ui.foreground}},
+                {"scope": ["punctuation.brackets", "punctuation.section", "punctuation.separator", "punctuation.delimiter", "meta.brace", "meta.bracket"], "settings": {"foreground": cfg.palette.ui.foreground_muted}},
                 {"scope": ["punctuation"], "settings": {"foreground": cfg.palette.ui.foreground_muted}},
-                {"scope": ["meta.embedded", "source.groovy.embedded"], "settings": {"foreground": ui.foreground}}
+                {"scope": ["meta.embedded", "source.groovy.embedded"], "settings": {"foreground": ui.foreground}},
+                {"scope": ["markup.heading"], "settings": {"foreground": cfg.palette.base.ansi.blue.base}},
+                {"scope": ["markup.bold"], "settings": {"foreground": cfg.palette.base.ansi.magenta.base, "fontStyle": "bold"}},
+                {"scope": ["markup.italic"], "settings": {"foreground": cfg.palette.base.ansi.magenta.base, "fontStyle": "italic"}},
+                {"scope": ["markup.inline.raw"], "settings": {"foreground": cfg.palette.syntax.lavender}}
             ]
         });
         fs::write(dir.join(name), serde_json::to_string_pretty(&theme)?)?;

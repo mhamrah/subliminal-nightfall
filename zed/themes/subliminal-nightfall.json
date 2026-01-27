@@ -439,10 +439,10 @@
             "color": "#e0def4"
           },
           "text.literal": {
-            "color": "#9ccfd8"
+            "color": "#c4a7e7"
           },
           "title": {
-            "color": "#e0def4",
+            "color": "#6699cc",
             "font_weight": 800
           },
           "type": {
@@ -988,10 +988,10 @@
             "color": "#e0def4"
           },
           "text.literal": {
-            "color": "#9ccfd8"
+            "color": "#c4a7e7"
           },
           "title": {
-            "color": "#e0def4",
+            "color": "#6699cc",
             "font_weight": 800
           },
           "type": {
@@ -1537,10 +1537,10 @@
             "color": "#e0def4"
           },
           "text.literal": {
-            "color": "#9ccfd8"
+            "color": "#c4a7e7"
           },
           "title": {
-            "color": "#e0def4",
+            "color": "#6699cc",
             "font_weight": 800
           },
           "type": {
@@ -2086,10 +2086,10 @@
             "color": "#e0def4"
           },
           "text.literal": {
-            "color": "#9ccfd8"
+            "color": "#c4a7e7"
           },
           "title": {
-            "color": "#e0def4",
+            "color": "#6699cc",
             "font_weight": 800
           },
           "type": {
