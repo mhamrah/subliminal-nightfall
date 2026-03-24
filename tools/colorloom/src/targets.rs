@@ -305,11 +305,6 @@ fn build_zed_style(cfg: &Config, variant: &Variant, ui: &crate::config::UiPalett
     } else {
         0.35
     };
-    let tab_active_alpha = if uses_tiers {
-        (tint_alpha * 0.55).clamp(0.35, 0.85)
-    } else {
-        0.5
-    };
     let tab_inactive_alpha = if uses_tiers {
         (tint_alpha * 0.35).clamp(0.2, 0.7)
     } else {
@@ -380,13 +375,16 @@ fn build_zed_style(cfg: &Config, variant: &Variant, ui: &crate::config::UiPalett
         .unwrap_or_else(|| apply_alpha(&alt_bg, subtle_alpha));
     let mut tab_bar_background = blur_layers
         .as_ref()
+        .map(|layers| layers.toolbar.clone())
+        .unwrap_or_else(|| apply_alpha(&alt_bg, (tab_inactive_alpha * 0.75).clamp(0.2, 0.85)));
+    let mut tab_inactive_background = blur_layers
+        .as_ref()
         .map(|layers| layers.soft.clone())
         .unwrap_or_else(|| apply_alpha(&alt_bg, tab_inactive_alpha));
-    let mut tab_inactive_background = tab_bar_background.clone();
     let mut tab_active_background = blur_layers
         .as_ref()
-        .map(|layers| layers.surface.clone())
-        .unwrap_or_else(|| apply_alpha(&base_bg, tab_active_alpha));
+        .map(|layers| layers.elevated.clone())
+        .unwrap_or_else(|| apply_alpha(&elevated_bg, elevated_alpha));
     let scrollbar_track = apply_alpha(&alt_bg, track_alpha);
     let mut element_background = if uses_tiers {
         apply_alpha(&base_bg, (tint_alpha * 0.78).clamp(0.45, 0.98))
@@ -507,7 +505,7 @@ fn build_zed_style(cfg: &Config, variant: &Variant, ui: &crate::config::UiPalett
         let gutter_alpha = 0x22 as f32 / 255.0;
         let tab_bar_alpha = 0x11 as f32 / 255.0;
         let tab_inactive_alpha_override = 0x22 as f32 / 255.0;
-        let tab_active_override = 0x80 as f32 / 255.0;
+        let tab_active_override = 0x55 as f32 / 255.0;
         let terminal_alpha = if variant_name == "clear" {
             0.0
         } else {
@@ -516,9 +514,9 @@ fn build_zed_style(cfg: &Config, variant: &Variant, ui: &crate::config::UiPalett
         let toolbar_alpha = 0x1A as f32 / 255.0;
         editor_background = apply_alpha(&base_bg, 0.0);
         editor_gutter = apply_alpha(&base_bg, gutter_alpha);
-        tab_bar_background = apply_alpha(&base_bg, tab_bar_alpha);
-        tab_inactive_background = apply_alpha(&base_bg, tab_inactive_alpha_override);
-        tab_active_background = apply_alpha(&base_bg, tab_active_override);
+        tab_bar_background = apply_alpha(&alt_bg, tab_bar_alpha);
+        tab_inactive_background = apply_alpha(&alt_bg, tab_inactive_alpha_override);
+        tab_active_background = apply_alpha(&elevated_bg, tab_active_override);
         editor_active_line = apply_alpha(&highlight, 0xDD as f32 / 255.0);
         panel_background = apply_alpha(&base_bg, 0.0);
         toolbar_background = apply_alpha(&base_bg, toolbar_alpha);
@@ -1657,14 +1655,14 @@ fn gen_cursor(cfg: &Config, target: &crate::config::Target, root: &PathBuf) -> R
                 "titleBar.border": cfg.palette.border.border_variant,
 
                 // Tabs
-                "tab.activeBackground": ui.background,
+                "tab.activeBackground": ui.background_elevated,
                 "tab.activeForeground": ui.foreground,
                 "tab.inactiveBackground": sidebar_bg,
                 "tab.inactiveForeground": cfg.palette.ui.foreground_muted,
                 "tab.border": cfg.palette.border.border_variant,
                 "tab.activeBorder": cfg.palette.base.ansi.cyan.base,
-                "tab.activeBorderTop": null,
-                "tab.hoverBackground": ui.background,
+                "tab.activeBorderTop": cfg.palette.base.ansi.cyan.base,
+                "tab.hoverBackground": ui.background_elevated,
 
                 // Status bar
                 "statusBar.background": sidebar_bg,

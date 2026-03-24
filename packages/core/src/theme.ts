@@ -231,7 +231,7 @@ export function createEditorTheme(): EditorTheme {
       'titleBar.border': palette.border,
 
       // Tabs
-      'tab.activeBackground': palette.bg,
+      'tab.activeBackground': palette.bgElevated,
       'tab.activeForeground': palette.fg,
       'tab.inactiveBackground': palette.bgAlt,
       'tab.inactiveForeground': palette.fgMuted,
