@@ -487,9 +487,9 @@
             "color": "#bf616a"
           }
         },
-        "tab.active_background": "#03021a80",
+        "tab.active_background": "#111028FF",
         "tab.inactive_background": "#0a092180",
-        "tab_bar.background": "#0a092180",
+        "tab_bar.background": "#0a092160",
         "terminal.ansi.background": "#0a0921FF",
         "terminal.ansi.black": "#7f7f7f",
         "terminal.ansi.blue": "#6699cc",
@@ -1036,9 +1036,9 @@
             "color": "#bf616a"
           }
         },
-        "tab.active_background": "#03021a80",
-        "tab.inactive_background": "#03021a22",
-        "tab_bar.background": "#03021a11",
+        "tab.active_background": "#11102855",
+        "tab.inactive_background": "#0a092122",
+        "tab_bar.background": "#0a092111",
         "terminal.ansi.background": "#03021a22",
         "terminal.ansi.black": "#7f7f7f",
         "terminal.ansi.blue": "#6699cc",
@@ -1585,9 +1585,9 @@
             "color": "#bf616a"
           }
         },
-        "tab.active_background": "#03021a80",
-        "tab.inactive_background": "#03021a22",
-        "tab_bar.background": "#03021a11",
+        "tab.active_background": "#11102855",
+        "tab.inactive_background": "#0a092122",
+        "tab_bar.background": "#0a092111",
         "terminal.ansi.background": "#03021a22",
         "terminal.ansi.black": "#7f7f7f",
         "terminal.ansi.blue": "#6699cc",
@@ -2134,9 +2134,9 @@
             "color": "#bf616a"
           }
         },
-        "tab.active_background": "#03021a80",
-        "tab.inactive_background": "#03021a22",
-        "tab_bar.background": "#03021a11",
+        "tab.active_background": "#11102855",
+        "tab.inactive_background": "#0a092122",
+        "tab_bar.background": "#0a092111",
         "terminal.ansi.background": "#03021a00",
         "terminal.ansi.black": "#7f7f7f",
         "terminal.ansi.blue": "#6699cc",
