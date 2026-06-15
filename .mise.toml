@@ -45,8 +45,8 @@ description = "Preview website build"
 run = "pnpm -C website preview"
 
 [tasks.verify]
-description = "Verify symlink setup"
-run = "./scripts/verify-symlinks.sh"
+description = "Verify Zed extension layout"
+run = "./scripts/verify-zed-extension.sh"
 
 [tasks.clean]
 description = "Clean all build artifacts"
