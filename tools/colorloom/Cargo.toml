@@ -1,6 +1,6 @@
 [package]
 name = "colorloom"
-version = "0.1.6"
+version = "0.1.7"
 edition = "2021"
 description = "A powerful Rust CLI for generating consistent color themes across multiple editors and terminals from a single TOML configuration."
 authors = ["Michael Hamrah"]
