@@ -5,13 +5,13 @@ runs:
   using: composite
   steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         fetch-depth: 0
         fetch-tags: true
 
     - name: Restore mise cache
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: |
           ~/.local/share/mise
@@ -27,7 +27,7 @@ runs:
         echo "$HOME/.local/share/mise/bin" >> "$GITHUB_PATH"
 
     - name: Restore pnpm store
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ~/.pnpm-store
         key: ${{ runner.os }}-pnpm-${{ hashFiles('website/pnpm-lock.yaml', 'packages/core/pnpm-lock.yaml') }}
