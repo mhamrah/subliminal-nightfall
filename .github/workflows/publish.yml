@@ -99,11 +99,11 @@ jobs:
           echo "zed=${{ github.event.inputs.force_zed == 'true' && 'true' || 'false' }}" >> "$GITHUB_OUTPUT"
           echo "colorloom=${{ github.event.inputs.force_colorloom == 'true' && 'true' || 'false' }}" >> "$GITHUB_OUTPUT"
 
-  # Bump versions for both cursor and zed when theme.toml changes
+  # Bump versions for both cursor and zed when theme inputs or generator output change
   bump-versions:
     needs: detect-changes
     runs-on: ubuntu-latest
-    if: needs.detect-changes.outputs.changed_theme == 'true'
+    if: needs.detect-changes.outputs.changed_theme == 'true' || needs.detect-changes.outputs.changed_colorloom == 'true'
     outputs:
       version: ${{ steps.bump.outputs.version }}
     steps:
