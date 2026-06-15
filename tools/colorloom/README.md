@@ -150,15 +150,17 @@ out_file = "palette.json"
 
 ColorLoom automatically handles transparency for blur-enabled variants:
 
-| Variant | Alpha | Editor BG | Surface BG | Tabs | Appearance |
-|---------|-------|-----------|------------|------|------------|
-| Base | 100% | `#191724FF` | `#1f1d2eFF` | 50% | opaque |
-| Hazy | 75% | `#19172400` | `#1f1d2eBF` | 22% | blurred |
-| Cloudy | 90% | `#19172400` | `#1f1d2eE6` | 27% | blurred |
+| Variant | Background | Editor BG | Surface BG | Elevated BG | Appearance |
+|---------|------------|-----------|------------|-------------|------------|
+| Base | `#191724FF` | `#191724FF` | `#1f1d2eFF` | `#26233aFF` | opaque |
+| Hazy | `#191724B3` | `#19172400` | `#191724BC` | `#191724E6` | blurred |
+| Cloudy | `#191724D9` | `#19172400` | `#191724E4` | `#191724E6` | blurred |
+| Clear | `#191724E6` | `#19172400` | `#191724F1` | `#191724E6` | transparent |
 
 For blurred variants:
 - Editor and gutter backgrounds are fully transparent (`00`) to show blur
-- Surfaces and panels use variant alpha for layering
+- Surfaces and panels use variant-aware alpha for layering
+- Elevated surfaces use high opacity so menus and popovers stay readable over editor text
 - Tabs and toolbars use reduced opacity for subtle differentiation
 
 ## Supported Targets

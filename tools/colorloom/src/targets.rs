@@ -422,7 +422,7 @@ fn build_zed_style(cfg: &Config, variant: &Variant, ui: &crate::config::UiPalett
     };
     let drop_target = shaded(&cfg.palette.base.ansi.blue.base, 0.35);
     let panel_indent = apply_alpha(&border_variant, 0.65);
-    let pane_group_border = apply_alpha(&border_variant, 0.45);
+    let pane_group_border = apply_alpha(&border_variant, if uses_tiers { 0.72 } else { 0.45 });
     let scrollbar_thumb = apply_alpha(&border_base, 0.7);
     let minimap_thumb = apply_alpha(&border_base, 0.35);
     let minimap_thumb_hover = shaded(&cfg.palette.base.ansi.magenta.base, 0.45);
@@ -502,7 +502,7 @@ fn build_zed_style(cfg: &Config, variant: &Variant, ui: &crate::config::UiPalett
         if let Some(alpha_override) = base_override {
             background = apply_alpha(&base_bg, alpha_override);
         }
-        let gutter_alpha = 0x22 as f32 / 255.0;
+        let gutter_alpha = 0.0;
         let tab_bar_alpha = 0x11 as f32 / 255.0;
         let tab_inactive_alpha_override = 0x22 as f32 / 255.0;
         let tab_active_override = 0x55 as f32 / 255.0;
@@ -523,7 +523,7 @@ fn build_zed_style(cfg: &Config, variant: &Variant, ui: &crate::config::UiPalett
         terminal_background = apply_alpha(&base_bg, terminal_alpha);
         terminal_ansi_background = terminal_background.clone();
         let element_alpha = 0x22 as f32 / 255.0;
-        let elevated_alpha = 0x44 as f32 / 255.0;
+        let elevated_alpha = 0xE6 as f32 / 255.0;
         let ghost_alpha_override = 0x11 as f32 / 255.0;
         element_background = apply_alpha(&base_bg, element_alpha);
         elevated_surface = apply_alpha(&base_bg, elevated_alpha);
@@ -956,7 +956,7 @@ fn build_zed_style(cfg: &Config, variant: &Variant, ui: &crate::config::UiPalett
         Value::String(apply_alpha(
             &border_base,
             if uses_tiers {
-                (tint_alpha * 0.6).clamp(0.35, 0.85)
+                (tint_alpha * 0.75).clamp(0.55, 0.9)
             } else {
                 0.8
             },
@@ -1601,6 +1601,7 @@ fn gen_cursor(cfg: &Config, target: &crate::config::Target, root: &PathBuf) -> R
         } else {
             cfg.palette.ui.background_elevated.clone()
         };
+        let list_selection_bg = shaded(&cfg.palette.ui.selection, 0.72);
 
         let theme = json!({
             "name": format!("{}{}", cfg.meta.name, variant_suffix),
@@ -1683,14 +1684,16 @@ fn gen_cursor(cfg: &Config, target: &crate::config::Target, root: &PathBuf) -> R
                 "panelInput.border": cfg.palette.border.border,
 
                 // Lists
-                "list.activeSelectionBackground": ui.selection,
+                "list.activeSelectionBackground": list_selection_bg.clone(),
                 "list.activeSelectionForeground": ui.foreground,
                 "list.inactiveSelectionBackground": cfg.palette.border.border_variant,
                 "list.inactiveSelectionForeground": ui.foreground,
                 "list.hoverBackground": cfg.palette.border.border_variant,
                 "list.hoverForeground": ui.foreground,
-                "list.focusBackground": ui.selection,
+                "list.focusBackground": list_selection_bg,
                 "list.focusForeground": ui.foreground,
+                "list.focusOutline": cfg.palette.border.border_variant,
+                "list.focusAndSelectionOutline": cfg.palette.border.border_variant,
                 "listFilterWidget.background": elevated_bg,
                 "listFilterWidget.noMatchesOutline": cfg.palette.base.ansi.red.base,
 

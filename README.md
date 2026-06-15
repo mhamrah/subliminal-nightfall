@@ -144,6 +144,8 @@ Subliminal Nightfall is designed for extended coding sessions with:
 Both variants feature:
 - Background blur effects that integrate with your desktop (`background.appearance: "blurred"`)
 - Fully transparent editor backgrounds to show blur through
+- Transparent editor gutters for a lighter git and line-number margin
+- More opaque elevated surfaces so menus and popovers remain readable
 - Semi-transparent panels, sidebars, and status bars with subtle variance
 - Full syntax color readability despite transparency
 - Perfect for those who prefer a less visually heavy workspace
