@@ -42,7 +42,7 @@ jobs:
   validate-versions:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Extract and validate versions
         run: |
@@ -74,13 +74,13 @@ jobs:
       force_colorloom: ${{ steps.force.outputs.colorloom }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Detect changed paths
         id: changed
-        uses: dorny/paths-filter@v3
+        uses: dorny/paths-filter@v4
         with:
           filters: |
             theme:
@@ -108,7 +108,7 @@ jobs:
       version: ${{ steps.bump.outputs.version }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Bump versions
         id: bump
@@ -151,7 +151,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.ref }}
           fetch-depth: 0
@@ -171,7 +171,7 @@ jobs:
         run: mise run build:website
 
       - name: Upload website artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: website-dist
           path: website/dist
@@ -185,12 +185,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - uses: ./.github/actions/setup
 
       - name: Download website artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: website-dist
           path: website/dist
@@ -216,11 +216,13 @@ jobs:
        needs.detect-changes.outputs.changed_colorloom == 'true' ||
        needs.detect-changes.outputs.force_cursor == 'true' ||
        needs.detect-changes.outputs.force_all == 'true') &&
-      needs.detect-changes.outputs.force_website != 'true'
+      (needs.detect-changes.outputs.force_website != 'true' ||
+       needs.detect-changes.outputs.force_cursor == 'true' ||
+       needs.detect-changes.outputs.force_all == 'true')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.ref }}
           fetch-depth: 0
@@ -249,11 +251,13 @@ jobs:
        needs.detect-changes.outputs.changed_colorloom == 'true' ||
        needs.detect-changes.outputs.force_zed == 'true' ||
        needs.detect-changes.outputs.force_all == 'true') &&
-      needs.detect-changes.outputs.force_website != 'true'
+      (needs.detect-changes.outputs.force_website != 'true' ||
+       needs.detect-changes.outputs.force_zed == 'true' ||
+       needs.detect-changes.outputs.force_all == 'true')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.ref }}
           fetch-depth: 0
@@ -285,7 +289,7 @@ jobs:
           (cd zed && zip -r "../zed-extension-$VERSION.zip" extension.toml extension/icon.png themes) || (sudo apt-get update && sudo apt-get install -y zip && cd zed && zip -r "../zed-extension-$VERSION.zip" extension.toml extension/icon.png themes)
 
       - name: Release Zed extension asset
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: v${{ steps.version.outputs.version }}
           files: |
@@ -322,7 +326,7 @@ jobs:
 
       - name: Run Zed extension action
         if: steps.zed-token.outputs.ok == 'true'
-        uses: huacnlee/zed-extension-action@v1
+        uses: huacnlee/zed-extension-action@v2.0.0
         with:
           extension-name: subliminal-nightfall
           push-to: ${{ vars.ZED_EXTENSIONS_FORK }}
@@ -341,7 +345,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - uses: ./.github/actions/setup
 
