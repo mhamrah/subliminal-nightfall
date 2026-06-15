@@ -46,15 +46,15 @@ jobs:
 
       - name: Extract and validate versions
         run: |
-          ZED_VERSION=$(grep '^version = ' extension.toml | sed 's/version = "\(.*\)"/\1/')
+          ZED_VERSION=$(grep '^version = ' zed/extension.toml | sed 's/version = "\(.*\)"/\1/')
           CURSOR_VERSION=$(jq -r '.version' cursor/package.json)
 
-          echo "Zed extension.toml version: $ZED_VERSION"
+          echo "Zed extension version: $ZED_VERSION"
           echo "Cursor package.json version: $CURSOR_VERSION"
 
           if [ "$ZED_VERSION" != "$CURSOR_VERSION" ]; then
             echo "::error::Version mismatch detected!"
-            echo "::error::  extension.toml (Zed): $ZED_VERSION"
+            echo "::error::  zed/extension.toml (Zed): $ZED_VERSION"
             echo "::error::  cursor/package.json:  $CURSOR_VERSION"
             exit 1
           fi
@@ -113,16 +113,16 @@ jobs:
       - name: Bump versions
         id: bump
         run: |
-          # Get current version from extension.toml
-          CUR=$(grep '^version = "' extension.toml | sed -E 's/^version = "([^"]+)".*/\1/')
+          # Get current version from zed/extension.toml
+          CUR=$(grep '^version = "' zed/extension.toml | sed -E 's/^version = "([^"]+)".*/\1/')
           IFS='.' read -r MA MI PA <<< "$CUR"
           PA=$((PA + 1))
           NEW_VERSION="$MA.$MI.$PA"
 
           echo "Bumping version from $CUR to $NEW_VERSION"
 
-          # Update extension.toml
-          sed -E -i "s/^version = \"[^\"]+\"/version = \"$NEW_VERSION\"/" extension.toml
+          # Update zed/extension.toml
+          sed -E -i "s/^version = \"[^\"]+\"/version = \"$NEW_VERSION\"/" zed/extension.toml
 
           # Update cursor/package.json
           jq ".version = \"$NEW_VERSION\"" cursor/package.json > cursor/package.tmp && mv cursor/package.tmp cursor/package.json
@@ -133,7 +133,7 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add extension.toml cursor/package.json
+          git add zed/extension.toml cursor/package.json
           git commit -m "chore: bump version to ${{ steps.bump.outputs.version }}"
           git push
 
@@ -269,7 +269,7 @@ jobs:
       - name: Get version
         id: version
         run: |
-          VERSION=$(grep '^version = "' extension.toml | sed -E 's/^version = "([^"]+)".*/\1/')
+          VERSION=$(grep '^version = "' zed/extension.toml | sed -E 's/^version = "([^"]+)".*/\1/')
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Tag Zed extension release
@@ -282,7 +282,7 @@ jobs:
       - name: Prepare Zed extension artifact
         run: |
           VERSION="${{ steps.version.outputs.version }}"
-          zip -r "zed-extension-$VERSION.zip" extension.toml extension/icon.png zed/themes || (sudo apt-get update && sudo apt-get install -y zip && zip -r "zed-extension-$VERSION.zip" extension.toml extension/icon.png zed/themes)
+          (cd zed && zip -r "../zed-extension-$VERSION.zip" extension.toml extension/icon.png themes) || (sudo apt-get update && sudo apt-get install -y zip && cd zed && zip -r "../zed-extension-$VERSION.zip" extension.toml extension/icon.png themes)
 
       - name: Release Zed extension asset
         uses: softprops/action-gh-release@v1

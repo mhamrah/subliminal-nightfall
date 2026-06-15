@@ -16,15 +16,15 @@ jobs:
       - name: Extract versions from files
         id: versions
         run: |
-          # Extract version from extension.toml (Zed)
-          ZED_VERSION=$(grep '^version = ' extension.toml | sed 's/version = "\(.*\)"/\1/')
+          # Extract version from zed/extension.toml (Zed)
+          ZED_VERSION=$(grep '^version = ' zed/extension.toml | sed 's/version = "\(.*\)"/\1/')
           echo "zed_version=$ZED_VERSION" >> $GITHUB_OUTPUT
           
           # Extract version from cursor/package.json
           CURSOR_VERSION=$(jq -r '.version' cursor/package.json)
           echo "cursor_version=$CURSOR_VERSION" >> $GITHUB_OUTPUT
           
-          echo "Zed extension.toml version: $ZED_VERSION"
+          echo "Zed extension version: $ZED_VERSION"
           echo "Cursor package.json version: $CURSOR_VERSION"
 
       - name: Validate versions match
@@ -34,7 +34,7 @@ jobs:
           
           if [ "$ZED_VERSION" != "$CURSOR_VERSION" ]; then
             echo "::error::Version mismatch detected!"
-            echo "::error::  extension.toml (Zed): $ZED_VERSION"
+            echo "::error::  zed/extension.toml (Zed): $ZED_VERSION"
             echo "::error::  cursor/package.json:  $CURSOR_VERSION"
             echo ""
             echo "All version files must have the same version."
@@ -54,7 +54,7 @@ jobs:
             echo "::error::  Git tag:      v$TAG_VERSION"
             echo "::error::  File version: $FILE_VERSION"
             echo ""
-            echo "The git tag must match the version in extension.toml and package.json."
+            echo "The git tag must match the version in zed/extension.toml and package.json."
             echo "Please update the version files before tagging, or delete and recreate the tag."
             exit 1
           fi

@@ -1,7 +1,7 @@
 use crate::config::{Config, Variant};
 use anyhow::{anyhow, Result};
 use serde_json::{json, Map, Value};
-use std::{fs, path::PathBuf};
+use std::{fs, path::Path};
 
 fn strip_alpha(hex: &str) -> String {
     let h = hex.trim_start_matches('#');
@@ -14,7 +14,7 @@ fn strip_alpha(hex: &str) -> String {
 
 fn apply_alpha(hex: &str, a: f32) -> String {
     let a = a.clamp(0.0, 1.0);
-    let alpha = ((a * 255.0).round() as u8) as u8;
+    let alpha = (a * 255.0).round() as u8;
     let h = hex.trim_start_matches('#');
     let base = if h.len() >= 6 { &h[0..6] } else { h };
     format!("#{}{:02X}", base, alpha)
@@ -74,22 +74,34 @@ fn ui_with_variant(cfg: &Config, variant: &Variant) -> crate::config::UiPalette 
         if let Some(uo) = &ov.ui {
             // For overrides, apply alpha if specified and the override doesn't already have alpha
             if let Some(v) = &uo.background {
-                ui.background = if variant.alpha.is_some() && v.len() <= 7 {
-                    apply_alpha(v, variant.alpha.unwrap())
+                ui.background = if let Some(alpha) = variant.alpha {
+                    if v.len() <= 7 {
+                        apply_alpha(v, alpha)
+                    } else {
+                        v.clone()
+                    }
                 } else {
                     v.clone()
                 };
             }
             if let Some(v) = &uo.background_alt {
-                ui.background_alt = if variant.alpha.is_some() && v.len() <= 7 {
-                    apply_alpha(v, variant.alpha.unwrap())
+                ui.background_alt = if let Some(alpha) = variant.alpha {
+                    if v.len() <= 7 {
+                        apply_alpha(v, alpha)
+                    } else {
+                        v.clone()
+                    }
                 } else {
                     v.clone()
                 };
             }
             if let Some(v) = &uo.background_elevated {
-                ui.background_elevated = if variant.alpha.is_some() && v.len() <= 7 {
-                    apply_alpha(v, variant.alpha.unwrap())
+                ui.background_elevated = if let Some(alpha) = variant.alpha {
+                    if v.len() <= 7 {
+                        apply_alpha(v, alpha)
+                    } else {
+                        v.clone()
+                    }
                 } else {
                     v.clone()
                 };
@@ -117,7 +129,7 @@ fn ui_with_variant(cfg: &Config, variant: &Variant) -> crate::config::UiPalette 
     ui
 }
 
-pub fn generate_target(cfg: &Config, target: &crate::config::Target, root: &PathBuf) -> Result<()> {
+pub fn generate_target(cfg: &Config, target: &crate::config::Target, root: &Path) -> Result<()> {
     match target.id.as_str() {
         "ghostty" => gen_ghostty(cfg, target, root),
         "zed" => gen_zed(cfg, target, root),
@@ -128,14 +140,14 @@ pub fn generate_target(cfg: &Config, target: &crate::config::Target, root: &Path
     }
 }
 
-fn gen_ghostty(cfg: &Config, target: &crate::config::Target, root: &PathBuf) -> Result<()> {
+fn gen_ghostty(cfg: &Config, target: &crate::config::Target, root: &Path) -> Result<()> {
     let dir = root.join(&target.path);
     fs::create_dir_all(&dir)?;
     for v in &cfg.variants {
         if target
             .out_names
             .as_ref()
-            .map_or(false, |m| !m.contains_key(&v.name))
+            .is_some_and(|m| !m.contains_key(&v.name))
         {
             continue;
         }
@@ -224,7 +236,7 @@ fn gen_ghostty(cfg: &Config, target: &crate::config::Target, root: &PathBuf) -> 
     Ok(())
 }
 
-fn gen_zed(cfg: &Config, target: &crate::config::Target, root: &PathBuf) -> Result<()> {
+fn gen_zed(cfg: &Config, target: &crate::config::Target, root: &Path) -> Result<()> {
     let dir = root.join(&target.path);
     fs::create_dir_all(&dir)?;
     let mut themes = vec![];
@@ -1560,14 +1572,14 @@ fn build_zed_syntax(cfg: &Config, ui: &crate::config::UiPalette) -> Value {
     Value::Object(syntax)
 }
 
-fn gen_cursor(cfg: &Config, target: &crate::config::Target, root: &PathBuf) -> Result<()> {
+fn gen_cursor(cfg: &Config, target: &crate::config::Target, root: &Path) -> Result<()> {
     let dir = root.join(&target.path);
     fs::create_dir_all(&dir)?;
     for v in &cfg.variants {
         if target
             .out_names
             .as_ref()
-            .map_or(false, |m| !m.contains_key(&v.name))
+            .is_some_and(|m| !m.contains_key(&v.name))
         {
             continue;
         }
@@ -1842,14 +1854,14 @@ fn gen_cursor(cfg: &Config, target: &crate::config::Target, root: &PathBuf) -> R
     Ok(())
 }
 
-fn gen_neovim(cfg: &Config, target: &crate::config::Target, root: &PathBuf) -> Result<()> {
+fn gen_neovim(cfg: &Config, target: &crate::config::Target, root: &Path) -> Result<()> {
     let dir = root.join(&target.path);
     fs::create_dir_all(&dir)?;
     for v in &cfg.variants {
         if target
             .out_names
             .as_ref()
-            .map_or(false, |m| !m.contains_key(&v.name))
+            .is_some_and(|m| !m.contains_key(&v.name))
         {
             continue;
         }
@@ -1917,7 +1929,7 @@ hl('Keyword', {{ fg = c.dark_blue }})
     Ok(())
 }
 
-fn gen_website(cfg: &Config, target: &crate::config::Target, root: &PathBuf) -> Result<()> {
+fn gen_website(cfg: &Config, target: &crate::config::Target, root: &Path) -> Result<()> {
     let dir = root.join(&target.path);
     std::fs::create_dir_all(&dir)?;
     // Build arrays matching the website component expectations

@@ -38,7 +38,7 @@ Or install as dev extension:
 git clone https://github.com/mhamrah/subliminal-nightfall.git
 
 # In Zed, run: "zed: install dev extension"
-# Select the cloned repository directory
+# Select the cloned repository's zed/ directory
 ```
 
 ### Neovim
@@ -160,15 +160,17 @@ subliminal-nightfall/
 ├── packages/
 │   ├── core/           # Color definitions (TypeScript)
 │   └── website/        # Showcase site (Astro)
-├── zed/themes/         # Zed theme JSON
+├── zed/                # Self-contained Zed extension
+│   ├── extension.toml  # Zed extension manifest
+│   ├── extension/      # Zed extension assets
+│   └── themes/         # Zed theme JSON
 ├── cursor/             # VS Code/Cursor extension
 ├── neovim/             # Neovim colorscheme
 ├── ghostty/            # Ghostty terminal theme
-├── theme.toml          # Single source of truth for colors
-└── themes/             # Symlink to zed/themes/ (for Zed extension)
+└── theme.toml          # Single source of truth for colors
 ```
 
-**Note**: The `themes/` directory is a symlink to `zed/themes/` to satisfy Zed's extension requirements while keeping the repository organized.
+**Note**: The upstream Zed Extensions registry must include `path = "zed"` in `extensions.toml` so the Zed manifest and assets can stay isolated from the repository root.
 
 ## ColorLoom Theme Generator
 
@@ -251,7 +253,7 @@ mise run build
 # Preview website
 mise run preview
 
-# Verify symlink setup
+# Verify Zed extension layout
 mise run verify
 ```
 
@@ -291,8 +293,8 @@ The VS Code/Cursor extension automatically publishes to both marketplaces when t
 - Auto-bumps patch versions (Cursor, core if colors changed)
 - Computes and tags Zed release versions on Cursor, Zed, or Theme changes
 - Publishes VS Code/Cursor extension to Marketplace & Open VSX
-- Packages Zed extension (`extension.toml` + `extension/icon.png` + `zed/themes/`) and attaches to release
-- Push of tag `v<version>` triggers Zed release workflow via `huacnlee/zed-extension-action`
+- Packages Zed extension contents from `zed/` (`extension.toml` + `extension/icon.png` + `themes/`) and attaches to release
+- The Zed publish job tags `v<version>` and runs `huacnlee/zed-extension-action`
 - Commits version bumps back to repository
 
 **Manual (VS Code / Cursor):**
@@ -313,27 +315,37 @@ cd website
 wrangler pages deploy dist --project-name=subliminal-nightfall
 ```
 
-**Manual (Zed extension tag + PR):**
+**Manual (Zed extension PR):**
 ```bash
-# Tag matching cursor version
-VERSION=$(node -e "process.stdout.write(require('./cursor/package.json').version)")
-git tag "v$VERSION" && git push origin "v$VERSION"
-# GitHub Action will open release PR via zed-extension-action
+# Run the publish workflow manually with force_zed enabled.
+# The workflow tags the current zed/extension.toml version and opens the Zed Extensions PR.
+gh workflow run "Publish Themes and Website" -f force_zed=true
 ```
 
 ### Zed Extension Release Workflow
 
-This repo uses `huacnlee/zed-extension-action` to open a PR against the upstream Zed Extensions repo on new tags:
+This repo uses `huacnlee/zed-extension-action` from the publish workflow to open a PR against the upstream Zed Extensions repo:
 
-- Workflow file: `.github/workflows/zed-release.yml`
-- Trigger: push of tags `v*`
+- Workflow file: `.github/workflows/publish.yml`
+- Trigger: theme/colorloom changes, or manual `workflow_dispatch` with `force_zed`
 - Inputs:
   - `extension-name`: `subliminal-nightfall`
   - `push-to`: set via repo variable `ZED_EXTENSIONS_FORK` (e.g., `yourname/extensions` fork)
 - Secrets:
   - `COMMITTER_TOKEN`: Personal Access Token with `repo` + `workflow` scopes
 
-On tag push, the action creates/updates the PR to release the extension in Zed.
+When the Zed publish job runs, the action creates or updates the PR to release the extension in Zed.
+
+The upstream `zed-industries/extensions` entry should include:
+
+```toml
+[subliminal-nightfall]
+submodule = "extensions/subliminal-nightfall"
+path = "zed"
+version = "<version>"
+```
+
+If the generated Zed Extensions PR only bumps `version` and the submodule SHA, add the `path = "zed"` line to that PR once.
 
 Setup locations in GitHub UI:
 - Set repo variable: Settings → Secrets and variables → Actions → Variables → New variable → Name: `ZED_EXTENSIONS_FORK`, Value: `mhamrah/extensions` (or your fork)
