@@ -39,6 +39,7 @@ check_absent() {
 }
 
 check_file "zed/extension.toml" "Zed extension manifest"
+check_file "zed/LICENSE" "Zed extension license"
 check_file "zed/extension/icon.png" "Zed extension icon"
 check_file "zed/themes/subliminal-nightfall.json" "Zed theme JSON"
 check_absent "extension.toml" "Root Zed manifest"
