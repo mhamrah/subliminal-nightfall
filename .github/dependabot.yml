@@ -1,0 +1,26 @@
+version: 2
+
+# Security updates must also be enabled in the repository's GitHub settings.
+# A zero PR limit disables version updates; security updates remain enabled.
+# The required schedule applies only to version updates, not security fixes.
+updates:
+  - package-ecosystem: "npm"
+    directories:
+      - "/website"
+      - "/packages/core"
+      - "/cursor"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 0
+
+  - package-ecosystem: "cargo"
+    directory: "/tools/colorloom"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 0
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 0
