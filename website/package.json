@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.1",
-    "astro": "^6.4.7",
+    "astro": "^7.2.8",
     "gsap": "^3.15.0",
     "prismjs": "^1.30.0",
     "tailwindcss": "^4.3.1"
